@@ -77,6 +77,7 @@ AddrSpace::AddrSpace(OpenFile * executable) {
     StartStack = size;
     manageThreads = new BitMap(MAX_NUMBER_THREADS);
     manageThreadsSem = new Semaphore("Manage_Threads", 0);
+    nbCurThread=0;
 #endif
     ASSERT(numPages <= NumPhysPages); // check we're not trying
     // to run anything too big --
@@ -195,7 +196,7 @@ AddrSpace::RestoreState() {
 }
 
 int
-AddrSpace::InitUserRegisters(int addFunc, int arg) {
+AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     int i;
 
     for (i = 0; i < NumTotalRegs; i++)
@@ -208,6 +209,7 @@ AddrSpace::InitUserRegisters(int addFunc, int arg) {
     // of branch delay possibility
     machine->WriteRegister(NextPCReg, addFunc + 4);
     machine->WriteRegister(4, arg);
+    machine->WriteRegister(RetAddrReg,addrExitThread);
     // Set the stack register to the end of the address space, where we
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
@@ -216,4 +218,11 @@ AddrSpace::InitUserRegisters(int addFunc, int arg) {
     machine->WriteRegister(StackReg, EndStack);
     DEBUG('a', "Initializing stack register to %d\n",
             numPages * PageSize - 16);
+}
+void AddrSpace::IncrementNbThread(){
+    this->nbCurThread++;
+}
+
+void AddrSpace::DecrementNbThread(){
+    this->nbCurThread--;
 }

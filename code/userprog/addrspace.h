@@ -37,13 +37,14 @@ public:
     void InitRegisters(); // Initialize user-level CPU registers,
     // before jumping to user code
 #ifdef CHANGED
-    int InitUserRegisters(int addFunc, int arg); // Initialize user-level thread CPU registers
+    int InitUserRegisters(int addFunc, int arg, int addrExitThread); // Initialize user-level thread CPU registers
     BitMap *manageThreads; // Managed multiple threading
     Semaphore *manageThreadsSem;
 #endif // CHANGED
     void SaveState(); // Save/restore address space-specific
     void RestoreState(); // info on a context switch
-
+    void IncrementNbThread();
+    void DecrementNbThread();
 private:
     TranslationEntry * pageTable; // Assume linear page table translation
     // for now!
@@ -51,6 +52,7 @@ private:
     // address space
 #ifdef CHANGED
     int StartStack;
+    int nbCurThread;
 #endif
 };
 
