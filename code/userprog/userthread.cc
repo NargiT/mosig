@@ -5,21 +5,22 @@
 #include "userthread.h"
 
 static void StartUserThread(int functionAndArg) {
-    int AddrOfFunction = ((serial_Funct_p) functionAndArg)->addrFunc;
+    int addrOfFunction = ((serial_Funct_p) functionAndArg)->addrFunc;
     int arg = ((serial_Funct_p) functionAndArg)->arg;
-
+    int addrExitThread = ((serial_Funct_p) functionAndArg)->addrExitThread;
     // use current thread to intialize the right adresse space
-    currentThread->space->InitUserRegisters(AddrOfFunction, arg);
+    currentThread->space->InitUserRegisters(addrOfFunction, arg,addrExitThread);
     machine->Run();
 
 
 }
 
-int do_createUserThread(int f, int arg) {
+int do_createUserThread(int f, int arg, int addrExitThread) {
     Thread *newThread = new Thread("newThread");
     serial_Funct_p structFunction = new serialFunct_s;
     structFunction->addrFunc = f;
     structFunction->arg = arg;
+    structFunction->addrExitThread = addrExitThread;
     newThread->Fork(StartUserThread, (int) structFunction);
 
     int id = -1;

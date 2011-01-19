@@ -11,11 +11,12 @@
 typedef struct serialFunct {
     int addrFunc;
     int arg;
+    int addrExitThread;
 } serialFunct_s, *serial_Funct_p;
 
 static void StartUserThread(int functionAndArg);
 
-extern int do_createUserThread(int f, int arg);
+extern int do_createUserThread(int f, int arg, int addrExitThread);
 extern void do_UserThreadExit();
 
 
