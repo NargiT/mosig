@@ -77,8 +77,10 @@ Join:
 	.ent	Create
 Create:
 	addiu $2,$0,SC_Create
+        addiu $6,$0,SC_UserThreadExit
 	syscall
 	j	$31
+
 	.end Create
 
 	.globl Open
