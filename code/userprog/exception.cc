@@ -176,7 +176,7 @@ ExceptionHandler(ExceptionType which) {
                 break;
             }
             case SC_UserThreadCreate:
-            {
+            {   
                 int addrFunctionToCall = machine->ReadRegister(4);
                 int arg = machine->ReadRegister(5);
                 int addrExitThread = machine->ReadRegister(6);
@@ -185,20 +185,12 @@ ExceptionHandler(ExceptionType which) {
                 break;
             }
             case SC_UserThreadExit:
-            {
+            {   
                 DEBUG('a', "Exit, initiated by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
                 // Check which thread is exiting
                 if (strncmp("main", currentThread->getName(), 4)) {
-                    bool threadsRunning;
-                    // the main waits for it's children to terminates
-                    do {
-                        threadsRunning = FALSE;
-                        currentThread->space->manageThreadsSem->P();
-                        for (int i = 0; i < MAX_NUMBER_THREADS; i++)
-                            // check if there still threads running
-                            threadsRunning = threadsRunning || currentThread->space->manageThreads->Test(i);
-                        currentThread->space->manageThreadsSem->V();
-                    } while (threadsRunning);
+
+                    
                 } else
                     do_UserThreadExit(); // the thread exit
                 break;
