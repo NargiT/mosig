@@ -79,19 +79,9 @@ ExceptionHandler(ExceptionType which) {
             }
             case SC_Exit:
             {
-                DEBUG('a', "Exit, initiated by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
-                // Check which thread is exiting
-                if (strncmp("main", currentThread->getName(), 4)) {
-                    bool threadsRunning;
-                    // the main waits for it's children to terminates
-                    do {
-                        threadsRunning = FALSE;
-                        currentThread->space->manageThreadsSem->P();
-                        for (int i = 0; i < MAX_NUMBER_THREADS; i++)
-                            // check if there still threads running
-                            threadsRunning = threadsRunning || currentThread->space->manageThreads->Test(i);
-                        currentThread->space->manageThreadsSem->V();
-                    } while (threadsRunning);
+                DEBUG('a', "SC_Exit");
+                if (false) {
+
                 } else
                     do_UserThreadExit(); // the thread exit
                 break;
@@ -189,12 +179,28 @@ ExceptionHandler(ExceptionType which) {
             {
                 int addrFunctionToCall = machine->ReadRegister(4);
                 int arg = machine->ReadRegister(5);
-                machine->WriteRegister(2, do_createUserThread(addrFunctionToCall, arg));
+                int addrExitThread = machine->ReadRegister(6);
+                machine->WriteRegister(2, do_createUserThread(addrFunctionToCall, arg, addrExitThread));
+
                 break;
             }
             case SC_UserThreadExit:
             {
-                do_UserThreadExit();
+                DEBUG('a', "Exit, initiated by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
+                // Check which thread is exiting
+                if (strncmp("main", currentThread->getName(), 4)) {
+                    bool threadsRunning;
+                    // the main waits for it's children to terminates
+                    do {
+                        threadsRunning = FALSE;
+                        currentThread->space->manageThreadsSem->P();
+                        for (int i = 0; i < MAX_NUMBER_THREADS; i++)
+                            // check if there still threads running
+                            threadsRunning = threadsRunning || currentThread->space->manageThreads->Test(i);
+                        currentThread->space->manageThreadsSem->V();
+                    } while (threadsRunning);
+                } else
+                    do_UserThreadExit(); // the thread exit
                 break;
             }
 
