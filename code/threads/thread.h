@@ -126,6 +126,8 @@ class Thread
     // Allocate a stack for thread.
     // Used internally by Fork()
 
+	int thread_id; // unique ID of the thread
+
 #ifdef USER_PROGRAM
 // A thread running a user program actually has *two* sets of CPU registers -- 
 // one for its state while executing user code, one for its state 
@@ -137,8 +139,14 @@ class Thread
     void SaveUserState ();	// save user-level register state
     void RestoreUserState ();	// restore user-level register state
 
+#ifdef CHANGED
+    int getID();
+    void setID(int newID);
+#endif
+
+	
     AddrSpace *space;		// User code this thread is running.
-    int thread_id;
+
     #endif
 };
 

@@ -395,6 +395,14 @@ Thread::RestoreUserState() {
     for (int i = 0; i < NumTotalRegs; i++)
         machine->WriteRegister(i, userRegisters[i]);
 }
+
+int getID() {
+	return this.thread_id;
+}
+
+void setID(int newId) {
+	this.thread_id = newId;
+}
 #endif
 
 
