@@ -16,21 +16,23 @@ static void StartUserThread(int functionAndArg) {
 }
 
 int do_createUserThread(int f, int arg, int addrExitThread) {
+    
     Thread *newThread = new Thread("newThread");
     serial_Funct_p structFunction = new serialFunct_s;
     structFunction->addrFunc = f;
     structFunction->arg = arg;
-    structFunction->addrExitThread = addrExitThread;
-    newThread->Fork(StartUserThread, (int) structFunction);
-
+    structFunction->addrExitThread = addrExitThread;       
     int id = -1;
 
-    newThread->space->manageThreadsSem->P();
+    currentThread->space->manageThreadsSem->P();
     // find and mark the free bit otherwise return -1
-    if ((id = newThread->space->manageThreads->Find()) == -1) {
+    if ((id = currentThread->space->manageThreads->Find()) == -1) {
         DEBUG('a', "do_createUserThread cannot create an additional thread.\n");
+        currentThread->space->manageThreadsSem->V();
         return -1;
     }
+    newThread->Fork(StartUserThread, (int) structFunction);
+    newThread->space->IncrementNbThread();
     newThread->space->manageThreadsSem->V();
 
     newThread->setID(id);
@@ -42,10 +44,13 @@ void do_UserThreadExit() {
     // lock manageThreads to clear the current thread from the bitmap
     currentThread->space->manageThreadsSem->P();
     currentThread->space->manageThreads->Clear(id);
+
+    currentThread->space->DecrementNbThread();
     // release the lock
     currentThread->space->manageThreadsSem->V();
-
+    
     currentThread->Finish();
+
 }
 
 
