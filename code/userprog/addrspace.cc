@@ -58,6 +58,7 @@ SwapHeader(NoffHeader * noffH) {
 //
 //      "executable" is the file containing the object code to load into memory
 //----------------------------------------------------------------------
+
 AddrSpace::AddrSpace(OpenFile * executable) {
     NoffHeader noffH;
     unsigned int i, size;
@@ -75,9 +76,11 @@ AddrSpace::AddrSpace(OpenFile * executable) {
     size = numPages * PageSize;
 #ifdef CHANGED
     StartStack = size;
-    manageThreads = new BitMap(MAX_NUMBER_THREADS);
-    manageThreadsSem = new Semaphore("Manage_Threads", 0);
-    nbCurThread=0;
+    manageThreads = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
+    manageThreads->Mark(0); // Mark the main address space
+    nbCurThread = 1; // the main
+    exitSem = new Semaphore("Exit_Main", 1);
+    manageThreadsSem = new Semaphore("Manage_Threads", 1);    
 #endif
     ASSERT(numPages <= NumPhysPages); // check we're not trying
     // to run anything too big --
@@ -209,7 +212,7 @@ AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     // of branch delay possibility
     machine->WriteRegister(NextPCReg, addFunc + 4);
     machine->WriteRegister(4, arg);
-    machine->WriteRegister(RetAddrReg,addrExitThread);
+    machine->WriteRegister(RetAddrReg, addrExitThread);
     // Set the stack register to the end of the address space, where we
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
@@ -219,10 +222,15 @@ AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     DEBUG('a', "Initializing stack register to %d\n",
             numPages * PageSize - 16);
 }
-void AddrSpace::IncrementNbThread(){
+
+void AddrSpace::IncrementNbThread() {
     this->nbCurThread++;
 }
 
-void AddrSpace::DecrementNbThread(){
+void AddrSpace::DecrementNbThread() {
     this->nbCurThread--;
+}
+
+bool AddrSpace::LastOne() {
+    return (this->nbCurThread == 1);
 }

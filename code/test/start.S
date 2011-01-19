@@ -77,7 +77,6 @@ Join:
 	.ent	Create
 Create:
 	addiu $2,$0,SC_Create
-        addiu $6,$0,SC_UserThreadExit
 	syscall
 	j	$31
 
@@ -133,6 +132,7 @@ Yield:
 
 	.globl PutChar
 	.ent	PutChar
+#ifdef CHANGED
 PutChar:
 	addiu $2,$0,SC_PutChar // pass the parameter SC_PutChar to reg2
 	syscall // call the system
@@ -188,6 +188,7 @@ GetInt:
 
 UserThreadCreate:
 	addiu $2,$0,SC_UserThreadCreate // pass the parameter SC_GetChar to reg2
+        addiu $6,$0,UserThreadExit
 	syscall // call the system
 	j	$31 // jump to the return adress
 	.end UserThreadCreate
@@ -200,6 +201,7 @@ UserThreadExit:
 	syscall // call the system
 	j	$31 // jump to the return adress
 	.end UserThreadExit
+#endif
 /* dummy function to keep gcc happy */
         .globl  __main
         .ent    __main

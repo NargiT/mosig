@@ -79,11 +79,13 @@ ExceptionHandler(ExceptionType which) {
             }
             case SC_Exit:
             {
-                DEBUG('a', "SC_Exit");
+                DEBUG('a', "SC_Exit - No killing just the the last one will leave");
+                currentThread->Yield();
+                currentThread->space->exitSem->P();
                 if (false) {
-
+                    NULL; // will later release the ressources (kill)
                 } else
-                    do_UserThreadExit(); // the thread exit
+                    interrupt->Halt(); //the thread exit
                 break;
             }
             case SC_Exec:
@@ -176,23 +178,20 @@ ExceptionHandler(ExceptionType which) {
                 break;
             }
             case SC_UserThreadCreate:
-            {   
+            {
                 int addrFunctionToCall = machine->ReadRegister(4);
                 int arg = machine->ReadRegister(5);
                 int addrExitThread = machine->ReadRegister(6);
-                machine->WriteRegister(2, do_createUserThread(addrFunctionToCall, arg, addrExitThread));
-
+                // save the id of the new thread
+                int tid = do_createUserThread(addrFunctionToCall, arg, addrExitThread);
+                machine->WriteRegister(2, tid);
+                // return the id of the thread
                 break;
             }
             case SC_UserThreadExit:
-            {   
-                DEBUG('a', "Exit, initiated by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
-                // Check which thread is exiting
-                if (strncmp("main", currentThread->getName(), 4)) {
-
-                    
-                } else
-                    do_UserThreadExit(); // the thread exit
+            {
+                DEBUG('a', "UserThreadExit, initiated by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
+                do_UserThreadExit();
                 break;
             }
 

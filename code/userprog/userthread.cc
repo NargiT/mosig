@@ -28,6 +28,7 @@ int do_createUserThread(int f, int arg, int addrExitThread) {
     // find and mark the free bit otherwise return -1
     if ((id = currentThread->space->manageThreads->Find()) == -1) {
         DEBUG('a', "do_createUserThread cannot create an additional thread.\n");
+        printf("cannot create a thread.");
         currentThread->space->manageThreadsSem->V();
         return -1;
     }
@@ -44,13 +45,13 @@ void do_UserThreadExit() {
     // lock manageThreads to clear the current thread from the bitmap
     currentThread->space->manageThreadsSem->P();
     currentThread->space->manageThreads->Clear(id);
-
     currentThread->space->DecrementNbThread();
     // release the lock
+    if (currentThread->space->LastOne())
+       currentThread->space->exitSem->V();
     currentThread->space->manageThreadsSem->V();
     
     currentThread->Finish();
-
 }
 
 

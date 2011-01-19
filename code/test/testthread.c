@@ -11,6 +11,8 @@ int main() {
 
     PutString("Début du main...\n");
     UserThreadCreate(print, 1);
+    UserThreadCreate(print, 2);
     UserThreadCreate(print, 3);
+    PutString("hello world\n");
 }
 

@@ -39,12 +39,14 @@ public:
 #ifdef CHANGED
     int InitUserRegisters(int addFunc, int arg, int addrExitThread); // Initialize user-level thread CPU registers
     BitMap *manageThreads; // Managed multiple threading
-    Semaphore *manageThreadsSem;
+    Semaphore *manageThreadsSem; // Semaphore to manage multiple threads and nbCurThread
+    Semaphore *exitSem; // To let the main function exit the program
 #endif // CHANGED
     void SaveState(); // Save/restore address space-specific
     void RestoreState(); // info on a context switch
     void IncrementNbThread();
     void DecrementNbThread();
+    bool LastOne(); // check if the currentThread is the last one
 private:
     TranslationEntry * pageTable; // Assume linear page table translation
     // for now!
