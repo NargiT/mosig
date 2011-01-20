@@ -231,6 +231,10 @@ void AddrSpace::DecrementNbThread() {
     this->nbCurThread--;
 }
 
-bool AddrSpace::LastOne() {
+bool AddrSpace::MainRemains() {
     return (this->nbCurThread == 1);
+}
+
+int AddrSpace::NbRunningThreads() {
+    return (this->nbCurThread - 1);
 }

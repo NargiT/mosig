@@ -33,7 +33,7 @@ public:
 
 private:
     Console *console;
-    
+    Semaphore *protectIO;
 };
 
 #endif // SYNCHCONSOLE_H

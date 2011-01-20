@@ -10,10 +10,10 @@
 void startCounting(int i) {
     int j;
     
-    PutString("Process "); PutInt(i); PutString(" starts the counting");
+    PutString("Process :"); PutInt(i); PutString(" starts the counting\n");
     for (j = 0; j < 10; j++)
         PutInt(j);
-    return;
+    PutChar('\n');
 }
 
 /*

@@ -34,6 +34,8 @@ int do_createUserThread(int f, int arg, int addrExitThread) {
     }
     newThread->Fork(StartUserThread, (int) structFunction);
     newThread->space->IncrementNbThread();
+    if (newThread->space->NbRunningThreads() == 1)
+        newThread->space->exitSem->P();
     newThread->space->manageThreadsSem->V();
 
     newThread->setID(id);
@@ -46,8 +48,8 @@ void do_UserThreadExit() {
     currentThread->space->manageThreadsSem->P();
     currentThread->space->manageThreads->Clear(id);
     currentThread->space->DecrementNbThread();
-    // release the lock
-    if (currentThread->space->LastOne())
+    // release the lock if the last threads is main
+    if (currentThread->space->MainRemains())
        currentThread->space->exitSem->V();
     currentThread->space->manageThreadsSem->V();
     

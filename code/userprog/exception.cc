@@ -25,6 +25,7 @@
 #include "../threads/system.h"
 #include "syscall.h"
 #include "userthread.h"
+#include <string>
 
 //----------------------------------------------------------------------
 // UpdatePC : Increments the Program Counter register in order to resume
@@ -80,7 +81,6 @@ ExceptionHandler(ExceptionType which) {
             case SC_Exit:
             {
                 DEBUG('a', "SC_Exit - No killing just the the last one will leave");
-                currentThread->Yield();
                 currentThread->space->exitSem->P();
                 if (false) {
                     NULL; // will later release the ressources (kill)
@@ -151,11 +151,12 @@ ExceptionHandler(ExceptionType which) {
             {
                 DEBUG('a', "GetString, initiated by user.\n");
                 int addr, size;
-                char *buffer;
+                char *buffer = new char[MAX_STRING_SIZE];
                 addr = machine->ReadRegister(4);
                 size = machine->ReadRegister(5);
-                buffer = &machine->mainMemory[addr];
+                buffer = &(machine->mainMemory[addr]);
                 synchconsole->SynchGetString(buffer, size);
+                buffer = NULL;
                 break;
             }
             case SC_PutInt:

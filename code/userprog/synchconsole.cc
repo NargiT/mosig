@@ -22,6 +22,9 @@ SynchConsole::SynchConsole(char *readFile, char* writeFile) {
 
     readAvail = new Semaphore("read avail", 0);
     writeDone = new Semaphore("write done", 0);
+
+    protectIO = new Semaphore("protect IO from Threads", 1);
+
     console = new Console(readFile, writeFile, ReadAvail, WriteDone, 0);
 
 }
@@ -34,41 +37,49 @@ SynchConsole::~SynchConsole() {
 }
 
 void SynchConsole::SynchPutChar(const char ch) {
+    protectIO->P();
     console->PutChar(ch);
     writeDone->P();
+    protectIO->V();
 }
 
 char SynchConsole::SynchGetChar() {
+    protectIO->P();
     readAvail->P();
+    protectIO->V();
     return console->GetChar();
+
 }
 
 void SynchConsole::SynchPutString(const char *s) {
 
+    protectIO->P();
     for (int i = 0; i < MAX_STRING_SIZE; i++) {
         if (*(s + i) == '\0') break;
-        this->SynchPutChar(*(s + i));
+        console->PutChar(*(s + i));
+        writeDone->P();
     }
+    protectIO->V();
 }
 
 void SynchConsole::SynchGetString(char *buffer, int n) {
+    protectIO->P();
     int i = 0;
-
     // recover the string from the standard input
     readAvail->P();
     buffer[i] = console->GetChar();
-    for (i = 1; i < n && buffer[i] != EOF && buffer[i] != '\n'; i++) {
+    while(buffer[i] != '\n' && i < n - 1 && buffer[i] != EOF) {
         readAvail->P();
-        buffer[i] = console->GetChar();
+        buffer[++i] = console->GetChar();
     }
-    buffer[i] = '\0';
+    buffer[i+1] = '\0';
+    protectIO->V();
 }
 
 void SynchConsole::SynchPutInt(int n) {
     char buffer[MAX_INT_SIZE + 2] = {'0'};
     snprintf(buffer, MAX_INT_SIZE + 2, "%d", n);
     this->SynchPutString(buffer);
-    //delete[] buffer;
 }//
 
 int SynchConsole::SynchGetInt() {
@@ -82,7 +93,6 @@ int SynchConsole::SynchGetInt() {
 }//
 
 void SynchConsole::CopyStringFromMachine(int from, char *to, unsigned int size) {
-
     unsigned int i;
     for (i = 0; i < size; i++) {
         to[i] = machine->mainMemory[from + i];

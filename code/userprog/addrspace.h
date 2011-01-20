@@ -26,7 +26,6 @@
 class Semaphore;
 #endif
 
-
 class AddrSpace {
 public:
     AddrSpace(OpenFile * executable); // Create an address space,
@@ -46,7 +45,18 @@ public:
     void RestoreState(); // info on a context switch
     void IncrementNbThread();
     void DecrementNbThread();
-    bool LastOne(); // check if the currentThread is the last one
+
+    /*
+     * Check if the last remaining threads is main.
+     * If so returns ture otherwise false
+     */
+    bool MainRemains();
+
+    /*
+     * returns the number of threads created by the main and
+     * currently running
+     */
+    int NbRunningThreads();
 private:
     TranslationEntry * pageTable; // Assume linear page table translation
     // for now!
