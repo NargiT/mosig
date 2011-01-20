@@ -17,10 +17,16 @@ public:
     char SynchGetChar(); // Unix getchar(3S)
 
     void SynchPutString(const char *); // Unix puts(3S)
-    void SynchGetString(char *s, int n); // Unix fgets(3S)
+
+    /**
+     * Recover the string from the standard input of size n in to nachos memory
+     * @param str : string to be recoverd
+     * @param n : size max of the string
+     */
+    void SynchGetString(char *str, int n); // Unix fgets(3S)
 
     void SynchPutInt(int n); //
-    void SynchGetInt(int *n); //    
+    int SynchGetInt(); //
     void CopyStringFromMachine(int from, char *to, unsigned size);
 
 

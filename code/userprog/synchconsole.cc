@@ -47,19 +47,21 @@ void SynchConsole::SynchPutString(const char *s) {
 
     for (int i = 0; i < MAX_STRING_SIZE; i++) {
         if (*(s + i) == '\0') break;
-        console->PutChar(*(s + i));
-        console->WriteDone();
+        this->SynchPutChar(*(s + i));
     }
-    writeDone->P();
 }
 
-void SynchConsole::SynchGetString(char *s, int n) {
+void SynchConsole::SynchGetString(char *buffer, int n) {
+    int i = 0;
+
+    // recover the string from the standard input
     readAvail->P();
-    int i;
-    for (i = 0; i < n; i++) {
-        s[i] = console->GetChar();
-        console->CheckCharAvail();
+    buffer[i] = console->GetChar();
+    for (i = 1; i < n && buffer[i] != EOF && buffer[i] != '\n'; i++) {
+        readAvail->P();
+        buffer[i] = console->GetChar();
     }
+    buffer[i] = '\0';
 }
 
 void SynchConsole::SynchPutInt(int n) {
@@ -69,12 +71,14 @@ void SynchConsole::SynchPutInt(int n) {
     //delete[] buffer;
 }//
 
-void SynchConsole::SynchGetInt(int *n) {
+int SynchConsole::SynchGetInt() {
     char buffer[MAX_INT_SIZE + 2];
     // use the getString to read from the console the needed value
     this->SynchGetString(buffer, MAX_INT_SIZE + 2);
+    int toReturn;
     // store the value in to the memory
-    sscanf(buffer, "%d", &n);
+    sscanf(buffer, "%d", &toReturn);
+    return toReturn;
 }//
 
 void SynchConsole::CopyStringFromMachine(int from, char *to, unsigned int size) {

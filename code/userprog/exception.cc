@@ -150,31 +150,27 @@ ExceptionHandler(ExceptionType which) {
             case SC_GetString:
             {
                 DEBUG('a', "GetString, initiated by user.\n");
-                char to[machine->ReadRegister(5)];
-                synchconsole->SynchGetString(to, machine->ReadRegister(5));
-                int i;
-                for (i = 0; i < machine->ReadRegister(5); i++) {
-                    machine->WriteMem(machine->ReadRegister(4) + i, 1, (int) to[i]);
-                }
+                int addr, size;
+                char *buffer;
+                addr = machine->ReadRegister(4);
+                size = machine->ReadRegister(5);
+                buffer = &machine->mainMemory[addr];
+                synchconsole->SynchGetString(buffer, size);
                 break;
             }
             case SC_PutInt:
             {
                 DEBUG('a', "PutInt, initiated by user.\n");
                 int value = machine->ReadRegister(4);
-                char to[MAX_INT_SIZE + 2] = {'0'};
-                snprintf(to, MAX_INT_SIZE + 2, "%d", value);
-                synchconsole->SynchPutString(to);
+                synchconsole->SynchPutInt(value);
                 break;
             }
             case SC_GetInt:
             {
                 DEBUG('a', "GetInt, initiated by user.\n");
-                char to[MAX_INT_SIZE + 2];
-                synchconsole->SynchGetString(to, MAX_INT_SIZE + 2);
-                int tmp;
-                sscanf(to, "%d", &tmp);
-                machine->WriteMem(machine->ReadRegister(4), 4, tmp);
+                int val = synchconsole->SynchGetInt();
+                machine->WriteMem(machine->ReadRegister(4), 4, val);
+                // transfert it to the function
                 break;
             }
             case SC_UserThreadCreate:

@@ -149,7 +149,7 @@ void PutString(char *ch);
 
 char GetChar();
 
-void GetString( char *s, int n);
+void GetString(char *s, int n);
 
 void PutInt(int n);
 
