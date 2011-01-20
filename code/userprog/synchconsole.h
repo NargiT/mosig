@@ -18,6 +18,9 @@ public:
 
     void SynchPutString(const char *); // Unix puts(3S)
     void SynchGetString(char *s, int n); // Unix fgets(3S)
+
+    void SynchPutInt(int n); //
+    void SynchGetInt(int *n); //    
     void CopyStringFromMachine(int from, char *to, unsigned size);
 
 

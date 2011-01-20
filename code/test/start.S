@@ -169,7 +169,7 @@ GetString:
 	.ent	PutInt
 
 PutInt:
-	addiu $2,$0,SC_PutInt // pass the parameter SC_GetChar to reg2
+	addiu $2,$0,SC_PutInt // pass the parameter SC_PutInt to reg2
 	syscall // call the system
 	j	$31 // jump to the return adress
 	.end PutInt

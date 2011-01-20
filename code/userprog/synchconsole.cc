@@ -49,7 +49,6 @@ void SynchConsole::SynchPutString(const char *s) {
         if (*(s + i) == '\0') break;
         console->PutChar(*(s + i));
         console->WriteDone();
-
     }
     writeDone->P();
 }
@@ -62,6 +61,21 @@ void SynchConsole::SynchGetString(char *s, int n) {
         console->CheckCharAvail();
     }
 }
+
+void SynchConsole::SynchPutInt(int n) {
+    char buffer[MAX_INT_SIZE + 2] = {'0'};
+    snprintf(buffer, MAX_INT_SIZE + 2, "%d", n);
+    this->SynchPutString(buffer);
+    //delete[] buffer;
+}//
+
+void SynchConsole::SynchGetInt(int *n) {
+    char buffer[MAX_INT_SIZE + 2];
+    // use the getString to read from the console the needed value
+    this->SynchGetString(buffer, MAX_INT_SIZE + 2);
+    // store the value in to the memory
+    sscanf(buffer, "%d", &n);
+}//
 
 void SynchConsole::CopyStringFromMachine(int from, char *to, unsigned int size) {
 

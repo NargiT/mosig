@@ -29,6 +29,7 @@
 #define SC_Close	8
 #define SC_Fork		9
 #define SC_Yield	10
+#ifdef CHANGED
 #define SC_PutChar      11
 #define SC_PutString    12
 #define SC_GetChar      13
@@ -37,7 +38,7 @@
 #define SC_GetInt       16
 #define SC_UserThreadCreate 17
 #define SC_UserThreadExit 18
-
+#endif // CHANGED
 #ifdef IN_USER_MODE
 
 // LB: This part is read only on compiling the test/*.c files.
@@ -148,19 +149,17 @@ void PutString(char *ch);
 
 char GetChar();
 
-void SynchGetString( char *s, int n);
+void GetString( char *s, int n);
 
-void SynchPutInt(int n);
+void PutInt(int n);
 
-void SynchPutInt(int n);
-
-void SynchGetInt(int *n);
+void GetInt(int *n);
 
 int UserThreadCreate(void f(void *arg), void *arg);
 
 void UserThreadExit();
 
-#endif
+#endif // CHANGED
 
 #endif // IN_USER_MODE
 
