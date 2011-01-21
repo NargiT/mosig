@@ -102,7 +102,7 @@ Thread::Fork(VoidFunctionPtr func, int arg) {
 
     // LB: Observe that currentThread->space may be NULL at that time.
     this->space = currentThread->space;
-    
+
 #endif // USER_PROGRAM
 
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
@@ -189,8 +189,7 @@ Thread::Finish() {
 //----------------------------------------------------------------------
 
 void
-Thread::Yield()
- {
+Thread::Yield() {
     Thread *nextThread;
     IntStatus oldLevel = interrupt->SetLevel(IntOff);
 
@@ -396,13 +395,25 @@ Thread::RestoreUserState() {
         machine->WriteRegister(i, userRegisters[i]);
 }
 
-int Thread::getID() {
-	return this->thread_id;
+#ifdef CHANGED
+
+int Thread::getBitMapID() {
+    return this->bitmap_id;
 }
 
-void Thread::setID(int newId) {
-	this->thread_id = newId;
+void Thread::setBitMapID(int newId) {
+    this->bitmap_id = newId;
 }
+
+// return the thread id for the user
+int Thread::getID() {
+    return this->id;
+}
+
+void Thread::setID(int id) {
+    this->id = id;
+}
+#endif // CHANGED
 #endif
 
 

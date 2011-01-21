@@ -18,7 +18,7 @@ static void StartUserThread(int functionAndArg);
 
 extern int do_createUserThread(int f, int arg, int addrExitThread);
 extern void do_UserThreadExit();
-
+extern void do_UserThreadJoin(int id_to_join);
 
 #endif	/* USERTHREAD_H */
 

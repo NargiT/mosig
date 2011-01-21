@@ -20,7 +20,8 @@
 #include "noff.h"
 #include "addrspace.h"
 #include "../threads/synch.h"
-#include <strings.h>		/* for bzero */
+#include <strings.h>        /* for bzero */
+//#include <stdlib.h>		
 
 //----------------------------------------------------------------------
 // SwapHeader
@@ -75,12 +76,20 @@ AddrSpace::AddrSpace(OpenFile * executable) {
     numPages = divRoundUp(size, PageSize);
     size = numPages * PageSize;
 #ifdef CHANGED
-    StartStack = size;
-    manageThreads = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
-    manageThreads->Mark(0); // Mark the main address space
-    nbCurThread = 1; // the main
+    StartStack = size; // size of the main stack
+    thread_management = new id_structure_s;
+    thread_management->stackID = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
+    thread_management->stackID->Mark(0);
+    thread_management->threadID[0] = 0;
+    lastThreadID = 0; // the main ID was the last one
+    //manageThreads = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
+    //manageThreads->Mark(0); // Mark the main address space
+    nbCurThread = 1; // the main is always running
+
+    // to manage the syscall EXIT and USER_THREAD_EXIT
     exitSem = new Semaphore("Exit_Main", 1);
-    manageThreadsSem = new Semaphore("Manage_Threads", 1);    
+    // to protect the structure of bitmap + id thread and nbcurthread
+    manageThreadsSem = new Semaphore("Manage_Threads", 1);
 #endif
     ASSERT(numPages <= NumPhysPages); // check we're not trying
     // to run anything too big --
@@ -135,7 +144,8 @@ AddrSpace::~AddrSpace() {
     delete [] pageTable;
     // End of modification
 #ifdef CHANGED
-    delete manageThreads;
+    delete thread_management;
+    //delete manageThreads;
     delete manageThreadsSem;
 #endif
 }
@@ -198,7 +208,7 @@ AddrSpace::RestoreState() {
     machine->pageTableSize = numPages;
 }
 
-int
+void
 AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     int i;
 
@@ -216,11 +226,12 @@ AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     // Set the stack register to the end of the address space, where we
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
-    int EndStack = this->StartStack - (3 * PageSize) * (currentThread->getID() + 1);
+    int EndStack = this->StartStack - (3 * PageSize) * (currentThread->getBitMapID() + 1);
 
     machine->WriteRegister(StackReg, EndStack);
     DEBUG('a', "Initializing stack register to %d\n",
             numPages * PageSize - 16);
+
 }
 
 void AddrSpace::IncrementNbThread() {
@@ -237,4 +248,9 @@ bool AddrSpace::MainRemains() {
 
 int AddrSpace::NbRunningThreads() {
     return (this->nbCurThread - 1);
+}
+
+int AddrSpace::newID() {
+    this->lastThreadID++;
+    return this->lastThreadID;
 }

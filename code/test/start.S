@@ -178,7 +178,7 @@ PutInt:
 	.ent	GetInt
 
 GetInt:
-	addiu $2,$0,SC_GetInt // pass the parameter SC_GetChar to reg2
+	addiu $2,$0,SC_GetInt // pass the parameter SC_GetInt to reg2
 	syscall // call the system
 	j	$31 // jump to the return adress
 	.end GetInt
@@ -187,7 +187,7 @@ GetInt:
 	.ent	UserThreadCreate
 
 UserThreadCreate:
-	addiu $2,$0,SC_UserThreadCreate // pass the parameter SC_GetChar to reg2
+	addiu $2,$0,SC_UserThreadCreate // pass the parameter SC_UserThreadCreate to reg2
         addiu $6,$0,UserThreadExit
 	syscall // call the system
 	j	$31 // jump to the return adress
@@ -197,10 +197,20 @@ UserThreadCreate:
 	.ent	UserThreadExit
 
 UserThreadExit:
-	addiu $2,$0,SC_UserThreadExit // pass the parameter SC_GetChar to reg2
+	addiu $2,$0,SC_UserThreadExit // pass the parameter SC_UserThreadExit to reg2
 	syscall // call the system
 	j	$31 // jump to the return adress
 	.end UserThreadExit
+
+       .globl UserThreadExit
+	.ent	UserThreadExit
+
+UserThreadJoin:
+	addiu $2,$0,SC_UserThreadJoin // pass the parameter SC_UserThreadJoin to reg2
+	syscall // call the system
+	j	$31 // jump to the return adress
+	.end UserThreadExit
+
 #endif
 /* dummy function to keep gcc happy */
         .globl  __main

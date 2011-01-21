@@ -176,6 +176,7 @@ ExceptionHandler(ExceptionType which) {
             }
             case SC_UserThreadCreate:
             {
+                DEBUG('a', "UserThreadCreate, initialted by main");
                 int addrFunctionToCall = machine->ReadRegister(4);
                 int arg = machine->ReadRegister(5);
                 int addrExitThread = machine->ReadRegister(6);
@@ -191,7 +192,13 @@ ExceptionHandler(ExceptionType which) {
                 do_UserThreadExit();
                 break;
             }
-
+            case SC_UserThreadJoin:
+            {
+                DEBUG('a', "UserThreadJoin, initialted by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
+                unsigned int toJoin = machine->ReadRegister(4);
+                do_UserThreadJoin(toJoin);
+                break;
+            }
             default:
             {
                 printf("Unexpected user mode exception %d %d\n", which, type);
