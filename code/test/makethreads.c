@@ -42,5 +42,6 @@ int main(int argc, char** argv) {
     }
 
     PutString("The main is done.\n");
+    Halt();
     return 0;
 }
