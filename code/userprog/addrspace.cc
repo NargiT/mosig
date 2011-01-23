@@ -102,7 +102,12 @@ AddrSpace::AddrSpace(OpenFile * executable) {
     pageTable = new TranslationEntry[numPages];
     for (i = 0; i < numPages; i++) {
         pageTable[i].virtualPage = i; // for now, virtual page # = phys page #
+#ifndef CHANGED
         pageTable[i].physicalPage = i;
+#endif
+#ifdef CHANGED
+        pageTable[i].physicalPage =  machine->frameProvider->GetEmptyframe();
+#endif
         pageTable[i].valid = TRUE;
         pageTable[i].use = FALSE;
         pageTable[i].dirty = FALSE;
@@ -114,7 +119,7 @@ AddrSpace::AddrSpace(OpenFile * executable) {
     // zero out the entire address space, to zero the unitialized data segment
     // and the stack segment
     bzero(machine->mainMemory, size);
-
+#ifndef CHANGED
     // then, copy in the code and data segments into memory
     if (noffH.code.size > 0) {
         DEBUG('a', "Initializing code segment, at 0x%x, size %d\n",
@@ -130,6 +135,20 @@ AddrSpace::AddrSpace(OpenFile * executable) {
                 [noffH.initData.virtualAddr]),
                 noffH.initData.size, noffH.initData.inFileAddr);
     }
+#endif
+#ifdef CHANGED
+    // then, copy in the code and data segments into memory
+    if (noffH.code.size > 0) {
+        DEBUG('a', "Initializing code segment, at 0x%x, size %d\n",
+                noffH.code.virtualAddr, noffH.code.size);
+        this->ReadAtVirtual(executable, noffH.code.virtualAddr, noffH.code.size, noffH.code.inFileAddr, pageTable, numPages);
+    }
+    if (noffH.initData.size > 0) {
+        DEBUG('a', "Initializing data segment, at 0x%x, size %d\n",
+                noffH.initData.virtualAddr, noffH.initData.size);
+        this->ReadAtVirtual(executable, noffH.initData.virtualAddr, noffH.initData.size, noffH.initData.inFileAddr, pageTable, numPages);
+    }
+#endif
 
 }
 
@@ -254,3 +273,17 @@ int AddrSpace::newID() {
     this->lastThreadID++;
     return this->lastThreadID;
 }
+
+#ifdef CHANGED
+
+void AddrSpace::ReadAtVirtual(OpenFile *executable, int virtualaddr, int numBytes, int position, TranslationEntry *pageTable, unsigned numPages) {
+    char *buffer = new char[numBytes];
+    int i;
+    machine->pageTable = pageTable;
+    machine->pageTableSize = numPages;
+    executable->ReadAt(buffer, numBytes, position);
+    for (i = 0; i < numBytes; i++) {
+        machine->WriteMem(virtualaddr + i, 1, buffer[i]);
+    }
+}
+#endif
