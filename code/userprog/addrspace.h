@@ -77,6 +77,7 @@ private:
     unsigned int numPages; // Number of pages in the virtual
     // address space
 #ifdef CHANGED
+    static void ReadAtVirtual(OpenFile *executable, int virtualaddr, int numBytes, int position, TranslationEntry *pageTable, unsigned numPages);
     int StartStack;
     int nbCurThread; // Number of threads running
     int lastThreadID; // The last thread id given
