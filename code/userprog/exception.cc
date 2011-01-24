@@ -199,6 +199,12 @@ ExceptionHandler(ExceptionType which) {
                 do_UserThreadJoin(toJoin);
                 break;
             }
+            case SC_ForkExec:
+            {  
+                char *buffer = new char[MAX_STRING_SIZE];
+                synchconsole->CopyStringFromMachine(machine->ReadRegister(4),buffer,MAX_STRING_SIZE);
+                break;
+            }
             default:
             {
                 printf("Unexpected user mode exception %d %d\n", which, type);
