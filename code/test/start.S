@@ -211,6 +211,15 @@ UserThreadJoin:
 	j	$31 // jump to the return adress
 	.end UserThreadExit
 
+       .globl ForkExec
+	.ent	ForkExec
+
+ForkExec:
+	addiu $2,$0,SC_ForkExec // pass the parameter SC_ForkExec to reg2
+	syscall // call the system
+	j	$31 // jump to the return adress
+	.end ForkExec
+
 #endif
 /* dummy function to keep gcc happy */
         .globl  __main
