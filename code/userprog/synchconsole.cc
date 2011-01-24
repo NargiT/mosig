@@ -94,8 +94,10 @@ int SynchConsole::SynchGetInt() {
 
 void SynchConsole::CopyStringFromMachine(int from, char *to, unsigned int size) {
     unsigned int i;
+    int tmp;
     for (i = 0; i < size; i++) {
-        to[i] = machine->mainMemory[from + i];
+        machine->ReadMem(from+i,1,&tmp);
+        to[i] = (char) tmp;
         if (to[i] == '\0') break;
     }
     to[i] = '\0';
