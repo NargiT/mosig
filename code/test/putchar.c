@@ -7,10 +7,13 @@ void print(char c, int n) {
         PutChar(c + i);
     }
     PutChar('\n');
+    GetInt(&i);
+    PutInt(i);
 }
 
 int main() {
 
+    PutChar('e');
     print('a', 4);
     Halt();
 }

@@ -56,7 +56,6 @@
 #define StackSize	(4 * 1024)	// in words
 
 // Thread state
-
 enum ThreadStatus {
     JUST_CREATED, RUNNING, READY, BLOCKED
 };
@@ -75,7 +74,7 @@ extern void ThreadPrint(int arg);
 //  Some threads also belong to a user address space; threads
 //  that only run in the kernel have a NULL address space.
 class AddrSpace;
-
+class Semaphore;
 class Thread {
 private:
     // NOTE: DO NOT CHANGE the order of these first two members.
@@ -122,10 +121,12 @@ private:
     // (If NULL, don't deallocate stack)
     ThreadStatus status; // ready, running or blocked
     char *name;
+#ifdef USER_PROGRAM
 #ifdef CHANGED
     int bitmap_id; // unique ID of the thread
+    Semaphore *synch_join; //
+#endif // CHANGED
 #endif
-
 
     void StackAllocate(VoidFunctionPtr func, int arg);
     // Allocate a stack for thread.
@@ -144,9 +145,25 @@ public:
 
 #ifdef CHANGED
     int getBitMapID();
-    void setBitMapID(int newID);
     int getID(); // user view of the thread ID
-    void setID(int id);
+
+    // from the bitmap id set right address space and generate a new private ID
+    void setID(int bitmap_id);
+
+    /*
+     * Initialise the semaphore and return it's pointer
+     */
+    Semaphore* CreateSemaphore();
+    
+    /*
+     * Serve the threads synchronized by USER_THREAD_JOIN
+     */
+    void ServeAndRemove();
+
+    /*
+     * Destroy its adress space and remove itself from the array
+     */
+    void DestroyAndRemove();
 #endif
 
     AddrSpace *space; // User code this thread is running.

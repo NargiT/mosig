@@ -196,6 +196,9 @@ ExceptionHandler(ExceptionType which) {
             {
                 DEBUG('a', "UserThreadJoin, initialted by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
                 unsigned int toJoin = machine->ReadRegister(4);
+                // if the user try to wait for it self or the main, the instruction is ignored
+                if (toJoin == 0 || toJoin == currentThread->getID())
+                    break;
                 do_UserThreadJoin(toJoin);
                 break;
             }

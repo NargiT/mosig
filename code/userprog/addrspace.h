@@ -28,10 +28,18 @@ class Semaphore;
 
 class AddrSpace {
 
-    typedef struct id_structure {
-        int threadID[MAX_NUMBER_THREADS + 1]; // user thread ids
-        BitMap *stackID; // manage the stack of multiple ids
-    } id_structure_s, *id_structure_p;
+    typedef struct idArray {
+        int threadID[MAX_NUMBER_THREADS + 1]; // user thread ids (main included)
+        BitMap *stackID; // manage the stack of multiple ids (main included)
+    } idArray_s, *idArray_p;
+
+    typedef struct idJoin {
+        // join[] and nbWaiter[] exclude main function
+        Semaphore* join[MAX_NUMBER_THREADS]; // array of semaphore to permit the USER THREAD JOIN
+        // each semaphore has a number of threads waiting, a user thread cannot
+        // wait for main (main excluded)
+        int nbWaiter[MAX_NUMBER_THREADS];
+    } idJoin_s, *idJoin_p;
 
 public:
     AddrSpace(OpenFile * executable); // Create an address space,
@@ -43,20 +51,26 @@ public:
     // before jumping to user code
 #ifdef CHANGED
     void InitUserRegisters(int addFunc, int arg, int addrExitThread); // Initialize user-level thread CPU registers
-    id_structure_p thread_management; // Thread managemend (stack + ids)
-    //BitMap *manageThreads; // Managed multiple threading
-    Semaphore *manageThreadsSem; // Semaphore to protect the id_strcut_p and nbCurThread
+
+    idArray_p thread_management; // Keep track of stack and ids of all threads (main included)
+    Semaphore *manageThreadsSem; // Semaphore to protect thread_management
+
+    idJoin_p thread_join; // Keep track of all the USER THREAD JOIN (main excluded)
+    Semaphore *manageJoinSem; // Semaphore to protect thread_join
+
     Semaphore *exitSem; // To let the main function exit the program
 #endif // CHANGED
     void SaveState(); // Save/restore address space-specific
     void RestoreState(); // info on a context switch
 #ifdef CHANGED
+    // used by idArray
     void IncrementNbThread();
     void DecrementNbThread();
 
     /*
      * Check if the last remaining threads is main.
      * If so returns ture otherwise false
+     * used by USER THREAD EXIT
      */
     bool MainRemains();
 
@@ -69,8 +83,30 @@ public:
     /*
      * increment the id thread and returns a new (unique) tread id
      */
-    int newID();
-#endif
+    int generatePrivateID();
+    
+    /*
+     * Set up a new join at index index with the semaphore lock
+     */
+    void AddJoin(int index, Semaphore *lock);
+
+    /*
+     * Remove the join at index index
+     */
+    void RemoveJoin(int index);
+
+    /*
+     * Return the index in the set from the private id
+     * -1 if not present
+     */
+    int FindBitMapIndex(int id);
+#endif // CHANGED
+
+#ifdef CHANGED
+protected:
+    void CreateIdArray();
+    void CreateIdJoin();
+#endif // CHANGED
 private:
     TranslationEntry * pageTable; // Assume linear page table translation
     // for now!

@@ -398,20 +398,43 @@ Thread::RestoreUserState() {
 #ifdef CHANGED
 
 int Thread::getBitMapID() {
+    ASSERT(bitmap_id != NULL);
     return this->bitmap_id;
 }
 
-void Thread::setBitMapID(int newId) {
-    this->bitmap_id = newId;
-}
-
 // return the thread id for the user
+
 int Thread::getID() {
     return this->id;
 }
 
-void Thread::setID(int id) {
-    this->id = id;
+void Thread::setID(int bitmap_id) {
+    this->bitmap_id = bitmap_id;
+    id = space->generatePrivateID();
+    space->thread_management->threadID[bitmap_id] = id;
+}
+
+Semaphore* Thread::CreateSemaphore() {
+    this->synch_join = new Semaphore("Synchronization USER_THREAD_JOIN", 0);
+    return this->synch_join;
+}
+
+void Thread::ServeAndRemove() {
+    space->manageJoinSem->P();
+    while (space->thread_join->nbWaiter[bitmap_id - 1] > 0) {
+        space->thread_join->nbWaiter[bitmap_id - 1]--;
+        space->manageJoinSem->V();
+        //this->synch_join->P();
+        space->manageJoinSem->P();
+    }
+    space->RemoveJoin(bitmap_id);
+    space->manageJoinSem->V();
+}
+
+void Thread::DestroyAndRemove() {
+    space->thread_management->threadID[bitmap_id] = NULL;
+    space->thread_management->stackID->Clear(bitmap_id);
+    space->DecrementNbThread();
 }
 #endif // CHANGED
 #endif

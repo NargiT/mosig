@@ -77,19 +77,18 @@ AddrSpace::AddrSpace(OpenFile * executable) {
     size = numPages * PageSize;
 #ifdef CHANGED
     StartStack = size; // size of the main stack
-    thread_management = new id_structure_s;
-    thread_management->stackID = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
-    thread_management->stackID->Mark(0);
-    thread_management->threadID[0] = 0;
-    lastThreadID = 0; // the main ID was the last one
-    //manageThreads = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
-    //manageThreads->Mark(0); // Mark the main address space
-    nbCurThread = 1; // the main is always running
+    // manage USER THREAD CREATE
+    manageThreadsSem = new Semaphore("CreateIdArray", 1);
+    this->CreateIdArray();
+    // the main is always running
+    nbCurThread = 1;
 
-    // to manage the syscall EXIT and USER_THREAD_EXIT
+    // manage USER THREAD JOIN
+    manageJoinSem = new Semaphore("CreateIdJoin", 1);
+    this->CreateIdJoin();
+
+    // EXIT & USER THREAD EXIT
     exitSem = new Semaphore("Exit_Main", 1);
-    // to protect the structure of bitmap + id thread and nbcurthread
-    manageThreadsSem = new Semaphore("Manage_Threads", 1);
 #endif
     ASSERT(numPages <= NumPhysPages); // check we're not trying
     // to run anything too big --
@@ -164,8 +163,10 @@ AddrSpace::~AddrSpace() {
     // End of modification
 #ifdef CHANGED
     delete thread_management;
-    //delete manageThreads;
+    delete thread_join;
+    delete manageJoinSem;
     delete manageThreadsSem;
+    delete exitSem;
 #endif
 }
 
@@ -227,6 +228,7 @@ AddrSpace::RestoreState() {
     machine->pageTableSize = numPages;
 }
 
+#ifdef CHANGED
 void
 AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     int i;
@@ -245,7 +247,7 @@ AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     // Set the stack register to the end of the address space, where we
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
-    int EndStack = this->StartStack - (3 * PageSize) * (currentThread->getBitMapID() + 1);
+    int EndStack = this->StartStack - (1 * PageSize) * (currentThread->getBitMapID() + 1);
 
     machine->WriteRegister(StackReg, EndStack);
     DEBUG('a', "Initializing stack register to %d\n",
@@ -269,12 +271,9 @@ int AddrSpace::NbRunningThreads() {
     return (this->nbCurThread - 1);
 }
 
-int AddrSpace::newID() {
+int AddrSpace::generatePrivateID() {
     this->lastThreadID++;
     return this->lastThreadID;
-}
-
-#ifdef CHANGED
 
 void AddrSpace::ReadAtVirtual(OpenFile *executable, int virtualaddr, int numBytes, int position, TranslationEntry *pageTable, unsigned numPages) {
     char *buffer = new char[numBytes];
@@ -286,4 +285,39 @@ void AddrSpace::ReadAtVirtual(OpenFile *executable, int virtualaddr, int numByte
         machine->WriteMem(virtualaddr + i, 1, buffer[i]);
     }
 }
-#endif
+    thread_management->stackID = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
+    thread_management->stackID->Mark(currentThread->getID()); // The main addrspace is always marked at index 0
+    thread_management->threadID[0] = currentThread->getID(); // The main id is always 0 at index 0
+    lastThreadID = currentThread->getID(); // the last id was
+}
+
+void AddrSpace::CreateIdJoin() {
+    thread_join = new idJoin_s;
+}
+
+void AddrSpace::AddJoin(int index, Semaphore* lock) {
+    // Create and initialize the joining semaphore
+    thread_join->join[index - 1] = lock;
+    // Initialize the number of thread which will potentially wait on newThread
+    thread_join->nbWaiter[index - 1] = 0;
+}
+
+void AddrSpace::RemoveJoin(int index) {
+    delete thread_join->join[index - 1];
+    thread_join->nbWaiter[index - 1] = 0;
+}
+
+int AddrSpace::FindBitMapIndex(int id) {
+    bool found = false;
+    int toReturn = -1;
+    this->manageThreadsSem->P();
+    for (int i = 0; i < MAX_NUMBER_THREADS && !found; i++) {
+        if (this->thread_management->threadID[i] == id) {
+            found = true;
+            toReturn = i;
+        }
+    }
+    this->manageThreadsSem->V();
+    return toReturn;
+}
+#endif //CHANGED

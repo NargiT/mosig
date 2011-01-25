@@ -184,29 +184,29 @@ GetInt:
 	.end GetInt
 
         .globl UserThreadCreate
-	.ent	UserThreadCreate
+        .ent	UserThreadCreate
 
 UserThreadCreate:
-	addiu $2,$0,SC_UserThreadCreate // pass the parameter SC_UserThreadCreate to reg2
+        addiu $2,$0,SC_UserThreadCreate // pass the parameter SC_UserThreadCreate to reg2
         addiu $6,$0,UserThreadExit
 	syscall // call the system
 	j	$31 // jump to the return adress
 	.end UserThreadCreate
 
-       .globl UserThreadExit
+        .globl UserThreadJoin
+	.ent	UserThreadJoin
+
+UserThreadJoin:
+	addiu $2,$0,SC_UserThreadJoin // pass the parameter SC_UserThreadJoin to reg2
+	syscall // call the system
+	j	$31 // jump to the return adress
+	.end UserThreadJoin
+
+        .globl UserThreadExit
 	.ent	UserThreadExit
 
 UserThreadExit:
 	addiu $2,$0,SC_UserThreadExit // pass the parameter SC_UserThreadExit to reg2
-	syscall // call the system
-	j	$31 // jump to the return adress
-	.end UserThreadExit
-
-       .globl UserThreadExit
-	.ent	UserThreadExit
-
-UserThreadJoin:
-	addiu $2,$0,SC_UserThreadJoin // pass the parameter SC_UserThreadJoin to reg2
 	syscall // call the system
 	j	$31 // jump to the return adress
 	.end UserThreadExit

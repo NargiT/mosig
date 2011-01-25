@@ -37,10 +37,10 @@ int main(int argc, char** argv) {
 
     PutString("Creation of threads...\n");
 
-    for (i = 0; i < nb_threads; i++) {
+    for (i = 1; i < nb_threads; i++) {
         UserThreadCreate(startCounting, i);
     }
-
+    //startCounting(0);
     PutString("The main is done.\n");
   
     return 0;
