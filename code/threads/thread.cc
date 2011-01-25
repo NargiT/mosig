@@ -111,6 +111,14 @@ Thread::Fork(VoidFunctionPtr func, int arg) {
     (void) interrupt->SetLevel(oldLevel);
 }
 
+void Thread::ForkProcess(VoidNoArgFunctionPtr func) {
+    StackAllocate((VoidFunctionPtr) func, 0);
+    IntStatus oldLevel = interrupt->SetLevel(IntOff);
+    scheduler->ReadyToRun(this); // ReadyToRun assumes that interrupts
+    // are disabled!
+    (void) interrupt->SetLevel(oldLevel);
+
+}
 //----------------------------------------------------------------------
 // Thread::CheckOverflow
 //      Check a thread's stack to see if it has overrun the space

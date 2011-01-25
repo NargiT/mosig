@@ -1,4 +1,5 @@
-// exception.cc 
+// exception.cc
+
 //      Entry point into the Nachos kernel from user programs.
 //      There are two kinds of things that can cause control to
 //      transfer back to here from user code:
@@ -25,6 +26,7 @@
 #include "../threads/system.h"
 #include "syscall.h"
 #include "userthread.h"
+#include "userprocess.h"
 #include <string>
 
 //----------------------------------------------------------------------
@@ -81,6 +83,7 @@ ExceptionHandler(ExceptionType which) {
             case SC_Exit:
             {
                 DEBUG('a', "SC_Exit - No killing just the the last one will leave");
+                //currentThread->Yield();
                 currentThread->space->exitSem->P();
                 if (false) {
                     NULL; // will later release the ressources (kill)
@@ -203,9 +206,10 @@ ExceptionHandler(ExceptionType which) {
                 break;
             }
             case SC_ForkExec:
-            {  
+            {
                 char *buffer = new char[MAX_STRING_SIZE];
-                synchconsole->CopyStringFromMachine(machine->ReadRegister(4),buffer,MAX_STRING_SIZE);
+                synchconsole->CopyStringFromMachine(machine->ReadRegister(4), buffer, MAX_STRING_SIZE);
+                do_ForkExec(buffer);
                 break;
             }
             default:

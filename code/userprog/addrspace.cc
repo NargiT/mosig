@@ -210,6 +210,8 @@ AddrSpace::InitRegisters() {
 
 void
 AddrSpace::SaveState() {
+    machine->pageTableSize = numPages;
+    machine->pageTable = pageTable;
 }
 
 //----------------------------------------------------------------------

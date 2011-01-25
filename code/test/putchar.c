@@ -7,8 +7,6 @@ void print(char c, int n) {
         PutChar(c + i);
     }
     PutChar('\n');
-    GetInt(&i);
-    PutInt(i);
 }
 
 int main() {
