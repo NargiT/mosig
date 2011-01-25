@@ -103,9 +103,8 @@ AddrSpace::AddrSpace(OpenFile * executable) {
         pageTable[i].virtualPage = i; // for now, virtual page # = phys page #
 #ifndef CHANGED
         pageTable[i].physicalPage = i;
-#endif
-#ifdef CHANGED
-        pageTable[i].physicalPage =  machine->frameProvider->GetEmptyframe();
+#else
+        pageTable[i].physicalPage = machine->frameProvider->GetEmptyframe();
 #endif
         pageTable[i].valid = TRUE;
         pageTable[i].use = FALSE;
@@ -134,8 +133,7 @@ AddrSpace::AddrSpace(OpenFile * executable) {
                 [noffH.initData.virtualAddr]),
                 noffH.initData.size, noffH.initData.inFileAddr);
     }
-#endif
-#ifdef CHANGED
+#else
     // then, copy in the code and data segments into memory
     if (noffH.code.size > 0) {
         DEBUG('a', "Initializing code segment, at 0x%x, size %d\n",
@@ -229,6 +227,7 @@ AddrSpace::RestoreState() {
 }
 
 #ifdef CHANGED
+
 void
 AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     int i;
@@ -274,21 +273,15 @@ int AddrSpace::NbRunningThreads() {
 int AddrSpace::generatePrivateID() {
     this->lastThreadID++;
     return this->lastThreadID;
-
-void AddrSpace::ReadAtVirtual(OpenFile *executable, int virtualaddr, int numBytes, int position, TranslationEntry *pageTable, unsigned numPages) {
-    char *buffer = new char[numBytes];
-    int i;
-    machine->pageTable = pageTable;
-    machine->pageTableSize = numPages;
-    executable->ReadAt(buffer, numBytes, position);
-    for (i = 0; i < numBytes; i++) {
-        machine->WriteMem(virtualaddr + i, 1, buffer[i]);
-    }
 }
+
+void AddrSpace::CreateIdArray() {
+    thread_management = new idArray_s;
     thread_management->stackID = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
     thread_management->stackID->Mark(currentThread->getID()); // The main addrspace is always marked at index 0
     thread_management->threadID[0] = currentThread->getID(); // The main id is always 0 at index 0
     lastThreadID = currentThread->getID(); // the last id was
+
 }
 
 void AddrSpace::CreateIdJoin() {
@@ -320,4 +313,16 @@ int AddrSpace::FindBitMapIndex(int id) {
     this->manageThreadsSem->V();
     return toReturn;
 }
+
+void AddrSpace::ReadAtVirtual(OpenFile *executable, int virtualaddr, int numBytes, int position, TranslationEntry *pageTable, unsigned numPages) {
+    char *buffer = new char[numBytes];
+    int i;
+    machine->pageTable = pageTable;
+    machine->pageTableSize = numPages;
+    executable->ReadAt(buffer, numBytes, position);
+    for (i = 0; i < numBytes; i++) {
+        machine->WriteMem(virtualaddr + i, 1, buffer[i]);
+    }
+}
+
 #endif //CHANGED
