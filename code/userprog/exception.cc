@@ -83,7 +83,6 @@ ExceptionHandler(ExceptionType which) {
             case SC_Exit:
             {
                 DEBUG('a', "SC_Exit - No killing just the the last one will leave");
-                //currentThread->Yield();
                 currentThread->space->exitSem->P();
                 if (false) {
                     NULL; // will later release the ressources (kill)

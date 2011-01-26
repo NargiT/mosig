@@ -210,8 +210,6 @@ AddrSpace::InitRegisters() {
 
 void
 AddrSpace::SaveState() {
-    machine->pageTableSize = numPages;
-    machine->pageTable = pageTable;
 }
 
 //----------------------------------------------------------------------
@@ -248,11 +246,11 @@ AddrSpace::InitUserRegisters(int addFunc, int arg, int addrExitThread) {
     // Set the stack register to the end of the address space, where we
     // allocated the stack; but subtract off a bit, to make sure we don't
     // accidentally reference off the end!
-    int EndStack = this->StartStack - (1 * PageSize) * (currentThread->getBitMapID() + 1);
+    int EndStack = this->StartStack - 16 - (3 * PageSize) * (currentThread->getBitMapID());
 
     machine->WriteRegister(StackReg, EndStack);
     DEBUG('a', "Initializing stack register to %d\n",
-            numPages * PageSize - 16);
+            EndStack);
 
 }
 
