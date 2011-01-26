@@ -11,7 +11,7 @@
  */
 int main() {
     PutString("Lunch putstring\n");
-    ForkExec("../test/putstring");
+    ForkExec("test/putstring");
     PutString("End\n");
     return 0;
 }
