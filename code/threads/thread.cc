@@ -412,14 +412,14 @@ int Thread::getBitMapID() {
 
 // return the thread id for the user
 
-int Thread::getID() {
-    return this->id;
+int Thread::getPrivateID() {
+    return this->privateID;
 }
 
-void Thread::setID(int bitmap_id) {
+void Thread::setPrivateID(int bitmap_id) {
     this->bitmap_id = bitmap_id;
-    id = space->generatePrivateID();
-    space->thread_management->threadID[bitmap_id] = id;
+    privateID = space->generatePrivateID();
+    space->thread_management->threadID[bitmap_id] = privateID;
 }
 
 Semaphore* Thread::CreateSemaphore() {

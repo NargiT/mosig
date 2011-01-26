@@ -100,6 +100,12 @@ public:
      * -1 if not present
      */
     int FindBitMapIndex(int id);
+
+    /*
+     * return the address space id
+     * NULL if no more physical memory available
+     */
+    int getID();
 #endif // CHANGED
 
 #ifdef CHANGED
@@ -117,6 +123,7 @@ private:
     int StartStack;
     int nbCurThread; // Number of threads running
     int lastThreadID; // The last thread id given
+    int id;
 #endif
 };
 

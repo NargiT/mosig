@@ -12,6 +12,10 @@
 int main() {
     PutString("Lunch putstring\n");
     ForkExec("../test/putstring");
+    ForkExec("../test/putstring");
+    //ForkExec("../test/makethreadjoin");
+    //ForkExec("../test/makethreads");
+    //ForkExec("../test/getstring"),
     PutString("End\n");
     return 0;
 }

@@ -7,6 +7,6 @@ void test(char *s) {
 int main() {
     PutString("Hello ");
     test("World!");
-    Halt();
+    //Halt();
 }
 

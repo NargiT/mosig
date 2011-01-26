@@ -45,7 +45,7 @@ int do_createUserThread(int f, int arg, int addrExitThread) {
 
     // Generate a new thread id for the user 
     // Set the new ID of the Thread from the bitmap
-    newThread->setID(bitmap_id);
+    newThread->setPrivateID(bitmap_id);
 
     // critical section ends
     newThread->space->manageThreadsSem->V();
@@ -55,7 +55,7 @@ int do_createUserThread(int f, int arg, int addrExitThread) {
     newThread->space->AddJoin(bitmap_id, newThread->CreateSemaphore());
     newThread->space->manageJoinSem->V();
 
-    return newThread->getID();
+    return newThread->getPrivateID();
 }
 
 void do_UserThreadExit() {

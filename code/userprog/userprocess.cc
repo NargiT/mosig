@@ -23,6 +23,13 @@ extern void do_ForkExec(char* filename) {
     delete executable;
     Thread *new_process = new Thread("new process");
     new_process->space = space;
+
+    // to avoid halting when other are still executed
+    machine->frameProvider->numProcessesSem->P();   
+    if (machine->frameProvider->getNumProcesses() == 2)
+        machine->frameProvider->DisableHalt();
+    machine->frameProvider->numProcessesSem->V();
+
     currentThread->SaveUserState();
     currentThread->space->RestoreState();
     new_process->ForkProcess(StartUserProcess);

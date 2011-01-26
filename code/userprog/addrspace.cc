@@ -99,12 +99,22 @@ AddrSpace::AddrSpace(OpenFile * executable) {
             numPages, size);
     // first, set up the translation
     pageTable = new TranslationEntry[numPages];
+    this->id = machine->frameProvider->generateAddrID();
+    machine->frameProvider->IncrementNumProcesses();
     for (i = 0; i < numPages; i++) {
         pageTable[i].virtualPage = i; // for now, virtual page # = phys page #
 #ifndef CHANGED
         pageTable[i].physicalPage = i;
 #else
-        pageTable[i].physicalPage = machine->frameProvider->GetEmptyframe();
+        int frame = -1;
+        if ((frame = machine->frameProvider->GetEmptyframe(id)) == -1) {
+            machine->frameProvider->DecrementNumProcesses();
+            id = -1;
+            return;
+        }
+
+        ASSERT(frame != -1);
+        pageTable[i].physicalPage = frame;
 #endif
         pageTable[i].valid = TRUE;
         pageTable[i].use = FALSE;
@@ -113,7 +123,6 @@ AddrSpace::AddrSpace(OpenFile * executable) {
         // a separate page, we could set its
         // pages to be read-only
     }
-
     // zero out the entire address space, to zero the unitialized data segment
     // and the stack segment
     bzero(machine->mainMemory, size);
@@ -278,9 +287,9 @@ int AddrSpace::generatePrivateID() {
 void AddrSpace::CreateIdArray() {
     thread_management = new idArray_s;
     thread_management->stackID = new BitMap(MAX_NUMBER_THREADS + 1); // initialize the mapping of the Address space
-    thread_management->stackID->Mark(currentThread->getID()); // The main addrspace is always marked at index 0
-    thread_management->threadID[0] = currentThread->getID(); // The main id is always 0 at index 0
-    lastThreadID = currentThread->getID(); // the last id was
+    thread_management->stackID->Mark(currentThread->getPrivateID()); // The main addrspace is always marked at index 0
+    thread_management->threadID[0] = currentThread->getPrivateID(); // The main id is always 0 at index 0
+    lastThreadID = currentThread->getPrivateID(); // the last id was
 
 }
 
@@ -312,6 +321,11 @@ int AddrSpace::FindBitMapIndex(int id) {
     }
     this->manageThreadsSem->V();
     return toReturn;
+}
+
+// can be NULL if no more space
+int AddrSpace::getID() {
+    return id;
 }
 
 void AddrSpace::ReadAtVirtual(OpenFile *executable, int virtualaddr, int numBytes, int position, TranslationEntry *pageTable, unsigned numPages) {

@@ -16,11 +16,12 @@
 #include "stats.h"
 #include "timer.h"
 
-//#ifdef CHNAGED
+#ifdef CHANGED
 #define MAX_STRING_SIZE 100 //max charecters for string
 #define MAX_INT_SIZE 10 // lenght(2^32)
-#define MAX_NUMBER_THREADS 3 // Maximum number of threads at the same time
-//#endif // CHANGED
+#define MAX_NUMBER_THREADS 3 // Maximum number of threads in a Process at the same time
+#define MAX_NUMBER_PROCESSES 5 // Maximum number of processes running on the OS at the same time
+#endif // CHANGED
 
 // Initialization and cleanup routines
 extern void Initialize (int argc, char **argv);	// Initialization,

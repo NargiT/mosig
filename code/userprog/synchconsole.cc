@@ -38,37 +38,37 @@ SynchConsole::~SynchConsole() {
 
 void SynchConsole::SynchPutChar(const char ch) {
     protectIO->P();
-    DEBUG('a', "GetString - (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "GetString - (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     console->PutChar(ch);
     writeDone->P();
-    DEBUG('a', "GetString - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "GetString - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     protectIO->V();
 }
 
 char SynchConsole::SynchGetChar() {
     protectIO->P();
-    DEBUG('a', "GetChar- (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "GetChar- (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     readAvail->P();
-    DEBUG('a', "GetChar - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "GetChar - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     protectIO->V();
     return console->GetChar();
 }
 
 void SynchConsole::SynchPutString(const char *s) {
     protectIO->P();
-    DEBUG('a', "PutString - (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "PutString - (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     for (int i = 0; i < MAX_STRING_SIZE; i++) {
         if (*(s + i) == '\0') break;
         console->PutChar(*(s + i));
         writeDone->P();
     }
-    DEBUG('a', "PutString - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "PutString - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     protectIO->V();
 }
 
 void SynchConsole::SynchGetString(char *buffer, int n) {
     protectIO->P();
-    DEBUG('a', "GetString - (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "GetString - (P) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     int i = 0;
     // recover the string from the standard input
     readAvail->P();
@@ -78,7 +78,7 @@ void SynchConsole::SynchGetString(char *buffer, int n) {
         buffer[++i] = console->GetChar();
     }
     buffer[i + 1] = '\0';
-    DEBUG('a', "GetString - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getID());
+    DEBUG('a', "GetString - (V) Initiate by the user - %s %d", currentThread->getName(), currentThread->getPrivateID());
     protectIO->V();
 }
 

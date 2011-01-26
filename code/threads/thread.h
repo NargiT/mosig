@@ -56,6 +56,7 @@
 #define StackSize	(4 * 1024)	// in words
 
 // Thread state
+
 enum ThreadStatus {
     JUST_CREATED, RUNNING, READY, BLOCKED
 };
@@ -75,6 +76,7 @@ extern void ThreadPrint(int arg);
 //  that only run in the kernel have a NULL address space.
 class AddrSpace;
 class Semaphore;
+
 class Thread {
 private:
     // NOTE: DO NOT CHANGE the order of these first two members.
@@ -118,7 +120,11 @@ public:
 
 private:
     // some of the private data for this class is listed above
+#ifndef CHANGED
     int id;
+#else
+    int privateID; // used to differentiate threads in the same process
+#endif
     int *stack; // Bottom of the stack
     // NULL if this is the main thread
     // (If NULL, don't deallocate stack)
@@ -148,16 +154,15 @@ public:
 
 #ifdef CHANGED
     int getBitMapID();
-    int getID(); // user view of the thread ID
-
+    int getPrivateID(); // user view of the thread ID
     // from the bitmap id set right address space and generate a new private ID
-    void setID(int bitmap_id);
+    void setPrivateID(int bitmap_id);
 
     /*
      * Initialise the semaphore and return it's pointer
      */
     Semaphore* CreateSemaphore();
-    
+
     /*
      * Serve the threads synchronized by USER_THREAD_JOIN
      */

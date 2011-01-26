@@ -84,10 +84,11 @@ ExceptionHandler(ExceptionType which) {
             {
                 DEBUG('a', "SC_Exit - No killing just the the last one will leave");
                 currentThread->space->exitSem->P();
-                if (false) {
-                    NULL; // will later release the ressources (kill)
-                } else
-                    interrupt->Halt(); //the thread exit
+
+                ASSERT(currentThread->space->getID() != -1)
+
+                machine->frameProvider->ReleaseFrame(currentThread->space->getID());
+                machine->frameProvider->TryHalt();
                 break;
             }
             case SC_Exec:
@@ -190,16 +191,16 @@ ExceptionHandler(ExceptionType which) {
             }
             case SC_UserThreadExit:
             {
-                DEBUG('a', "UserThreadExit, initiated by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
+                DEBUG('a', "UserThreadExit, initiated by thread `%s` id = %d ", currentThread->getName(), currentThread->getPrivateID());
                 do_UserThreadExit();
                 break;
             }
             case SC_UserThreadJoin:
             {
-                DEBUG('a', "UserThreadJoin, initialted by thread `%s` id = %d ", currentThread->getName(), currentThread->getID());
+                DEBUG('a', "UserThreadJoin, initialted by thread `%s` id = %d ", currentThread->getName(), currentThread->getPrivateID());
                 unsigned int toJoin = machine->ReadRegister(4);
                 // if the user try to wait for it self or the main, the instruction is ignored
-                if (toJoin == 0 || toJoin == currentThread->getID())
+                if (toJoin == 0 || toJoin == currentThread->getPrivateID())
                     break;
                 do_UserThreadJoin(toJoin);
                 break;
