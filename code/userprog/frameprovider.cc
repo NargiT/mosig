@@ -47,6 +47,7 @@ int FrameProvider::GetEmptyframe(int aid) {
     printf("%d __ %d\n", aid, randomFrame);
     // insert the pair in to the multimapping
     addrMap.insert(aProcess);
+    bzero( &( machine->mainMemory[ PageSize * randomFrame ] ), PageSize );
     // open the door
     frameDoor->V();
     // return the adress
@@ -111,12 +112,14 @@ int FrameProvider::getNumProcesses() {
 void FrameProvider::TryHalt() {
     if (currentThread->space->getID() == 0) {
         haltSem->P();
+        printf("current thread is able to halt --> %d\n", currentThread->space->getID());
         interrupt->Halt();
     } else {
         numProcessesSem->P();
         if (numProcesses == 0)
             EnableHalt();
         numProcessesSem->V();
+        currentThread->Finish();
     }
 }
 

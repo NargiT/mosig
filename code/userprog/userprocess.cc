@@ -33,7 +33,8 @@ extern void do_ForkExec(char* filename) {
     currentThread->SaveUserState();
     currentThread->space->RestoreState();
     new_process->ForkProcess(StartUserProcess);
-    currentThread->RestoreUserState();   
+    currentThread->RestoreUserState();
+
 }
 
 //#endif

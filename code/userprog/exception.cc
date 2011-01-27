@@ -82,7 +82,7 @@ ExceptionHandler(ExceptionType which) {
             }
             case SC_Exit:
             {
-                DEBUG('a', "SC_Exit - No killing just the the last one will leave");
+                DEBUG('a', "SC_Exit - %d finished\n", currentThread->getPrivateID());
                 currentThread->space->exitSem->P();
 
                 ASSERT(currentThread->space->getID() != -1)
@@ -98,35 +98,35 @@ ExceptionHandler(ExceptionType which) {
             }
             case SC_Join:
             {
-
+                break;
             }
             case SC_Create:
             {
-
+                break;
             }
             case SC_Open:
             {
-
+                break;
             }
             case SC_Read:
             {
-
+                break;
             }
             case SC_Write:
             {
-
+                break;
             }
             case SC_Close:
             {
-
+                break;
             }
             case SC_Fork:
             {
-
+                break;
             }
             case SC_Yield:
             {
-
+                break;
             }
             case SC_PutChar:
             {

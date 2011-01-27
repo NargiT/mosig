@@ -148,6 +148,7 @@ AddrSpace::AddrSpace(OpenFile * executable) {
         DEBUG('a', "Initializing code segment, at 0x%x, size %d\n",
                 noffH.code.virtualAddr, noffH.code.size);
         this->ReadAtVirtual(executable, noffH.code.virtualAddr, noffH.code.size, noffH.code.inFileAddr, pageTable, numPages);
+
     }
     if (noffH.initData.size > 0) {
         DEBUG('a', "Initializing data segment, at 0x%x, size %d\n",
@@ -219,6 +220,8 @@ AddrSpace::InitRegisters() {
 
 void
 AddrSpace::SaveState() {
+    pageTable = machine->pageTable;
+    numPages = machine->pageTableSize;
 }
 
 //----------------------------------------------------------------------

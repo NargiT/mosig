@@ -10,13 +10,16 @@
  * 
  */
 int main() {
-    PutString("Lunch putstring\n");
-    ForkExec("../test/putstring");
-    ForkExec("../test/putstring");
+    //PutString("Lunch putstring\n");
+    //ForkExec("test/putstring");
+    //ForkExec("test/putstring");
+    //ForkExec("test/putstring");
+    //ForkExec("test/putstring");
+    ForkExec("../test/nonCall");
     //ForkExec("../test/makethreadjoin");
     //ForkExec("../test/makethreads");
     //ForkExec("../test/getstring"),
-    PutString("End\n");
+    //PutString("End\n");
     return 0;
 }
 

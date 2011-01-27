@@ -43,5 +43,5 @@ int main(int argc, char** argv) {
     //startCounting(0);
     PutString("The main is done.\n");
   
-    return 0;
+    //return 0;
 }
