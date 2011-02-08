@@ -5,6 +5,9 @@ import chat.client.interfaces.ClientRemote;
 import chat.utils.Message;
 
 public class Client implements ClientLocal, ClientRemote{
+	
+	private int id;
+	private String nickname;
 
 	@Override
 	public void send(Message msg) {
@@ -29,6 +32,24 @@ public class Client implements ClientLocal, ClientRemote{
 		// TODO Auto-generated method stub
 		
 	}
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public String getNickname() {
+		return nickname;
+	}
+
+	public void setNickname(String nickname) {
+		this.nickname = nickname;
+	}
+	
+	
 
 
 }
