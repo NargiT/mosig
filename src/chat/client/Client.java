@@ -6,18 +6,22 @@ import chat.utils.Message;
 
 public class Client implements ClientLocal, ClientRemote{
 	
-	private int id;
 	private String nickname;
+	private int id;
 
 	@Override
-	public void send(Message msg) {
+	public boolean send(Message msg) {
 		// TODO Auto-generated method stub
+		
+		return true;
 		
 	}
 
 	@Override
-	public void register() {
+	public boolean register() {
 		// TODO Auto-generated method stub
+		
+		return true;
 		
 	}
 
@@ -28,8 +32,9 @@ public class Client implements ClientLocal, ClientRemote{
 	}
 
 	@Override
-	public void receive(Message msg) {
+	public boolean receive(Message msg) {
 		// TODO Auto-generated method stub
+		return true;
 		
 	}
 

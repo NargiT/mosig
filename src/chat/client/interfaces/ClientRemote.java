@@ -4,6 +4,6 @@ import chat.utils.Message;
 
 public interface ClientRemote {
 
-	void receive(Message msg);
+	boolean receive(Message msg);
 	
 }
