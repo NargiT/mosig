@@ -8,6 +8,11 @@ public class Client implements ClientLocal, ClientRemote{
 	
 	private String nickname;
 	private int id;
+	
+	public Client(String nickname) {
+		super();
+		this.nickname = nickname;
+	}
 
 	@Override
 	public boolean send(Message msg) {
