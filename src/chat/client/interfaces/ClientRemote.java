@@ -1,5 +1,7 @@
 package chat.client.interfaces;
 
-public interface ClientProvided {
+public interface ClientRemote {
 
+	
+	
 }

@@ -2,12 +2,12 @@ package chat.utils;
 
 import java.util.Date;
 
-public class ChatMessage {
+public class Message {
 
 	private String text;
 	private Date date;
 
-	public ChatMessage(String text, Date date) {
+	public Message(String text, Date date) {
 		super();
 		this.text = text;
 		this.date = date;
