@@ -8,6 +8,7 @@ package chat.server.interfaces;
 import chat.client.interfaces.ClientRemote;
 import chat.utils.Message;
 import java.rmi.Remote;
+import java.rmi.RemoteException;
 
 /**
  *
@@ -15,10 +16,13 @@ import java.rmi.Remote;
  */
 public interface ServerRemote extends Remote {
 
-    public void add(ClientRemote c);
+    public boolean add(ClientRemote c)
+            throws RemoteException;
 
-    public void remove(ClientRemote c);
+    public void remove(ClientRemote c)
+            throws RemoteException;
 
-    public void broadcast(Message msg);
+    public boolean broadcast(Message msg)
+            throws RemoteException;
     
 }
