@@ -1,8 +1,9 @@
 package chat.utils;
 
+import java.io.Serializable;
 import java.util.Date;
 
-public class Message {
+public class Message implements Serializable {
 
 	private String text;
 	private Date date;

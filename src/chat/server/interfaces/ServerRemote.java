@@ -16,12 +16,30 @@ import java.rmi.RemoteException;
  */
 public interface ServerRemote extends Remote {
 
+    /**
+     * Add a new @Client c to the chat session.
+     * @param c, client to add to the chat session
+     * @return @true if the client successfully added to the session
+     * @return @false if the nickname is already used
+     * @throws RemoteException
+     */
     public boolean add(ClientRemote c)
             throws RemoteException;
 
+    /**
+     * Remove an existing @Client c from the chat session.
+     * @param c, client to remove from the chat session
+     * @throws RemoteException
+     */
     public void remove(ClientRemote c)
             throws RemoteException;
 
+    /**
+     * Broadcast a message msg to all the clients of the session
+     * @param msg, message to be send
+     * @return always return @true
+     * @throws RemoteException
+     */
     public boolean broadcast(Message msg)
             throws RemoteException;
     

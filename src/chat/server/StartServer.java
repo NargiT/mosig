@@ -2,9 +2,10 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-
 package chat.server;
 
+import chat.client.interfaces.ClientRemote;
+import chat.server.interfaces.ServerLocal;
 import chat.server.interfaces.ServerRemote;
 import chat.utils.Constants;
 import java.rmi.AccessException;
@@ -22,18 +23,21 @@ import java.util.logging.Logger;
  */
 public class StartServer {
 
-    public static void main(String[] args ) {
+    public static void main(String[] args) {
         try {
-            if (System.getSecurityManager() == null) {
-                System.setSecurityManager(new SecurityManager());
-            }
+            //if (System.getSecurityManager() == null) {
+            //    System.setSecurityManager(new SecurityManager());
+            //}
+
+            System.setProperty("java.rmi.server.codebase",
+                    ServerRemote.class.getProtectionDomain().getCodeSource().getLocation().toString());
+            // Becomes a server
             Server server = new Server();
-            ServerRemote server_stub = (ServerRemote) UnicastRemoteObject.exportObject(server,0);
+            ServerRemote server_stub = (ServerRemote) UnicastRemoteObject.exportObject(server, 0);
             Registry registry = LocateRegistry.getRegistry();
-            registry.bind(Constants.HOST, server_stub);
+            registry.bind(Constants.SERVER, server_stub);
 
             System.out.print("Crazy Chat Server is running.");
-            
         } catch (AlreadyBoundException ex) {
             Logger.getLogger(StartServer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AccessException ex) {
@@ -41,7 +45,6 @@ public class StartServer {
         } catch (RemoteException ex) {
             Logger.getLogger(StartServer.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-    }
 
+    }
 }
