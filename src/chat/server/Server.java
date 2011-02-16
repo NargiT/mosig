@@ -32,11 +32,11 @@ public class Server implements ServerRemote, ServerLocal {
     }
 
     @Override
-    public boolean add(ClientRemote c) throws RemoteException {
+    public boolean add(String nickName, ClientRemote c) throws RemoteException {
         try {
             Registry registry = LocateRegistry.getRegistry(Constants.HOST);
-            ClientRemote cr = (ClientRemote) registry.lookup(c.getNickname());
-            if (clients.containsKey(cr.getNickname())) {
+            ClientRemote cr = (ClientRemote) registry.lookup(nickName);
+            if (clients.containsKey(nickName)) {
                 return false;
             }
             clients.put(c.getNickname(), cr);
@@ -49,9 +49,9 @@ public class Server implements ServerRemote, ServerLocal {
     }
 
     @Override
-    public void remove(ClientRemote c) throws RemoteException {
-        if (clients.containsKey(c.getNickname())) {
-            clients.remove(c.getNickname());
+    public void remove(String nickName) throws RemoteException {
+        if (clients.containsKey(nickName)) {
+            clients.remove(nickName);
         }
     }
 

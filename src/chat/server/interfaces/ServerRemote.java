@@ -23,7 +23,7 @@ public interface ServerRemote extends Remote {
      * @return @false if the nickname is already used
      * @throws RemoteException
      */
-    public boolean add(ClientRemote c)
+    public boolean add(String nickname, ClientRemote c)
             throws RemoteException;
 
     /**
@@ -31,7 +31,7 @@ public interface ServerRemote extends Remote {
      * @param c, client to remove from the chat session
      * @throws RemoteException
      */
-    public void remove(ClientRemote c)
+    public void remove(String nickName)
             throws RemoteException;
 
     /**
