@@ -44,7 +44,6 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
     @Override
     public boolean send(Message msg) {
         try {
-            // TODO Auto-generated method stub
             server.broadcast(msg);
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -56,7 +55,6 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
     @Override
     public boolean register() {
         try {
-            // TODO Auto-generated method stub
             server.add(this.getNickname());
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -73,15 +71,16 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
-
     }
 
     @Override
     public boolean receive(Message msg) {
-        // TODO Auto-generated method stub
-        System.out.println(msg.getText());
+        String from = getNickname();
+        if (!msg.getFrom().equals(this.getNickname())) {
+            from = msg.getFrom();
+        }
+        System.out.println(msg.getDate().toString() + " " + from + ": " + msg.getText());
         return true;
-
     }
 
     public int getId() {
@@ -92,6 +91,7 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
         this.id = id;
     }
 
+    @Override
     public String getNickname() {
         return nickname;
     }
