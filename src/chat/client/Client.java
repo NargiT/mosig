@@ -57,7 +57,7 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
     public boolean register() {
         try {
             // TODO Auto-generated method stub
-            server.add((ClientRemote) this);
+            server.add(this.getNickname());
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -69,7 +69,7 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
     public void unregister() {
         try {
             // TODO Auto-generated method stub
-            server.remove((ClientRemote) this);
+            server.remove(this.getNickname());
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
