@@ -32,14 +32,14 @@ public class Server implements ServerRemote, ServerLocal {
     }
 
     @Override
-    public boolean add(String nickName, ClientRemote c) throws RemoteException {
+    public boolean add(String nickName) throws RemoteException {
         try {
             Registry registry = LocateRegistry.getRegistry(Constants.HOST);
             ClientRemote cr = (ClientRemote) registry.lookup(nickName);
             if (clients.containsKey(nickName)) {
                 return false;
             }
-            clients.put(c.getNickname(), cr);
+            clients.put(cr.getNickname(), cr);
         } catch (NotBoundException ex) {
             Logger.getLogger(Server.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AccessException ex) {
