@@ -23,7 +23,7 @@ public interface ServerRemote extends Remote {
      * @return @false if the nickname is already used
      * @throws RemoteException
      */
-    public boolean add(String nickname, ClientRemote c)
+    public boolean add(String nickname)
             throws RemoteException;
 
     /**
