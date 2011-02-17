@@ -8,11 +8,15 @@ import java.rmi.registry.Registry;
 
 import chat.client.interfaces.ClientLocal;
 import chat.client.interfaces.ClientRemote;
-import chat.server.Server;
 import chat.server.interfaces.ServerRemote;
 import chat.utils.Constants;
 import chat.utils.Message;
 import java.io.Serializable;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.Stack;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -42,9 +46,10 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
     }
 
     @Override
-    public boolean send(Message msg) {
+    public boolean send(String msg) {
+        Message toSend = new Message(nickname, msg, new Date());
         try {
-            server.broadcast(msg);
+            server.broadcast(toSend);
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -66,7 +71,6 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
     @Override
     public void unregister() {
         try {
-            // TODO Auto-generated method stub
             server.remove(this.getNickname());
         } catch (RemoteException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
@@ -79,7 +83,19 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
         if (!msg.getFrom().equals(this.getNickname())) {
             from = msg.getFrom();
         }
-        System.out.println(msg.getDate().toString() + " " + from + ": " + msg.getText());
+        DateFormat df = new SimpleDateFormat(Constants.DATEFORMAT);
+        System.out.println(df.format(msg.getDate()) + " " + from + ": " + msg.getText());
+        return true;
+    }
+
+    @Override
+    public boolean receive(LinkedList<Message> history) {
+        for (int i = 0; i < history.size(); i++) {
+            Message msg = history.get(i);
+            if (!receive(msg)) {
+                System.out.println("--");
+            }
+        }
         return true;
     }
 

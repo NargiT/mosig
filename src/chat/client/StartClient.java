@@ -2,14 +2,13 @@ package chat.client;
 
 import chat.client.interfaces.ClientLocal;
 import chat.client.interfaces.ClientRemote;
-import chat.utils.Message;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
+import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
-import java.util.Date;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -26,10 +25,8 @@ public class StartClient {
             // Swith to the locale version
             ClientLocal cl = (ClientLocal) c;
             cl.register();
-            Message msg = new Message(cl.getNickname(), "Hello !", new Date());
-            cl.send(msg);
-            //cl.unregister();
-
+            cl.send("Hello");
+            cl.unregister();
         } catch (AlreadyBoundException ex) {
             Logger.getLogger(StartClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AccessException ex) {

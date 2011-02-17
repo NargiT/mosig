@@ -7,6 +7,7 @@ package chat.server.interfaces;
 
 import chat.client.interfaces.ClientRemote;
 import chat.utils.Message;
+import java.rmi.AccessException;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
@@ -32,7 +33,7 @@ public interface ServerRemote extends Remote {
      * @throws RemoteException
      */
     public void remove(String nickName)
-            throws RemoteException;
+            throws RemoteException, AccessException;
 
     /**
      * Broadcast a message msg to all the clients of the session

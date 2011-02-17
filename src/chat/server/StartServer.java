@@ -31,13 +31,17 @@ public class StartServer {
 
             System.setProperty("java.rmi.server.codebase",
                     ServerRemote.class.getProtectionDomain().getCodeSource().getLocation().toString());
+
             // Becomes a server
             Server server = new Server();
+            // Create remote server
             ServerRemote server_stub = (ServerRemote) UnicastRemoteObject.exportObject(server, 0);
-            Registry registry = LocateRegistry.getRegistry();
-            registry.bind(Constants.SERVER, server_stub);
-
+            // Switch to the local server
+            ServerLocal sl = (ServerLocal) server;
+            sl.getRegistry().bind(Constants.SERVER, server_stub);
+            
             System.out.print("Crazy Chat Server is running.");
+
         } catch (AlreadyBoundException ex) {
             Logger.getLogger(StartServer.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AccessException ex) {

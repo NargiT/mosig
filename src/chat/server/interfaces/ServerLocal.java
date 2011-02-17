@@ -6,6 +6,7 @@ package chat.server.interfaces;
 
 import chat.utils.Message;
 import java.rmi.RemoteException;
+import java.rmi.registry.Registry;
 
 /**
  *
@@ -16,5 +17,5 @@ public interface ServerLocal {
     public boolean broadcast(Message msg)
             throws RemoteException;
 
-    ;
+    public Registry getRegistry();
 }
