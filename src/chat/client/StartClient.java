@@ -4,11 +4,11 @@ import chat.client.interfaces.ClientLocal;
 import chat.client.interfaces.ClientRemote;
 import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
-import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -25,8 +25,18 @@ public class StartClient {
             // Swith to the locale version
             ClientLocal cl = (ClientLocal) c;
             cl.register();
-            cl.send("Hello");
-            cl.unregister();
+            Scanner talk = new Scanner(System.in);
+            boolean chatting = true;
+
+            while (chatting) {
+                String s = talk.nextLine();
+                if (s.equals("quit")) {
+                    chatting = false;
+                }
+                cl.send(s);
+            }
+
+
         } catch (AlreadyBoundException ex) {
             Logger.getLogger(StartClient.class.getName()).log(Level.SEVERE, null, ex);
         } catch (AccessException ex) {

@@ -9,6 +9,13 @@ public class Message implements Serializable {
     private Date date;
     private String from;
 
+    public Message() {
+        super();
+        from = "robot";
+        text = "Hello you";
+        date = new Date();
+    }
+
     public Message(String from, String text, Date date) {
         super();
         this.from = from;

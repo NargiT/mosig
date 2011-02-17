@@ -47,6 +47,10 @@ public class Client implements ClientLocal, ClientRemote, Serializable {
 
     @Override
     public boolean send(String msg) {
+        if (msg.equals("quit")) {
+            unregister();
+            return true;
+        }
         Message toSend = new Message(nickname, msg, new Date());
         try {
             server.broadcast(toSend);

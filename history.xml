@@ -1,4 +1,173 @@
 <?xml version="1.0" encoding="UTF-8"?> 
 <java version="1.6.0_21" class="java.beans.XMLDecoder"> 
- <object class="java.util.LinkedList"/> 
+ <object class="java.util.LinkedList"> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933011718</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>Bonjour tout le monde</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933019083</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>Salut</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933019103</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>tigran</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933066386</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>Proute proute</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933070210</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>quoi??</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933073732</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>FUUUCKK YOUUUUU !!</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933077810</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>CONNAARARD</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933082329</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>hello?</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933095642</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>hsjd</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933164709</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>bonjour</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933168363</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>hello mec</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933172777</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>bien ou bien?</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933175864</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>bien</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="chat.utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1297933181867</long> 
+     </object> 
+    </void> 
+    <void property="text"> 
+     <string>allo?</string> 
+    </void> 
+   </object> 
+  </void> 
+ </object> 
 </java> 
