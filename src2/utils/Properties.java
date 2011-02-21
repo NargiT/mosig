@@ -7,7 +7,7 @@ public class Properties {
 	
 	public static final String HOST = "localhost";
 	public static final String SERVER_NAME = "ChatServer";
-	public static final String HISTORY_FILE = "history2.xml";
+	public static final String HISTORY_FILE = "history.xml";
 	
 	public final static Color CL_BLACK = new Color(0,0,0);
 	public final static Color CL_WHITE = new Color(255,255,255);

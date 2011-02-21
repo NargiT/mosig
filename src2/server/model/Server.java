@@ -33,17 +33,13 @@ public class Server implements ServerRemote {
 			history = (LinkedList<Message>) XMLTools.decodeFromFile(Properties.HISTORY_FILE);
 			
 		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			
-			e.printStackTrace();
+			//e.printStackTrace();
 			history = new LinkedList<Message>();
 			
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			//e.printStackTrace();
 			history = new LinkedList<Message>();
 		}
-
 		
 	}
 
