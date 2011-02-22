@@ -8,7 +8,6 @@ import java.awt.event.KeyListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.rmi.registry.Registry;
 
 import utils.Message;
 
@@ -23,7 +22,6 @@ public class Controller implements ActionListener, KeyListener {
 
     private Gui gui;
     private ClientLocal client;
-    private Registry registry;
 
     public Controller(Gui gui) {
         this.client = null;
@@ -40,7 +38,7 @@ public class Controller implements ActionListener, KeyListener {
 
             @Override
             public void windowClosing(WindowEvent we) {
-                System.out.println("WindowListener");
+                //System.out.println("WindowListener");
                 if (client != null && client.isConnected()) {
                     client.unregister();
                 }
@@ -57,7 +55,7 @@ public class Controller implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        System.out.println("ACTIONLISTENER started");
+        //System.out.println("ACTIONLISTENER started");
         if (ae.getSource().equals(gui.m_exit)) {
             if (client != null) {
                 if (client.isConnected()) {

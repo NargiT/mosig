@@ -5,7 +5,6 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
-import java.awt.Rectangle;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
@@ -52,7 +51,7 @@ public class Gui extends JFrame {
         box_chat = Box.createVerticalBox();
         box_chat.add(ta_chat);
         JScrollPane scrollPane = new JScrollPane(ta_chat);
-        scrollPane.setHorizontalScrollBarPolicy(scrollPane.HORIZONTAL_SCROLLBAR_NEVER);
+        scrollPane.setHorizontalScrollBarPolicy(JScrollPane.HORIZONTAL_SCROLLBAR_NEVER);
         box_chat.add(scrollPane);
         box_chat.add(tf_chat);
         pnl_chat.add(box_chat);

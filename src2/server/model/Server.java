@@ -19,7 +19,6 @@ import utils.XMLTools;
 import client.model.interfaces.ClientRemote;
 
 
-
 public class Server implements ServerRemote {
 
 	private HashMap<String, ClientRemote> clients;
@@ -67,11 +66,12 @@ public class Server implements ServerRemote {
 	public boolean addClient(String nickname) throws RemoteException {
 		Registry registry = LocateRegistry.getRegistry();
 		try {
-			Logger.getLogger(Server.class.getName()).log(Level.INFO, "Trying to register user " + nickname);
+			
 			ClientRemote client = (ClientRemote) registry.lookup(nickname);
 			clients.put(nickname, client);
 			Message msg = new Message("User " + nickname + " joined the chat!","SERVER");
 			broadcast(msg);
+			Logger.getLogger(Server.class.getName()).log(Level.INFO, "Registered user " + nickname);
 		} catch (NotBoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -86,6 +86,7 @@ public class Server implements ServerRemote {
 			clients.remove(nickname);
 			Message msg = new Message("User " + nickname + " left the chat","SERVER");
 			broadcast(msg);
+			Logger.getLogger(Server.class.getName()).log(Level.INFO, "Unregistered user " + nickname);
 			return true;
 		} else {
 			return false;

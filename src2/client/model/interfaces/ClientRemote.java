@@ -9,6 +9,6 @@ import utils.Message;
 public interface ClientRemote extends Remote {
 	
 	boolean receive(Message msg) throws java.rmi.RemoteException;
-	String getType() throws java.rmi.RemoteException;
+	//String getType() throws java.rmi.RemoteException;
 
 }
