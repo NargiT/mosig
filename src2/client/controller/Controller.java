@@ -1,5 +1,6 @@
 package client.controller;
 
+import java.awt.Rectangle;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -68,7 +69,17 @@ public class Controller implements ActionListener, KeyListener {
             if (client == null || !client.isConnected()) {
 
                 try {
-                    client = new Client(gui.show_ConnectionDialog(), "GUI", this);
+                	String username = "";
+                	while (username.isEmpty()) {
+                	  username = gui.show_ConnectionDialog();
+                	  if (username == null) {
+                		  break;
+                	  }
+                	}
+                	if (username != null) {
+                		client = new Client(username, "GUI", this);
+                	}
+                    
 
                     /**
                     ClientRemote client_stub = (ClientRemote) UnicastRemoteObject.exportObject(client,0);
@@ -89,9 +100,14 @@ public class Controller implements ActionListener, KeyListener {
                 gui.throwErrorMessage("Client already connected");
             }
         } else if (ae.getSource().equals(gui.m_disconnect)) {
-            if (!(client == null) || client.isConnected()) {
-                client.unregister();
-                gui.tf_chat.setEnabled(false);
+            if (!(client == null)) {
+            	if (client.isConnected()) {
+	                client.unregister();
+	                gui.tf_chat.setEnabled(false);
+            	}
+            	else {
+                    gui.throwErrorMessage("Client not connected");
+                }  
             } else {
                 gui.throwErrorMessage("Client not connected");
             }
@@ -142,6 +158,7 @@ public class Controller implements ActionListener, KeyListener {
         }
         DateFormat df = new SimpleDateFormat("dd hh:mm");
         gui.ta_chat.append("[" + df.format(msg.getDate()) + "] " + msg.getFrom() + ": " + msg.getText() + "\n");
+        gui.ta_chat.scrollRectToVisible(new Rectangle(0, gui.ta_chat.getHeight()-2, 1, 1));
     }
 
     public void throwErrorMessage(String s) {

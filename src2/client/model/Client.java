@@ -49,7 +49,7 @@ public class Client implements ClientLocal, ClientRemote {
 	
 	public void initialize() {
 		System.setProperty("java.rmi.server.codebase",
-                Client.class.getProtectionDomain().getCodeSource().getLocation().toString());
+                ClientRemote.class.getProtectionDomain().getCodeSource().getLocation().toString());
 		try {
 			registry = LocateRegistry.getRegistry();
 			server = (ServerRemote) registry.lookup(Properties.SERVER_NAME);
@@ -70,7 +70,7 @@ public class Client implements ClientLocal, ClientRemote {
 			if (type.equals("GUI")) {
 				controller.throwErrorMessage("Client already Connected");
 			}
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 	}
 

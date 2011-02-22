@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
+import java.awt.Rectangle;
 
 import javax.swing.Box;
 import javax.swing.JFrame;
@@ -102,8 +103,12 @@ public class Gui extends JFrame {
     }
 
     public String show_ConnectionDialog() {
-        String username = (String) JOptionPane.showInputDialog(
-                this, "Chose your Username", JOptionPane.QUESTION_MESSAGE);
+    	
+        String username;
+
+        username = (String) JOptionPane.showInputDialog(this, "Chose your Username", "");
+
+        //System.out.println("Chosen Username = " + username);          
         return username;
     }
 
