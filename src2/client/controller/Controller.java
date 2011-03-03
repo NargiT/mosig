@@ -31,14 +31,12 @@ public class Controller implements ActionListener, KeyListener {
         gui.m_disconnect.addActionListener(this);
         gui.m_history.addActionListener(this);
         gui.m_exit.addActionListener(this);
-
         gui.tf_chat.addKeyListener(this);
 
         WindowListener wl = new WindowAdapter() {
 
             @Override
             public void windowClosing(WindowEvent we) {
-                //System.out.println("WindowListener");
                 if (client != null && client.isConnected()) {
                     client.unregister();
                 }
@@ -46,7 +44,6 @@ public class Controller implements ActionListener, KeyListener {
             }
         };
         gui.addWindowListener(wl);
-
     }
 
     public void run() {
@@ -55,7 +52,6 @@ public class Controller implements ActionListener, KeyListener {
 
     @Override
     public void actionPerformed(ActionEvent ae) {
-        //System.out.println("ACTIONLISTENER started");
         if (ae.getSource().equals(gui.m_exit)) {
             if (client != null) {
                 if (client.isConnected()) {
@@ -65,47 +61,33 @@ public class Controller implements ActionListener, KeyListener {
             System.exit(0);
         } else if (ae.getSource().equals(gui.m_connect)) {
             if (client == null || !client.isConnected()) {
-
                 try {
-                	String username = "";
-                	while (username.isEmpty()) {
-                	  username = gui.show_ConnectionDialog();
-                	  if (username == null) {
-                		  break;
-                	  }
-                	}
-                	if (username != null) {
-                		client = new Client(username, "GUI", this);
-                	}
-                    
-
-                    /**
-                    ClientRemote client_stub = (ClientRemote) UnicastRemoteObject.exportObject(client,0);
-                    //client = (ClientLocal) client_impl;
-                    //Register RemoteObject in RMI-Registry
-                    Registry registry = java.rmi.registry.LocateRegistry.getRegistry();
-                    String nickname = client.getNickName();
-                    registry.bind(client.getNickName(),  client_stub);
-
-                    client.register();
-                     **/
+                    String username = "";
+                    while (username.isEmpty()) {
+                        username = gui.show_ConnectionDialog();
+                        if (username == null) {
+                            break;
+                        }
+                    }
+                    if (username != null) {
+                        client = new Client(username, "GUI", this);
+                        client.register();
+                    }
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
                 gui.tf_chat.setEnabled(true);
             } else {
-
                 gui.throwErrorMessage("Client already connected");
             }
         } else if (ae.getSource().equals(gui.m_disconnect)) {
             if (!(client == null)) {
-            	if (client.isConnected()) {
-	                client.unregister();
-	                gui.tf_chat.setEnabled(false);
-            	}
-            	else {
+                if (client.isConnected()) {
+                    client.unregister();
+                    gui.tf_chat.setEnabled(false);
+                } else {
                     gui.throwErrorMessage("Client not connected");
-                }  
+                }
             } else {
                 gui.throwErrorMessage("Client not connected");
             }
@@ -156,7 +138,7 @@ public class Controller implements ActionListener, KeyListener {
         }
         DateFormat df = new SimpleDateFormat("dd hh:mm");
         gui.ta_chat.append("[" + df.format(msg.getDate()) + "] " + msg.getFrom() + ": " + msg.getText() + "\n");
-        gui.ta_chat.scrollRectToVisible(new Rectangle(0, gui.ta_chat.getHeight()-2, 1, 1));
+        gui.ta_chat.scrollRectToVisible(new Rectangle(0, gui.ta_chat.getHeight() - 2, 1, 1));
     }
 
     public void throwErrorMessage(String s) {

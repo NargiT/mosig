@@ -1,5 +1,6 @@
 package client.model;
 
+import java.rmi.AccessException;
 import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -20,148 +21,127 @@ import client.model.interfaces.ClientLocal;
 import client.model.interfaces.ClientRemote;
 import client.run.console.StartConsoleClient;
 
-
-
 public class Client implements ClientLocal, ClientRemote {
 
-	private ServerRemote server;
-	private String nickname;
-	private boolean connected = false;
-	private Controller controller;
-	private String type;
-	private Registry registry;
-	
-	public String getType() throws RemoteException {
-		return type;
-	}
+    private ServerRemote server;
+    private String nickname;
+    private boolean connected = false;
+    private Controller controller;
+    private String type;
+    private Registry registry;
 
-	public void setType(String type) {
-		this.type = type;
-	}
+    public String getType() throws RemoteException {
+        return type;
+    }
 
-	public Client(String nickname, String type, Controller controller) {
-		super();
-		this.controller = controller;
-		this.setNickname(nickname);
-		this.setType(type);
-		initialize();
-	}
-	
-	public void initialize() {
-		System.setProperty("java.rmi.server.codebase",
-                ClientRemote.class.getProtectionDomain().getCodeSource().getLocation().toString());
-		try {
-			registry = LocateRegistry.getRegistry();
-			server = (ServerRemote) registry.lookup(Properties.SERVER_NAME);
-			
-			ClientRemote client_stub = (ClientRemote) UnicastRemoteObject.exportObject(this,0);
-			registry.bind(nickname,  client_stub);
-			register();
-			
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (AlreadyBoundException e) {
-			// TODO Auto-generated catch block
-			System.out.println("Client already Connected");
-			if (type.equals("GUI")) {
-				controller.throwErrorMessage("Client already Connected");
-			}
-			//e.printStackTrace();
-		}
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	@Override
-	public boolean receive(Message msg) throws RemoteException {
-		System.out.print("[" + msg.getDate() + "] " + msg.getFrom() + ": " + msg.getText() + "\n");
-		if (this.getType() == "GUI") {
-			controller.displayMessage(msg);
-		}
-		return true;
-	}
+    public Client(String nickname, String type, Controller controller) {
+        super();
+        this.controller = controller;
+        this.nickname = nickname;
+        this.type = type;
+        initialize();
+    }
 
-	@Override
-	public boolean register() {
-		try {
-			Logger.getLogger(Client.class.getName()).log(Level.INFO, "Nickname = " + this.getNickName());
-			server.addClient(nickname);
-			connected = true;
-		} catch(RemoteException e) {
-			// TODO Auto-generated catch block
+    public void initialize() {
+        try {
+            System.setProperty("java.rmi.server.codebase", ClientRemote.class.getProtectionDomain().getCodeSource().getLocation().toString());
+            registry = LocateRegistry.getRegistry();
+            server = (ServerRemote) registry.lookup(Properties.SERVER_NAME);
+        } catch (NotBoundException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (AccessException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (RemoteException ex) {
+            Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 
-			e.printStackTrace();
-			return false;
-		} 
-			
-		return true;
-	}
+    @Override
+    public boolean receive(Message msg) throws RemoteException {
+        if (this.getType().equals("GUI")) {
+            controller.displayMessage(msg);
+        } else {
+            System.out.print("[" + msg.getDate() + "] " + msg.getFrom() + ": " + msg.getText() + "\n");
+        }
+        return true;
+    }
 
-	@Override
-	public boolean unregister() {
-		try {
-			server.removeClient(nickname);
-			
-			registry.unbind(nickname);
-			
-			connected = false;
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		} catch (NotBoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		// TODO Auto-generated method stub
-		return true;
-	}
+    @Override
+    public boolean register() {
+        connected = false;
+        try {
+            ClientRemote client_stub = (ClientRemote) UnicastRemoteObject.exportObject(this, 0);
+            while (!connected) {
+                connected = server.addClient(nickname, client_stub);
+                if (connected == false) {
+                    if (type.equals("GUI")) {
+                        controller.throwErrorMessage("Client already Connected");
+                    } else {
+                        System.out.println("Client already Connected");
+                    }
+                }
+            }
+        } catch (RemoteException e) {
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public boolean send(String text) {
-		Message msg = new Message(text, nickname);
-		try {
-			server.broadcast(msg);
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+    @Override
+    public boolean unregister() {
+        try {
+            server.removeClient(nickname);
+            //registry.unbind(nickname);
+            connected = false;
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
-	@Override
-	public String getNickName() {
-		// TODO Auto-generated method stub
-		return nickname;
-	}
+    @Override
+    public boolean send(String text) {
+        Message msg = new Message(text, nickname);
+        try {
+            server.broadcast(msg);
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
-	public void setNickname(String nickname) {
-		this.nickname = nickname;
-	}
+    @Override
+    public String getNickName() {
+        return nickname;
+    }
 
-	@Override
-	public boolean printHistory() {
-		LinkedList<Message> history;
-		try {
-			history = server.getHistory();
-			for (Message m : history) {
-				receive(m);
-			}
-		} catch (RemoteException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-	}
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
-	@Override
-	public boolean isConnected() {
-		return connected;
-	}
+    @Override
+    public boolean printHistory() {
+        LinkedList<Message> history;
+        try {
+            history = server.getHistory();
+            for (Message m : history) {
+                receive(m);
+            }
+        } catch (RemoteException e) {
+            e.printStackTrace();
+            return false;
+        }
+        return true;
+    }
 
+    @Override
+    public boolean isConnected() {
+        return connected;
+    }
 }
