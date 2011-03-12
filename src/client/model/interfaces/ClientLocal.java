@@ -8,6 +8,7 @@ public interface ClientLocal {
 	boolean printHistory();
 	boolean isConnected();
 	String getNickName();
+        void setNickName(String nickname);
 	
 	
 }

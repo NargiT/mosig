@@ -144,4 +144,9 @@ public class Client implements ClientLocal, ClientRemote {
     public boolean isConnected() {
         return connected;
     }
+
+    @Override
+    public void setNickName(String nickname) {
+        this.nickname = nickname;
+    }
 }

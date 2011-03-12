@@ -1,6 +1,5 @@
 package client.run.console;
 
-
 import java.util.Scanner;
 
 import client.model.Client;
@@ -15,16 +14,21 @@ public class StartConsoleClient {
     public static void main(String[] args) {
 
         try {
-          
+
             System.out.println("Type in your username");
             Scanner talk = new Scanner(System.in);
             String nickname = talk.nextLine();
 
             //Create Client RemoteObject
             ClientLocal client = new Client(nickname, "CONSOLE", null);
-           
+            while (!client.register()) {
+                nickname = talk.nextLine();
+                client.setNickName(nickname);
+            }
+
             boolean chatting = true;
             String text;
+
             while (chatting) {
                 text = talk.nextLine();
                 if (text.equals("/quit")) {
