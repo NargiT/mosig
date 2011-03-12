@@ -15,13 +15,28 @@ import utils.XMLTools;
 
 import client.model.interfaces.ClientRemote;
 
+/**
+ * This class allows for a client to use all the features of the chat
+ * @author TCHOUGOURIAN Tigran
+ */
 public class Server implements ServerRemote {
 
+    /**
+     * Map of all the clients registered to the chat,
+     * the nickname identify the client in the set.
+     */
     private HashMap<String, ClientRemote> clients;
+
+    /**
+     * List of all messaged stored in the chat since the first day.
+     */
     private LinkedList<Message> history;
 
+    /**
+     * Constructor of the server, initialize the client map and load the
+     * history if it's available otherwise create a new one.
+     */
     public Server() {
-
         clients = new HashMap<String, ClientRemote>();
 
         try {
@@ -38,6 +53,15 @@ public class Server implements ServerRemote {
 
     }
 
+    /**
+     * Broadcast one message to all the clients connected to the chat.
+     * @param msg message to be transimted.
+     * @return {@code true} if all the messages were transmited,<br />
+     *         {@code false} if at least one failed
+     *         </ul>
+     * This return value is more as an tips that a real return value.
+     * @throws RemoteException
+     */
     @Override
     public boolean broadcast(Message msg) throws RemoteException {
         boolean toReturn = true;
@@ -55,6 +79,14 @@ public class Server implements ServerRemote {
         return toReturn;
     }
 
+     /**
+     * Register a client in to the server, a client must have a unique identifier.
+     * @param nickname client's identifier.
+     * @param client_stub client's reference of the remote object.
+     * @return {@code true} if the client were added, <br />
+     * {@code false} if another client has already the same identifier.
+     * @throws RemoteException
+     */
     @Override
     public boolean addClient(String nickname, ClientRemote client_stub) throws RemoteException {
         ClientRemote client = (ClientRemote) client_stub;
@@ -68,6 +100,13 @@ public class Server implements ServerRemote {
         return true;
     }
 
+    /**
+     * Unregister a client from the server using his nickname.
+     * @param nickname client's to be removed
+     * @return {@code true} if the client were successfully removed, <br />
+     *         {@code false} if the nickname is not presents in the server.
+     * @throws RemoteException
+     */
     @Override
     public boolean removeClient(String nickname) throws RemoteException {
         if (clients.containsKey(nickname)) {
@@ -80,6 +119,11 @@ public class Server implements ServerRemote {
         return false;
     }
 
+    /**
+     * Return the deserialized history.
+     * @return history {@code LinkedList<Message>}
+     * @throws RemoteException
+     */
     @Override
     public LinkedList<Message> getHistory() throws RemoteException {
         return history;

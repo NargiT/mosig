@@ -7,7 +7,11 @@ import server.model.interfaces.ServerRemote;
 import utils.Properties;
 
 
-
+/**
+ * Main Server class which start the server
+ * The RMI registery should be started before
+ * to run this class.
+ */
 public class StartServer {
 	
 	public static void main(String[] args) {

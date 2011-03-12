@@ -6,6 +6,10 @@ import java.util.Scanner;
 import client.model.Client;
 import client.model.interfaces.ClientLocal;
 
+/**
+ * Main Client Console class which start the client console
+ * The server has be running.
+ */
 public class StartConsoleClient {
 
     public static void main(String[] args) {

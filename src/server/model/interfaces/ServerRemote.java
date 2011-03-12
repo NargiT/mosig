@@ -8,7 +8,7 @@ import java.util.LinkedList;
 import utils.Message;
 
 /**
- * This object allows for a client to use all the features of the chat
+ * This class allows for a client to use all the features of the chat
  * @author TCHOUGOURIAN Tigran
  */
 public interface ServerRemote extends Remote {
