@@ -1,14 +1,12 @@
 package client.model;
 
 import java.rmi.AccessException;
-import java.rmi.AlreadyBoundException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.LinkedList;
-import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -19,7 +17,6 @@ import utils.Properties;
 import client.controller.Controller;
 import client.model.interfaces.ClientLocal;
 import client.model.interfaces.ClientRemote;
-import client.run.console.StartConsoleClient;
 
 /**
  * 
@@ -40,7 +37,7 @@ public class Client implements ClientLocal, ClientRemote {
      * 
      * Getter-Method for the type of the client
      * 
-     * @return
+     * @return Type of the client
      * @throws RemoteException
      */
     public String getType() throws RemoteException {
@@ -100,7 +97,7 @@ public class Client implements ClientLocal, ClientRemote {
 	 * This method is used by the server to send a message to a remote client-object.
 	 * 
 	 * @param msg
-	 * @return
+	 * @return {@code true} if the message was received and displayed successfully <br />
 	 * @throws java.rmi.RemoteException
 	 */
     @Override
@@ -116,7 +113,8 @@ public class Client implements ClientLocal, ClientRemote {
 	/**
 	 * Registers the client on the server. 
 	 * Uses remote server-object to add itself (reduced to the methods listed in the remote-interface) to the client-list.
-	 * @return
+	 * @return {@code true} if the client registered successfully, <br />
+     *         {@code false} if an exception occurred while registering the client.
 	 */
     @Override
     public boolean register() {
@@ -142,7 +140,8 @@ public class Client implements ClientLocal, ClientRemote {
 	/**
 	 * Unregisters the client from the server
 	 * Uses remote server-object to remove itself from the client-list.
-	 * @return
+	 * @return {@code true} if the client is successfully unregistered, <br />
+     *         {@code false} if an exception occured while unregistering the client.
 	 */
     @Override
     public boolean unregister() {
@@ -162,7 +161,8 @@ public class Client implements ClientLocal, ClientRemote {
 	 * Creates as message object from the String.
 	 * Uses remote server-object to broadcast this message to the other clients.
 	 * @param text
-	 * @return
+	 * @return {@code true} if the message is successfully sent, <br />
+     *         {@code false} if an exception occured while sending the message.
 	 */
     @Override
     public boolean send(String text) {
@@ -178,7 +178,7 @@ public class Client implements ClientLocal, ClientRemote {
 
 	/**
 	 * Getter-Method for the nickname of the client.
-	 * @return
+	 * @return nickname of the client
 	 */
     @Override
     public String getNickname() {
@@ -197,7 +197,8 @@ public class Client implements ClientLocal, ClientRemote {
 	 * Makes client receive all the messages that were sent to the server before.
 	 * Uses remote server-object to get a list of the messages.
 	 * Makes the local client receive each of these messages.
-	 * @return
+	 * @return {@code true} if the history is printed successfully, <br />
+     *         {@code false} if an exception occured while printing the history.
 	 */
     @Override
     public boolean printHistory() {
@@ -219,7 +220,8 @@ public class Client implements ClientLocal, ClientRemote {
 	 * When client connects/disconnects to a server, a boolean variable is set true/false,
 	 * this variable is checked by this method.
 	 *  
-	 * @return
+	 * @return {@code true} if the client is currently connected, <br />
+     *         {@code false} if the client is currently not connected.
 	 */
     @Override
     public boolean isConnected() {

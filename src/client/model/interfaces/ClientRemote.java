@@ -14,7 +14,7 @@ public interface ClientRemote extends Remote {
 	 * This method is used by the server to send a message to a remote client-object.
 	 * 
 	 * @param msg
-	 * @return
+	 * @return {@code true} if the message was received and displayed successfully <br />
 	 * @throws java.rmi.RemoteException
 	 */
 	boolean receive(Message msg) throws java.rmi.RemoteException;

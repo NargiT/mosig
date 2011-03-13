@@ -72,8 +72,7 @@ public class Gui extends JFrame {
      * 
      * Sets general settings (resolution, resizeable) of the user interface and makes it visible.
      * 
-     * 
-     * @return
+     * @return the Graphical User Interface object.
      */
     public Gui startGUI() {
         JFrame rahmen = this;
@@ -97,7 +96,7 @@ public class Gui extends JFrame {
      * @param foreground
      * @param background
      * @param font
-     * @return
+     * @return a textarea-object that is configured according to the parameters
      */
     public JTextArea makeTextArea(Color foreground, Color background, Font font) {
         JTextArea ta = new JTextArea("", 18, 40);
@@ -126,7 +125,7 @@ public class Gui extends JFrame {
      * @param foreground
      * @param background
      * @param font
-     * @return
+     * @return a textfield that is configured according to the parameters
      */
     public JTextField makeTextField(Color foreground, Color background, Font font) {
         JTextField tf = new JTextField(80);
@@ -143,7 +142,7 @@ public class Gui extends JFrame {
      * Shows a dialog with an edit-field.
      * After the user clicks ok, the input in the edit-field is returned as a string.
      * 
-     * @return
+     * @return String of the userinput in the editfield
      */
     public String show_ConnectionDialog() {
     	
