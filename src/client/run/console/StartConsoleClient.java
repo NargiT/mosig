@@ -23,7 +23,7 @@ public class StartConsoleClient {
             ClientLocal client = new Client(nickname, "CONSOLE", null);
             while (!client.register()) {
                 nickname = talk.nextLine();
-                client.setNickName(nickname);
+                client.setNickname(nickname);
             }
 
             boolean chatting = true;

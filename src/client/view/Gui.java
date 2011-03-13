@@ -19,11 +19,15 @@ import javax.swing.JTextField;
 
 import utils.Properties;
 
+/**
+ * 
+ * Main class for the graphical user interface (view).
+ * Contains the components and initialization methods.
+ * Also contains helper-methods for creating input -and information dialogs.
+ *
+ */
 public class Gui extends JFrame {
 
-    /**
-     *
-     */
     private static final long serialVersionUID = 1L;
     //Menu
     public JMenuBar mb = new JMenuBar();
@@ -38,6 +42,12 @@ public class Gui extends JFrame {
     public JTextArea ta_chat = makeTextArea(Properties.CL_BLACK, Properties.CL_WHITE, Properties.FONT);
     public JTextField tf_chat = makeTextField(Properties.CL_BLACK, Properties.CL_WHITE, Properties.FONT);
 
+    /**
+     * Constructor of the graphical user interface.
+     * It builds up the menubar and its available options.
+     * It also sets the layout of the application, so the textarea, which displays all the messages and the editfield for typing one message are displayed correctly.
+     * It also adds a vertical scrollpane to the textarea.
+     */
     public Gui() {
         super("Chat Client");
         this.setJMenuBar(mb);
@@ -58,6 +68,13 @@ public class Gui extends JFrame {
         this.add(pnl_chat);
     }
 
+    /**
+     * 
+     * Sets general settings (resolution, resizeable) of the user interface and makes it visible.
+     * 
+     * 
+     * @return
+     */
     public Gui startGUI() {
         JFrame rahmen = this;
 
@@ -72,6 +89,16 @@ public class Gui extends JFrame {
         return (Gui) rahmen;
     }
 
+    /**
+     * 
+     * Creates a textarea-object and sets basic properties and then continues to set other properties using the parameters given by the user. 
+     * It is basically just a help-method.
+     * 
+     * @param foreground
+     * @param background
+     * @param font
+     * @return
+     */
     public JTextArea makeTextArea(Color foreground, Color background, Font font) {
         JTextArea ta = new JTextArea("", 18, 40);
         ta.setColumns(80);
@@ -91,6 +118,16 @@ public class Gui extends JFrame {
         return ta;
     }
 
+    /**
+     * 
+     * Creates a textfield-object and sets basic properties and then continues to set other properties using the parameters given by the user. 
+     * It is basically just a help-method.
+     * 
+     * @param foreground
+     * @param background
+     * @param font
+     * @return
+     */
     public JTextField makeTextField(Color foreground, Color background, Font font) {
         JTextField tf = new JTextField(80);
         tf.setForeground(foreground);
@@ -101,6 +138,13 @@ public class Gui extends JFrame {
         return tf;
     }
 
+    /**
+     * 
+     * Shows a dialog with an edit-field.
+     * After the user clicks ok, the input in the edit-field is returned as a string.
+     * 
+     * @return
+     */
     public String show_ConnectionDialog() {
     	
         String username;
@@ -111,6 +155,12 @@ public class Gui extends JFrame {
         return username;
     }
 
+    /**
+     * 
+     * Creates a new window with an error message and gives it the focus, so the user is notified by an error that occured.
+     * 
+     * @param s
+     */
     public void throwErrorMessage(String s) {
         JOptionPane.showMessageDialog(
                 this, s, "Error", JOptionPane.ERROR_MESSAGE);
