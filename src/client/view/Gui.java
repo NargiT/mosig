@@ -144,7 +144,7 @@ public class Gui extends JFrame {
      * 
      * @return String of the userinput in the editfield
      */
-    public String show_ConnectionDialog() {
+    public String show_NicknameDialog() {
     	
         String username;
 
@@ -152,6 +152,22 @@ public class Gui extends JFrame {
 
         //System.out.println("Chosen Username = " + username);          
         return username;
+    }
+    
+    /**
+     * 
+     * Shows a dialog with an edit-field.
+     * After the user clicks ok, the input in the edit-field is returned as a string.
+     * 
+     * @return String of the userinput in the editfield
+     */
+    public String show_HostDialog() {
+    	
+        String host;
+
+        host = (String) JOptionPane.showInputDialog(this, "Type the ip address of the host running the chat-server", "");
+         
+        return host;
     }
 
     /**

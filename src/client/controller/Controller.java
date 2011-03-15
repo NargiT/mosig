@@ -85,15 +85,24 @@ public class Controller implements ActionListener, KeyListener {
                 try {
                     String username = "";
                     while (username.isEmpty()) {
-                        username = gui.show_ConnectionDialog();
+                        username = gui.show_NicknameDialog();
                         if (username == null) {
                             break;
                         }
                     }
                     if (username != null) {
                         // TODO need to ask which host
-                        client = new Client(username, "GUI", this, "");
-                        client.register();
+                    	String host = "";
+                    	while (host.isEmpty()) {
+                    		host = gui.show_HostDialog();
+                    		if (host == null) {
+                    			break;
+                    		}
+                    	}
+                    	if (host != null) {
+                    		client = new Client(username, "GUI", this, host);
+                    		client.register();
+                    	}
                     }
                 } catch (Exception e) {
                     e.printStackTrace();
