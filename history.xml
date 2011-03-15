@@ -1261,5 +1261,110 @@
     </void> 
    </object> 
   </void> 
+  <void method="add"> 
+   <object class="utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1300125521852</long> 
+     </object> 
+    </void> 
+    <void property="from"> 
+     <string>SERVER</string> 
+    </void> 
+    <void property="text"> 
+     <string>User TIgrna joined the chat!</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1300125525891</long> 
+     </object> 
+    </void> 
+    <void property="from"> 
+     <string>TIgrna</string> 
+    </void> 
+    <void property="text"> 
+     <string>he</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1300125533047</long> 
+     </object> 
+    </void> 
+    <void property="from"> 
+     <string>TIgrna</string> 
+    </void> 
+    <void property="text"> 
+     <string>quit</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1300126068867</long> 
+     </object> 
+    </void> 
+    <void property="from"> 
+     <string>SERVER</string> 
+    </void> 
+    <void property="text"> 
+     <string>User TIgrna left the chat</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1300126898416</long> 
+     </object> 
+    </void> 
+    <void property="from"> 
+     <string>SERVER</string> 
+    </void> 
+    <void property="text"> 
+     <string>User tigran joined the chat!</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1300126900988</long> 
+     </object> 
+    </void> 
+    <void property="from"> 
+     <string>tigran</string> 
+    </void> 
+    <void property="text"> 
+     <string>la</string> 
+    </void> 
+   </object> 
+  </void> 
+  <void method="add"> 
+   <object class="utils.Message"> 
+    <void property="date"> 
+     <object class="java.util.Date"> 
+      <long>1300126907989</long> 
+     </object> 
+    </void> 
+    <void property="from"> 
+     <string>SERVER</string> 
+    </void> 
+    <void property="text"> 
+     <string>User tigran left the chat</string> 
+    </void> 
+   </object> 
+  </void> 
  </object> 
 </java> 

@@ -20,7 +20,7 @@ public class StartConsoleClient {
             String nickname = talk.nextLine();
 
             //Create Client RemoteObject
-            ClientLocal client = new Client(nickname, "CONSOLE", null);
+            ClientLocal client = new Client(nickname, "CONSOLE", null, args[0]);
             while (!client.register()) {
                 nickname = talk.nextLine();
                 client.setNickname(nickname);

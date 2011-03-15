@@ -91,7 +91,8 @@ public class Controller implements ActionListener, KeyListener {
                         }
                     }
                     if (username != null) {
-                        client = new Client(username, "GUI", this);
+                        // TODO need to ask which host
+                        client = new Client(username, "GUI", this, "");
                         client.register();
                     }
                 } catch (Exception e) {

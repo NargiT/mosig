@@ -1,5 +1,6 @@
 package server.model;
 
+import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
 
@@ -13,7 +14,7 @@ import utils.Properties;
  * to run this class.
  */
 public class StartServer {
-	
+	//-Djava.rmi.server.hostname=129.88.254.49
 	public static void main(String[] args) {
 		try {
 			System.setProperty("java.rmi.server.codebase",
@@ -24,7 +25,7 @@ public class StartServer {
 			ServerRemote server_stub = (ServerRemote) UnicastRemoteObject.exportObject(server,0);
 			
 			//Register RemoteObject in RMI-Registry
-			Registry registry = java.rmi.registry.LocateRegistry.getRegistry();
+			Registry registry = LocateRegistry.getRegistry(args[0]);
 			registry.bind(Properties.SERVER_NAME,  server_stub);
 			
 			System.out.println("ChatServer ready");

@@ -64,12 +64,12 @@ public class Client implements ClientLocal, ClientRemote {
      * @param type
      * @param controller
      */
-    public Client(String nickname, String type, Controller controller) {
+    public Client(String nickname, String type, Controller controller, String host) {
         super();
         this.controller = controller;
         this.nickname = nickname;
         this.type = type;
-        initialize();
+        initialize(host);
     }
 
     /**
@@ -77,10 +77,10 @@ public class Client implements ClientLocal, ClientRemote {
      * Initializes the registry and gets a remote-object of the server.
      * 
      */
-    public void initialize() {
+    public void initialize(String host) {
         try {
             System.setProperty("java.rmi.server.codebase", ClientRemote.class.getProtectionDomain().getCodeSource().getLocation().toString());
-            registry = LocateRegistry.getRegistry();
+            registry = LocateRegistry.getRegistry(host);
             server = (ServerRemote) registry.lookup(Properties.SERVER_NAME);
         } catch (NotBoundException ex) {
             Logger.getLogger(Client.class.getName()).log(Level.SEVERE, null, ex);

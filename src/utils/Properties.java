@@ -8,12 +8,6 @@ import java.awt.Font;
  *
  */
 public class Properties {
-
-    /**
-     * Address of the server
-     */
-    public static final String HOST = "localhost";
-
     /**
      * Name of the server
      */
