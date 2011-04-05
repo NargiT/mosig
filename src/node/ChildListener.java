@@ -1,37 +1,31 @@
 package node;
 
-import node.News;
-
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Stack;
+import java.util.Map.Entry;
 import java.util.concurrent.Semaphore;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
-import javax.jms.TextMessage;
-import javax.jms.JMSException;
 
 public class ChildListener implements MessageListener {
 
-	private double memoryUsed;
+	private HashMap<Integer, Long> news;
 	private Semaphore semaphore;
 
 	public ChildListener() {
 		super();
-		memoryUsed = 0.0;
+		news = new HashMap<Integer, Long>();
 		semaphore = new Semaphore(1);
 	}
 
 	@Override
 	public void onMessage(Message message) {
-		if (message instanceof TextMessage) {
-			double latestNews = Double.parseDouble(((TextMessage) message).getText());
+		if (message instanceof ObjectMessage) {
+			News latestNews = (News)((ObjectMessage) message);
 			try {
 				semaphore.acquire();
-				// Has to be updated
-				news = latestNews.get
+				news.put(latestNews.getFrom(), latestNews.getMemoryUsed());
 				semaphore.release();
 			} catch (InterruptedException e) {
 				System.err.println("Failed to get acquire the lock: "
@@ -40,10 +34,12 @@ public class ChildListener implements MessageListener {
 		}
 	}
 
-	public News getNews() throws InterruptedException {
-		News toReturn = new News(from, memoryUsed);
+	public long getLatestNews() throws InterruptedException {
+		long toReturn = 0;
 		semaphore.acquire();
-		
+		for (Entry<Integer, Long> entry : news.entrySet()) {
+			toReturn += entry.getValue();
+		}
 		semaphore.release();
 		return toReturn;
 	}

@@ -3,21 +3,15 @@ package node;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Stack;
-import java.util.concurrent.Semaphore;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.Message;
 import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
 import javax.jms.MessageProducer;
 import javax.jms.ObjectMessage;
 import javax.jms.Session;
-import javax.jms.TextMessage;
 import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
@@ -69,7 +63,7 @@ public class Node {
 		this.session = null;
 		this.receiver = null;
 		this.sender = null;
-		this.listen = null;
+		this.listen = new ChildListener();
 		setStatus();
 		setUp();
 	}
@@ -80,8 +74,8 @@ public class Node {
 		try {
 			connection.start();
 			if (status != NodeStatus.LEAF)
-				receiver.setMessageListener(new ChildListener());
-
+				receiver.setMessageListener(listen);
+			
 			if (status != NodeStatus.MASTER) {
 				while (true) {
 					Thread.sleep(5000);
@@ -89,6 +83,11 @@ public class Node {
 					/**
 					 * Retrieve some stuff
 					 */
+					long l = Runtime.getRuntime().freeMemory();
+					l += listen.getLatestNews();
+					News n = new News(id, l);
+					ObjectMessage msg = session.createObjectMessage();
+					msg.setObject(n);
 					sender.send(msg);
 				}
 			}
@@ -118,16 +117,6 @@ public class Node {
 				}
 			}
 		}
-	}
-
-	private ObjectMessage getFreeMemory() {
-		listen.getNews();
-		ObjectMessage msg = session.createObjectMessage();
-		
-		msg.setObject(String.valueOf(Runtime.getRuntime()
-				.freeMemory()));
-
-		return null;
 	}
 	/**
 	 * 
