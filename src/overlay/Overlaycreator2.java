@@ -167,10 +167,10 @@ public class Overlaycreator2 {
 		ProcessBuilder pb;
 		if (pn.getParent() != null) {
 			//Middle-Node
-			pb = new ProcessBuilder("java node", "-id", Integer.toString(pn.getId()), "-pid", Integer.toString(pn.getParent().getId()), "-nch", Integer.toString(pn.getNumberOfChilds()));
+			pb = new ProcessBuilder("java -jar startnode.jar", "-id", Integer.toString(pn.getId()), "-pid", Integer.toString(pn.getParent().getId()), "-nch", Integer.toString(pn.getNumberOfChilds()));
 		} else {
 			//Master-Node
-			pb = new ProcessBuilder("java node", "-id", Integer.toString(pn.getId()), "-nch", Integer.toString(pn.getNumberOfChilds()));
+			pb = new ProcessBuilder("java -jar startnode.jar", "-id", Integer.toString(pn.getId()), "-nch", Integer.toString(pn.getNumberOfChilds()));
 		}
 		try {
 			pb.start();
