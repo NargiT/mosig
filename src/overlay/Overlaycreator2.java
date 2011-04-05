@@ -10,6 +10,7 @@ public class Overlaycreator2 {
 		 
 		if (args.length != 4) {
 			System.out.println("Number of arguments is wrong");
+			return;
 		}
 		
 		int n = readNumber(args[1]);
