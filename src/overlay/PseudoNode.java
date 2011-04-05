@@ -22,7 +22,7 @@ public class PseudoNode {
 	
 	public int getNumberOfChilds() {
 		int count = 0;
-		for (PseudoNode child : childs) {
+		for (PseudoNode pn : childs) {
 			count++;
 		}
 		return count;
@@ -49,6 +49,26 @@ public class PseudoNode {
 
 	public Collection<PseudoNode> getChilds() {
 		return childs;
+	}
+	
+	public String toString() {
+		String res = new String();
+		res += "ID="+ id + "\n";
+		if (parent != null) {
+			res += "Parent=" + parent.getId() + "\n";
+		} else {
+			res += "Parent=NULL\n";
+		}
+		res += ("Childs: ");
+		if (childs.isEmpty()) {
+			res += "No childs";
+		} else {
+			for (PseudoNode pn : childs) {
+				res += pn.id + " ";
+			}
+		}
+		return res;
+
 	}
 	
 	

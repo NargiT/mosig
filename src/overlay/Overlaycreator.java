@@ -2,6 +2,7 @@ package overlay;
 
 import java.io.IOException;
 import java.util.Collection;
+import java.util.LinkedList;
 
 public class Overlaycreator {
 
@@ -23,91 +24,149 @@ public class Overlaycreator {
 		} else {
 			mode = "depth";
 		}
-		
+		PseudoNode root;
 		if (mode.equals("arity")) {
 			System.out.println("Creating NodeTree of " + n + " nodes with arity " + value);
-			createTreeWithArity(n, value);
+			root = createTreeWithArity(n, value);
+			printTree(root);
+			//System.out.println("Depth=" + getDepth(n,value));
 		} else {
-			System.out.println("Creating NodeTree of " + n + " nodes with depth " + value);
-			createTreeWithDepth(n, value);
+			//System.out.println("Creating NodeTree of " + n + " nodes with depth " + value);
+			//System.out.println("Arity=" + getArity(n, value));
+			root = createTreeWithDepth(n, value);
+			printTree(root);
 		}
 	}
 	 
-	public static void createTreeWithArity(int n, int arity) {
+	public static PseudoNode createTreeWithArity(int n, int arity) {
 		
 		System.out.println("Tree will have depth " + getDepth(n,arity));
-		return;
-		/**
-		int count = 1;
-		PseudoNode pn;
-		PseudoNode master = null;
-		int depth = 0;
-		while (count <= n) {
-			pn = new PseudoNode(count);
-			
-			if (count == 1) {
-				master = pn;
-				depth++;
-				continue;
-			}
-			
-			PseudoNode root = master;
-			while (true) {
-				
-			}
-			for (PseudoNode child : master.getChilds()) {
-				
-			}
-
-			count++;
-			
-		}
-		**/
+		return createTree(n,arity,getDepth(n,arity));
 	}
 	
-	public static void createTreeWithDepth(int n, int depth) {
+	public static PseudoNode createTreeWithDepth(int n, int depth) {
 		System.out.println("Tree will have arity " + getArity(n,depth));
+		return createTree(n,getArity(n,depth), depth);
+	}
+	
+	public static boolean addChild(PseudoNode child, PseudoNode root, int arity, int depth) {
+		if (depth == 0) {
+			return false;
+		}
+		if (root.getNumberOfChilds() < arity) {
+			root.addChild(child);
+			child.setParent(root);
+			return true;
+		} else {
+			for (PseudoNode tmp : root.getChilds()) {
+				if (addChild(child, tmp, arity, depth-1)) {
+					return true;
+				}
+			}
+		}
+		return false;
+	}
+	
+	public static PseudoNode createTree(int n, int arity, int depth) {
+		LinkedList<PseudoNode> list = new LinkedList<PseudoNode>();
+		PseudoNode pn, root = null;
+		int currentDepth = 0;
+		int count = 0;
+		while (count <= n) {
+			pn = new PseudoNode(count);
+			count++;
+			list.add(pn);
+			if (root == null) {
+				root = pn;
+				currentDepth++;
+				continue;
+			}
+			addChild(pn, root, arity, depth-1);
+		}
+//			if (Math.pow(arity,currentDepth) > count) {
+//				currentDepth++;
+//			}
+//			
+//			int sum=0;
+//			for (int i = 0; i < currentDepth-1; i++) {
+//				sum += Math.pow(arity, i);
+//			}
+//			int minChildsNode = 0;
+//			for (int i = 0; i < sum; i++) {
+//				if (((PseudoNode) list.get(i)).getNumberOfChilds() < ((PseudoNode) list.get(minChildsNode)).getNumberOfChilds()) {
+//					minChildsNode = i;
+//				}
+//			}
+//			PseudoNode parent = ((PseudoNode) list.get(minChildsNode));
+//			parent.addChild(pn);
+//			pn.setParent(parent);
+//	
+//		}
+//		
+		return root;
+		
 	}
 	
 	public static int getDepth(int n, int arity) {
 		
 		int sum = 0;
 		int depth = 0;
-		while (sum <= n) {
+		while (sum < n) {
+			
 			sum += Math.pow(arity, depth);
 			depth++;
+//			System.out.println("SUM="+sum);
+//			System.out.println("DEPTH=" + depth);
 		}
-		return depth - 1;
+		return depth;
 		//return (int) (Math.log(n)/Math.log(arity));
 	}
 	
 	public static int getArity(int n, int depth) {
-		int arity;
-		
-		arity = 2;
-		int max_nodes;
+		int arity = 1;
 		while (true) {
-			max_nodes = (int)Math.pow(arity, depth-1);
-			System.out.println("MAX NODES IN ARITY " + arity + " = " + max_nodes);
-			if (max_nodes < n) {
-				arity++;
-			} else {
+			if (getDepth(n, arity) == depth) {
 				return arity;
 			}
+			arity++;
+		}
+//		int arity;
+//		
+//		arity = 2;
+//		int max_nodes;
+//		while (true) {
+//			max_nodes = (int)Math.pow(arity, depth-1);
+//			System.out.println("MAX NODES IN ARITY " + arity + " = " + max_nodes);
+//			if (max_nodes < n) {
+//				arity++;
+//			} else {
+//				return arity;
+//			}
+//		}
+	}
+	
+	public static void printTree(PseudoNode pn) {
+		System.out.println(pn);
+		Collection<PseudoNode> childs = pn.getChilds();
+		for (PseudoNode child : childs) {
+			printTree(child);
+		}
+	}
+	
+	public static void createOverlay(PseudoNode root) {
+		Collection<PseudoNode> childs = root.getChilds();
+		for (PseudoNode child : childs) {
+			createNodeProcess(child);
 		}
 	}
 	 
-	public static void createNodeProcess(String parent, Collection<String> childslist) {
-		String childs = new String();
-		for (String child : childslist) {
-			childs += child + " ";
-		}
+	public static void createNodeProcess(PseudoNode pn) {
 		ProcessBuilder pb;
-		if (parent != null) {
-			pb = new ProcessBuilder("java node", "-id", "ID", "-pid", parent, "-nch", childs);
+		if (pn.getParent() != null) {
+			pb = new ProcessBuilder("java node", "-id", Integer.toString(pn.getId()), "-pid", Integer.toString(pn.getParent().getId()), "-nch", Integer.toString(pn.getNumberOfChilds()));
 		} else {
 			//Master-Node
-			pb = new ProcessBuilder("java node", "-ch", childs);
+			pb = new ProcessBuilder("java node", "id", Integer.toString(pn.getId()), "-ch", Integer.toString(pn.getNumberOfChilds()));
 		}
 		try {
 			pb.start();
