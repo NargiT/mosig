@@ -84,6 +84,7 @@ public class Node {
 					 * Retrieve some stuff
 					 */
 					long l = Runtime.getRuntime().freeMemory();
+					//System.out.println(status+" "+l+" + "+listen.getLatestNews());
 					l += listen.getLatestNews();
 					News n = new News(id, l);
 					ObjectMessage msg = session.createObjectMessage();
