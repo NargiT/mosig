@@ -1,8 +1,6 @@
 package node;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -15,6 +13,8 @@ import javax.jms.Session;
 import javax.jms.Topic;
 import javax.naming.InitialContext;
 import javax.naming.NamingException;
+
+import sensor.MemorySensor;
 
 public class Node {
 
@@ -29,13 +29,14 @@ public class Node {
 	private ConnectionFactory factory;
 	private Topic publishTopic;
 	private Topic subscribedTopic;
-
 	private Connection connection;
 	private Session session;
+
 	private MessageConsumer receiver;
 	private MessageProducer sender;
-	
-	private ChildListener listen;
+
+	private MemoryListener listen;
+	private MemorySensor memory;
 
 	/**
 	 * Create a virtual node representing a server
@@ -63,7 +64,8 @@ public class Node {
 		this.session = null;
 		this.receiver = null;
 		this.sender = null;
-		this.listen = new ChildListener();
+		this.listen = new MemoryListener();
+		this.memory = new MemorySensor();
 		setStatus();
 		setUp();
 	}
@@ -75,26 +77,24 @@ public class Node {
 			connection.start();
 			if (status != NodeStatus.LEAF)
 				receiver.setMessageListener(listen);
-			
-			if (status != NodeStatus.MASTER) {
-				while (true) {
-					Thread.sleep(5000);
 
-					/**
-					 * Retrieve some stuff
-					 */
-					long l = Runtime.getRuntime().freeMemory();
-					//System.out.println(status+" "+l+" + "+listen.getLatestNews());
-					l += listen.getLatestNews();
+			while (true) {
+				Thread.sleep(5000);
+				/**
+				 * Retrieve some data from JMX
+				 */
+				long l = memory.getMemory();
+				l += listen.getLatestNews();
+				if (status != NodeStatus.MASTER) {
 					News n = new News(id, l);
 					ObjectMessage msg = session.createObjectMessage();
 					msg.setObject(n);
 					sender.send(msg);
+				} else {
+					System.out.println(status + ": the average memory used is:"
+							+ l / 5);
 				}
 			}
-			BufferedReader waiter = new BufferedReader(new InputStreamReader(
-					System.in));
-			waiter.readLine();
 		} catch (JMSException e) {
 			System.out.println(status + " " + e.toString());
 		} catch (InterruptedException e) {
@@ -119,6 +119,7 @@ public class Node {
 			}
 		}
 	}
+
 	/**
 	 * 
 	 */
