@@ -175,7 +175,6 @@ public class Overlaycreator {
 		createNodeProcess(pn);
 		Collection<PseudoNode> childs = pn.getChilds();
 		for (PseudoNode child : childs) {
-			createNodeProcess(child);
 			createOverlay(child);
 		}
 	}
