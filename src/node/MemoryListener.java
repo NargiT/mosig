@@ -9,11 +9,27 @@ import javax.jms.Message;
 import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 
+/**
+ * Listener used to receive message asynchronously from the topic
+ * 
+ * @author Tigran Tchougourian
+ * 
+ */
 public class MemoryListener implements MessageListener {
 
+	/**
+	 * Permit to save for each news its source and data sent
+	 */
 	private HashMap<Integer, Long> news;
+
+	/**
+	 * Care about data race
+	 */
 	private Semaphore semaphore;
 
+	/**
+	 * Initialize the attribute of the memory listener
+	 */
 	public MemoryListener() {
 		super();
 		news = new HashMap<Integer, Long>();
@@ -21,6 +37,9 @@ public class MemoryListener implements MessageListener {
 	}
 
 	@Override
+	/**
+	 * For each message received, update the right value in the hashmap
+	 */
 	public void onMessage(Message message) {
 		if (message instanceof ObjectMessage) {
 			News latestNews;
@@ -38,6 +57,12 @@ public class MemoryListener implements MessageListener {
 		}
 	}
 
+	/**
+	 * 
+	 * @return the latest news from the overlay
+	 * @throws InterruptedException
+	 *             if the current thread is interupt
+	 */
 	public long getLatestNews() throws InterruptedException {
 		long toReturn = 0;
 		semaphore.acquire();

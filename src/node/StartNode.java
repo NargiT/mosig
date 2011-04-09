@@ -2,23 +2,27 @@ package node;
 
 import java.io.IOException;
 import java.net.MalformedURLException;
-import java.util.logging.Logger;
 
 import javax.jms.JMSException;
 
 import org.exolab.jms.administration.AdminConnectionFactory;
 import org.exolab.jms.administration.JmsAdminServerIfc;
 
+/**
+ * Main program to lunch t
+ * 
+ * @author Tigran Tchougourian
+ * 
+ */
 public class StartNode {
 
-	public static Logger logger = Logger.getLogger("trace");
-
 	/**
+	 * Main function to start a node, it role is to parse the arguments and
+	 * create the right node according to the arguments.
 	 * 
-	 * @param args
-	 * @throws IOException
+	 * @param args -id [number] (-pid [parent_id] | -nch [numberOfChild] (-n [total number of node]))
 	 */
-	public static void main(String[] args) throws IOException {
+	public static void main(String[] args) {
 		int id = -1, pid = -1, nch = 0, n = 0;
 		String pTopicName = "", sTopicName = "";
 
@@ -134,6 +138,10 @@ public class StartNode {
 		} else {
 			node = new Node(id, pTopicName, sTopicName, nch);
 		}
-		node.start();
+		try {
+			node.start();
+		} catch (IOException e) {
+			System.out.println("The logger cannot be created: " + e.toString());
+		}
 	}
 }

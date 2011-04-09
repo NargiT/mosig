@@ -1,5 +1,11 @@
 package node.utils;
 
+/**
+ * Different state of a node.
+ * 
+ * @author Tigran Tchougourian
+ *
+ */
 public enum NodeStatus {
 	MASTER("MASTER"),
 	MIDDLE("MIDLLE"),

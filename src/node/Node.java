@@ -21,6 +21,13 @@ import sensor.MemorySensor;
 
 import node.utils.NodeStatus;
 
+/**
+ * Virtual representation of a server, it role is to retrieve information about
+ * the state of the server, Memory used, cpu frequency etc... It use JMS for
+ * communication between other servers and JMX to get information from the state.
+ * @author Tigran Tchougourian
+ * 
+ */
 public class Node {
 
 	private int id;
@@ -50,11 +57,12 @@ public class Node {
 	 * @param id
 	 *            unique identifier of the node
 	 * @param publisherTopicName
-	 *            topic published if it has a parent null otherwise
+	 *            topic to publish if it has a parent, empty string otherwise
 	 * @param subscriberTopicName
-	 *            topic subscribed if it has at least one child
+	 *            topic to subscribe if it has at least one child, empty string
+	 *            otherwise
 	 * @param numberOfChild
-	 *            number of child publishing in {@code subscriberTopicName}
+	 *            number of child publishing to {@code subscriberTopicName}
 	 */
 	public Node(int id, String publisherTopicName, String subscriberTopicName,
 			int numberOfChild) {
@@ -77,6 +85,22 @@ public class Node {
 		setUp();
 	}
 
+	/**
+	 * Create a virtual node representing the master node
+	 * 
+	 * @param id
+	 *            unique identifier of the node
+	 * @param publisherTopicName
+	 *            topic to publish if it has a parent, empty string otherwise
+	 * @param subscriberTopicName
+	 *            topic to subscribe if it has at least one child, empty string
+	 *            otherwise
+	 * @param numberOfChild
+	 *            number of child publishing to {@code subscriberTopicName}
+	 * @param numberOfNode
+	 *            total number of node in the overlay
+	 * 
+	 */
 	public Node(int id, String publisherTopicName, String subscriberTopicName,
 			int numberOfChild, int numberOfNode) {
 		this.id = id;
@@ -98,6 +122,12 @@ public class Node {
 		setUp();
 	}
 
+	/**
+	 * Start JMS and JMX sensors. After this execution the node is running.
+	 * 
+	 * @throws IOException
+	 *             if the log file cannot be created
+	 */
 	public void start() throws IOException {
 		createSubscribtion();
 		createPublication();
@@ -114,7 +144,7 @@ public class Node {
 				// Add to the desire logger
 				logger = Logger.getLogger("node");
 			}
-			
+
 			while (true) {
 				Thread.sleep(5000);
 				/**
@@ -160,7 +190,8 @@ public class Node {
 	}
 
 	/**
-	 * 
+	 * If the current node has at least one child, the node subscribes to its
+	 * according topic, otherwise does nothing.
 	 */
 	private void createSubscribtion() {
 		if (status == NodeStatus.LEAF)
@@ -176,7 +207,8 @@ public class Node {
 	}
 
 	/**
-	 * 
+	 * If the current node has a parent, the node start to publish to the right
+	 * topic, otherwise does nothing.
 	 */
 	private void createPublication() {
 		if (status == NodeStatus.MASTER)
@@ -192,8 +224,8 @@ public class Node {
 	}
 
 	/**
-	 * Create connection. Create session from connection; false means session is
-	 * not transacted.
+	 * Set up the node the be able to use JMS. Create connection, create
+	 * session.
 	 */
 	private void setUp() {
 		try {
@@ -254,6 +286,11 @@ public class Node {
 
 	}
 
+	/**
+	 * Set the type of node - Master (higher node, only one) - Middle (between
+	 * the Master and the Leaves) - Leaf (The lowest node in the overlay, do not
+	 * have child)
+	 */
 	private void setStatus() {
 		if (publisherTopicName.isEmpty())
 			status = NodeStatus.MASTER;
