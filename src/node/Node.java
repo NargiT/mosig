@@ -1,6 +1,9 @@
 package node;
 
 import java.io.IOException;
+import java.util.logging.FileHandler;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -16,11 +19,14 @@ import javax.naming.NamingException;
 
 import sensor.MemorySensor;
 
+import node.utils.NodeStatus;
+
 public class Node {
 
 	private int id;
 	private NodeStatus status;
 	private int numberOfChild;
+	private int numberOfNode;
 
 	private String publisherTopicName;
 	private String subscriberTopicName;
@@ -56,6 +62,28 @@ public class Node {
 		this.publisherTopicName = publisherTopicName;
 		this.subscriberTopicName = subscriberTopicName;
 		this.numberOfChild = numberOfChild;
+		this.numberOfNode = 0;
+		this.jndiContext = null;
+		this.factory = null;
+		this.publishTopic = null;
+		this.subscribedTopic = null;
+		this.connection = null;
+		this.session = null;
+		this.receiver = null;
+		this.sender = null;
+		this.listen = new MemoryListener();
+		this.memory = new MemorySensor();
+		setStatus();
+		setUp();
+	}
+
+	public Node(int id, String publisherTopicName, String subscriberTopicName,
+			int numberOfChild, int numberOfNode) {
+		this.id = id;
+		this.publisherTopicName = publisherTopicName;
+		this.subscriberTopicName = subscriberTopicName;
+		this.numberOfChild = numberOfChild;
+		this.numberOfNode = numberOfNode;
 		this.jndiContext = null;
 		this.factory = null;
 		this.publishTopic = null;
@@ -78,6 +106,15 @@ public class Node {
 			if (status != NodeStatus.LEAF)
 				receiver.setMessageListener(listen);
 
+			FileHandler handler = null;
+			Logger logger = null;
+			if (status == NodeStatus.MASTER) {
+				// Create an appending file handler
+				handler = new FileHandler("averageMemory.log", true);
+				// Add to the desire logger
+				logger = Logger.getLogger("node");
+			}
+			
 			while (true) {
 				Thread.sleep(5000);
 				/**
@@ -90,9 +127,11 @@ public class Node {
 					ObjectMessage msg = session.createObjectMessage();
 					msg.setObject(n);
 					sender.send(msg);
-				} else {
-					System.out.println(status + ": the average memory used is:"
-							+ l / 5);
+				} else { // status == NodeStatus.MASTER
+					logger.addHandler(handler);
+					logger.log(Level.INFO, status
+							+ ": the average memory used is:" + l
+							/ numberOfNode);
 				}
 			}
 		} catch (JMSException e) {

@@ -21,11 +21,7 @@ public class PseudoNode {
 	}
 	
 	public int getNumberOfChilds() {
-		int count = 0;
-		for (PseudoNode pn : childs) {
-			count++;
-		}
-		return count;
+		return childs.size();
 	}
 	
 	public boolean hasParent() {

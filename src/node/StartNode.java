@@ -19,7 +19,7 @@ public class StartNode {
 	 * @throws IOException
 	 */
 	public static void main(String[] args) throws IOException {
-		int id = -1, pid = -1, nch = 0;
+		int id = -1, pid = -1, nch = 0, n = 0;
 		String pTopicName = "", sTopicName = "";
 
 		/**
@@ -38,7 +38,6 @@ public class StartNode {
 			System.err.println("The option " + args[0] + "  doesn't exist");
 			System.exit(1);
 		}
-
 		id = Integer.parseInt(args[1]);
 
 		// Parse the first argument
@@ -47,16 +46,20 @@ public class StartNode {
 		else if (args[2].equals("-nch"))
 			nch = Integer.parseInt(args[3]);
 		else {
-			System.err.println("Usage: " +
-					"-id node identifier\n" +
-					"[-pid] node parent identifier\n" +
-					"[-nch] node number of children");
+			System.err.println("Usage: " + "-id node identifier\n"
+					+ "[-pid] node parent identifier\n"
+					+ "[-nch] node number of children"
+					+ "[-n] number of total nodes");
 		}
-			
 
+		// number of child
 		if (args.length == 6 && args[4].equals("-nch"))
 			nch = Integer.parseInt(args[5]);
 
+		// if master node
+		if (args.length == 6 && args[4].equals("-n")) {
+			n = Integer.parseInt(args[5]);
+		}
 		/**
 		 * Generate topic names
 		 * 
@@ -125,7 +128,12 @@ public class StartNode {
 		/**
 		 * Create the node
 		 */
-		Node n = new Node(id, pTopicName, sTopicName, nch);
-		n.start();
+		Node node;
+		if (id == 0) {
+			node = new Node(id, pTopicName, sTopicName, nch, n);
+		} else {
+			node = new Node(id, pTopicName, sTopicName, nch);
+		}
+		node.start();
 	}
 }
