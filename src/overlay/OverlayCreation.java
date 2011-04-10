@@ -230,7 +230,6 @@ public class OverlayCreation {
 	 * @param root
 	 *            Root of the tree.
 	 * 
-	 * @return Number of Subnodes
 	 */
 	public static void printTree(VirtualNode root) {
 		System.out.println(root);
@@ -246,6 +245,7 @@ public class OverlayCreation {
 	 * @param root
 	 *            Root of the tree.
 	 * 
+	 * @return Number of Subnodes
 	 */
 	public static int getNumberOfSubNodes(VirtualNode root) {
 		
