@@ -230,6 +230,7 @@ public class OverlayCreation {
 	 * @param root
 	 *            Root of the tree.
 	 * 
+	 * @return Number of Subnodes
 	 */
 	public static void printTree(VirtualNode root) {
 		System.out.println(root);
@@ -237,6 +238,24 @@ public class OverlayCreation {
 		for (VirtualNode child : childs) {
 			printTree(child);
 		}
+	}
+	
+	/**
+	 * Method returns the number of subnodes of a root
+	 * 
+	 * @param root
+	 *            Root of the tree.
+	 * 
+	 */
+	public static int getNumberOfSubNodes(VirtualNode root) {
+		
+		int n = root.getNumberOfChilds();
+		Collection<VirtualNode> childs = root.getChilds();
+		for (VirtualNode child : childs) {
+			n += getNumberOfSubNodes(child);
+		}
+		
+		return n;
 	}
 
 	/**
@@ -290,7 +309,7 @@ public class OverlayCreation {
 			System.out.println("MASTER");
 			pb.command("java", "-jar", jarFile.getAbsolutePath(), "-id",
 					Integer.toString(vn.getId()), "-nch",
-					Integer.toString(vn.getNumberOfChilds()));
+					Integer.toString(vn.getNumberOfChilds()), "-n", Integer.toString(getNumberOfSubNodes(vn)));
 		}
 
 		// Run the process
