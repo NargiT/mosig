@@ -9,10 +9,10 @@ import org.exolab.jms.administration.AdminConnectionFactory;
 import org.exolab.jms.administration.JmsAdminServerIfc;
 
 /**
- * Main program to lunch t
+ * Main function to start a node, it role is to parse the arguments and
+ * create the right node according to the arguments.
  * 
  * @author Tigran Tchougourian
- * 
  */
 public class StartNode {
 

@@ -24,7 +24,9 @@ import node.utils.NodeStatus;
 /**
  * Virtual representation of a server, it role is to retrieve information about
  * the state of the server, Memory used, cpu frequency etc... It use JMS for
- * communication between other servers and JMX to get information from the state.
+ * communication between other servers and JMX to get information from the
+ * state.
+ * 
  * @author Tigran Tchougourian
  * 
  */
@@ -143,10 +145,11 @@ public class Node {
 				handler = new FileHandler("averageMemory.log", true);
 				// Add to the desire logger
 				logger = Logger.getLogger("node");
+				logger.addHandler(handler);
 			}
 
 			while (true) {
-				Thread.sleep(30000);
+				Thread.sleep(5000);
 				/**
 				 * Retrieve some data from JMX
 				 */
@@ -158,10 +161,10 @@ public class Node {
 					msg.setObject(n);
 					sender.send(msg);
 				} else { // status == NodeStatus.MASTER
-					logger.addHandler(handler);
 					logger.log(Level.INFO, status
 							+ ": the average memory used is:" + l
 							/ numberOfNode);
+					handler.flush();
 				}
 			}
 		} catch (JMSException e) {

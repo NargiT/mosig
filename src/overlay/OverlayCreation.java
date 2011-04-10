@@ -315,6 +315,16 @@ public class OverlayCreation {
 		// Run the process
 		try {
 			Process p = pb.start();
+//			// hook up child process output to parent
+//			InputStream lsOut = p.getInputStream();
+//			InputStreamReader r = new InputStreamReader(lsOut);
+//			BufferedReader in = new BufferedReader(r);
+//
+//			// read the child process' output
+//			String line;
+//			if ((line = in.readLine()) != null)
+//			System.out.println(line);
+			
 			processList.add(p);
 			System.out.println("Java process " + p.toString() + " started");
 		} catch (IOException e) {
