@@ -1,5 +1,5 @@
-<div id="footer">
-	<p>&#169; Copyright <br />
+<footer>
+	<p>&#169; Copyright April 2011<br />
 	Tchougourian Tigran, Laurent Grabner<br />
 	Buy a pok&eacute;mon.com</p>
-</div>
+<footer>
