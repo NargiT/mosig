@@ -12,7 +12,7 @@
 	<!--  Display if logged -->
 	<form action="logout" method="post">
 		<section>Hello {nickname}</section>
-		<a href="basket"><img src="img/cart.gif" alt="basket" width="32px"
+		<a href="index.jsp?cart=1"><img src="img/cart.gif" alt="basket" width="32px"
 			height="32px" />
 		</a> <input type="submit" value="Logout" />
 	</form>
