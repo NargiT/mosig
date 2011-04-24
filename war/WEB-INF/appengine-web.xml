@@ -9,6 +9,6 @@
 	</system-properties>
 	
 	<resource-files>
-		<include path="/img/" />
+		<include path="/img/*" />
 	</resource-files>
 </appengine-web-app>
