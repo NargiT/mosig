@@ -17,7 +17,13 @@
 				total += entry.getValue() * pokemon.get(entry.getKey());
 		%>
 		<tr>
-			<td><%=entry.getKey()%></td>
+			<td>
+				<form action="removeCart" method="get">
+					<input type="hidden" value=<%=entry.getKey()%> />
+					<input type="submit" value="Remove From Cart" />
+					<%=entry.getKey()%>
+				</form>
+			</td>
 			<td><%=entry.getValue() * pokemon.get(entry.getKey())%> &euro;</td>
 		</tr>
 		<%
