@@ -4,22 +4,14 @@ xmlns="http://java.sun.com/xml/ns/javaee"
 xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
 xsi:schemaLocation="http://java.sun.com/xml/ns/javaee
 http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+
 	<servlet>
-		<servlet-name>Guestbook</servlet-name>
-		<servlet-class>guestbook.GuestbookServlet</servlet-class>
+		<servlet-name>Controller</servlet-name>
+		<servlet-class>pokemon.controller.Controller</servlet-class>
 	</servlet>
-	<servlet>
-		<servlet-name>Sign</servlet-name>
-		<servlet-class>guestbook.SignGuestbookServlet</servlet-class>
-	</servlet>
-	
 	<servlet-mapping>
-		<servlet-name>Guestbook</servlet-name>
-		<url-pattern>/guestbook</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>Sign</servlet-name>
-		<url-pattern>/sign</url-pattern>		
+		<servlet-name>Controller</servlet-name>
+		<url-pattern>/controller</url-pattern>
 	</servlet-mapping>
 	
 	<welcome-file-list>

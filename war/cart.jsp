@@ -1,4 +1,7 @@
 <%@	page import="java.util.HashMap"%>
+<%@	page import="java.util.LinkedList"%>
+<%@	page import="pokemon.model.CartPokemon"%>
+<%@	page import="pokemon.model.Cart"%>
 
 
 <table>
@@ -6,25 +9,35 @@
 		<tr>
 			<td>Name</td>
 			<td>Price</td>
+			<td>Units</td>
+			<td>Total</td>
+			
 		</tr>
 	</thead>
 	<tbody>
 		<%
 			DecimalFormat dFormat = new DecimalFormat("0.00");
-			cart.put("mew", 2);
+			Cart usercart = (Cart) request.getSession().getAttribute("cart");
 			double total = 0.00;
+			/**
 			for (Entry<String, Integer> entry : cart.entrySet()) {
 				total += entry.getValue() * pokemon.get(entry.getKey());
+			**/
+			LinkedList<CartPokemon> cartpokemons = usercart.getCartPokemons();
+			for (CartPokemon cp : cartpokemons) {
+			
 		%>
 		<tr>
 			<td>
-				<form action="removeCart" method="get">
-					<input type="hidden" value=<%=entry.getKey()%> />
-					<input type="submit" value="Remove From Cart" />
-					<%=entry.getKey()%>
+				<form action="controller" method="get">
+					<input type="hidden" name="pokemonname" value=<%=cp.getName()%> />
+					<input type="submit" name="action" value="RemoveFromCard" />
+					<%=cp.getName()%>
 				</form>
 			</td>
-			<td><%=entry.getValue() * pokemon.get(entry.getKey())%> &euro;</td>
+			<td><%=cp.getPrice()%> &euro;</td>
+			<td><%=cp.getUnits()%></td>
+			<td><%=cp.getTotalPrice()%>&euro;</td>
 		</tr>
 		<%
 			}
@@ -33,19 +46,30 @@
 	<tfoot>
 		<tr>
 			<td>Price (without VTA)</td>
-			<td><%=dFormat.format(total - (total * 19.60 / 100.00))%> &euro;</td>
+			<td><%=dFormat.format(usercart.getTotalPriceWithoutVAT())%> &euro;</td>
 		</tr>
 		<tr>
 			<td>V.T.A.</td>
-			<td><%=dFormat.format(total * 19.60 / 100.00)%> &euro;</td>
+			<td><%=dFormat.format(usercart.getTotalPrice() - usercart.getTotalPriceWithoutVAT())%> &euro;</td>
 		</tr>
 		<tr>
 			<td>Total price</td>
-			<td><%=total%> &euro;</td>
+			<td><%=usercart.getTotalPrice()%> &euro;</td>
 		</tr>
 	</tfoot>
 </table>
-<form action="payement.jsp" method="get">
+<table style="width:150px; border-bottom:0px; margin-left:55px">
+	<tr  style="border-bottom:0px">
+		<td>
+<form action="controller" method="get">
 	<input type="hidden" name="price" value="<%=total%>" /> <input
-		type="submit" value="Pay" />
+		type="submit" name="action" value="Pay" />
 </form>
+		</td>
+		<td>
+<form action="controller" method="get">
+	<input type="submit" name="action" value="Return"/>
+</form>
+		</td>
+	</tr>
+</table>

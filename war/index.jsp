@@ -5,6 +5,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java"%>
 
 <%
+
 	// Initialize the list of pokemons
 	// Database<key, price>
 	HashMap<String, Double> pokemon = new HashMap<String, Double>();
@@ -29,6 +30,7 @@
 	// Initialize the list of items in the cart
 	// Cart<key, how many>)
 	HashMap<String, Integer> cart = new HashMap<String, Integer>();
+
 %>
 
 <html>
