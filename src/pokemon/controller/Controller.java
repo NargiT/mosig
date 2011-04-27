@@ -15,16 +15,41 @@ import pokemon.model.Pokemon;
 import pokemon.model.User;
 import pokemon.model.UserManager;
 
+/**
+ * 
+ * The class controller is responsible for handling the incoming requests from the user
+ * It handles login, logout, buying pokemons and is also responsible for the session management
+ * 
+ */
 public class Controller extends HttpServlet {
 
+	/**
+	 * Logging object used for logmessages
+	 */
 	private static final Logger log = Logger.getLogger(Controller.class.getName());
 	
+	/**
+	 * List of pokemons that the system knows
+	 */
 	public static LinkedList<Pokemon> pokemons;
+	/**
+	 * Usermanager object for verifying the login-information
+	 */
 	public static UserManager usermanager;
+	/**
+	 * Cartmanager for saving and restoring a cart if the user logs in or out
+	 */
 	public static CartManager cartmanager;
 	
+	/**
+	 * Variable indicating if the system is initialized or not
+	 */
 	public static boolean initialized = false;
 	
+	/**
+	 * Initialization method
+	 * Initializes the list of pokemons, the usermanger and the cartmanager
+	 */
 	public static void initialize() {
 		log.info("Initialization");
 		
@@ -59,6 +84,18 @@ public class Controller extends HttpServlet {
 		initialized = true;
 	}
 	
+	/**
+	 * Service method for handling the POST and GET-requests
+	 * This actually is the main method of the system.
+	 * Depending on the action, appropriate measures are taken.
+	 * If the action is login, the usermanager verifies the login information and 
+	 * if it is correct opens a session for the user and loads also a cart from the 
+	 * cartmanager if there is a previous one stored.
+	 * If the action is logout, the cart is saved into the cartmanager and the session objects get deleted.
+	 * Action remove from card removes a pokemon from the cart and action addtocart adds one to the cart.
+	 * If the action is pay or viewCart which leads to another content, another parameter for site is set to the request,
+	 * so the correct code in the jsp content.jsp is shown.
+	 */
 	public void service(HttpServletRequest request, HttpServletResponse response)
 	throws IOException, ServletException {
 		
