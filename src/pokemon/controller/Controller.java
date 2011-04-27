@@ -12,22 +12,28 @@ import javax.servlet.http.HttpServletResponse;
 import pokemon.model.Cart;
 import pokemon.model.CartManager;
 import pokemon.model.Pokemon;
-import pokemon.model.User;
 import pokemon.model.UserManager;
 
 /**
  * 
- * The class controller is responsible for handling the incoming requests from the user
- * It handles login, logout, buying pokemons and is also responsible for the session management
+ * The class controller is responsible for handling the incoming requests from
+ * the user It handles login, logout, buying pokemons and is also responsible
+ * for the session management
  * 
  */
 public class Controller extends HttpServlet {
 
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 6276391437596079172L;
+
+	/**
 	 * Logging object used for logmessages
 	 */
-	private static final Logger log = Logger.getLogger(Controller.class.getName());
-	
+	private static final Logger log = Logger.getLogger(Controller.class
+			.getName());
+
 	/**
 	 * List of pokemons that the system knows
 	 */
@@ -40,28 +46,29 @@ public class Controller extends HttpServlet {
 	 * Cartmanager for saving and restoring a cart if the user logs in or out
 	 */
 	public static CartManager cartmanager;
-	
+
 	/**
 	 * Variable indicating if the system is initialized or not
 	 */
 	public static boolean initialized = false;
-	
+
 	/**
-	 * Initialization method
-	 * Initializes the list of pokemons, the usermanger and the cartmanager
+	 * Initialization method Initializes the list of pokemons, the usermanger
+	 * and the cartmanager
 	 */
 	public static void initialize() {
 		log.info("Initialization");
-		
-		//Usermanager
+
+		// Usermanager
 		usermanager = new UserManager();
-		//Add users
+		// Add users
 		usermanager.addUser("Laurent", "abc");
 		usermanager.addUser("Tigran", "abc");
-		
+		usermanager.addUser("Sarah", "teacher");
+
 		cartmanager = new CartManager();
-		
-		//Pokemons in the system
+
+		// Pokemons in the system
 		pokemons = new LinkedList<Pokemon>();
 		pokemons.add(new Pokemon("articuno", 150.00));
 		pokemons.add(new Pokemon("blastoise", 130.00));
@@ -80,29 +87,30 @@ public class Controller extends HttpServlet {
 		pokemons.add(new Pokemon("venusaur", 130.00));
 		pokemons.add(new Pokemon("wartortle", 75.00));
 		pokemons.add(new Pokemon("zapdos", 150.00));
-		
+
 		initialized = true;
 	}
-	
+
 	/**
-	 * Service method for handling the POST and GET-requests
-	 * This actually is the main method of the system.
-	 * Depending on the action, appropriate measures are taken.
-	 * If the action is login, the usermanager verifies the login information and 
-	 * if it is correct opens a session for the user and loads also a cart from the 
-	 * cartmanager if there is a previous one stored.
-	 * If the action is logout, the cart is saved into the cartmanager and the session objects get deleted.
-	 * Action remove from card removes a pokemon from the cart and action addtocart adds one to the cart.
-	 * If the action is pay or viewCart which leads to another content, another parameter for site is set to the request,
-	 * so the correct code in the jsp content.jsp is shown.
+	 * Service method for handling the POST and GET-requests This actually is
+	 * the main method of the system. Depending on the action, appropriate
+	 * measures are taken. If the action is login, the usermanager verifies the
+	 * login information and if it is correct opens a session for the user and
+	 * loads also a cart from the cartmanager if there is a previous one stored.
+	 * If the action is logout, the cart is saved into the cartmanager and the
+	 * session objects get deleted. Action remove from card removes a pokemon
+	 * from the cart and action addtocart adds one to the cart. If the action is
+	 * pay or viewCart which leads to another content, another parameter for
+	 * site is set to the request, so the correct code in the jsp content.jsp is
+	 * shown.
 	 */
 	public void service(HttpServletRequest request, HttpServletResponse response)
-	throws IOException, ServletException {
-		
+			throws IOException, ServletException {
+
 		if (!initialized) {
 			initialize();
 		}
-		
+
 		String action = request.getParameter("action");
 		log.info("ACTION: " + action);
 		if (action != null) {
@@ -115,15 +123,15 @@ public class Controller extends HttpServlet {
 					request.getSession().setAttribute("nickname", nickname);
 					request.getSession().setAttribute("loggedin", true);
 					Cart cart = cartmanager.getCart(nickname);
-					if  (cart == null) {
+					if (cart == null) {
 						cart = new Cart(nickname);
 					}
-					request.getSession().setAttribute("cart",cart);
+					request.getSession().setAttribute("cart", cart);
 				} else {
 					log.info("LOGIN-DATA incorrect");
 				}
 			} else if (action.equals("Logout")) {
-				Cart cart = (Cart)request.getSession().getAttribute("cart");
+				Cart cart = (Cart) request.getSession().getAttribute("cart");
 				cartmanager.setCart(cart);
 				request.getSession().removeAttribute("nickname");
 				request.getSession().removeAttribute("cart");
@@ -132,9 +140,12 @@ public class Controller extends HttpServlet {
 			} else if (action.equals("AddToCart")) {
 				if (request.getSession().getAttribute("loggedin") != null) {
 					String pokemonname = request.getParameter("pokemonname");
-					double pokemonprice = Double.parseDouble(request.getParameter("pokemonprice"));
-					log.info("pokemon-name=" + pokemonname + ", pokemon-price=" + pokemonprice);
-					Cart cart = (Cart)request.getSession().getAttribute("cart");
+					double pokemonprice = Double.parseDouble(request
+							.getParameter("pokemonprice"));
+					log.info("pokemon-name=" + pokemonname + ", pokemon-price="
+							+ pokemonprice);
+					Cart cart = (Cart) request.getSession()
+							.getAttribute("cart");
 					cart.addToCart(pokemonname, pokemonprice);
 					request.getSession().setAttribute("cart", cart);
 					log.info("pokemon added to cart");
@@ -143,25 +154,25 @@ public class Controller extends HttpServlet {
 					log.info("Cannot add pokemon to cart, user not logged in");
 				}
 			} else if (action.equals("ViewCart")) {
-				request.setAttribute("site","cart");
+				request.setAttribute("site", "cart");
 			} else if (action.equals("RemoveFromCard")) {
 				String pokemonname = request.getParameter("pokemonname");
-				Cart cart = (Cart)request.getSession().getAttribute("cart"); 
+				Cart cart = (Cart) request.getSession().getAttribute("cart");
 				cart.removeFromCart(pokemonname);
 				log.info(pokemonname + " removed from cart");
 				log.info("New Basket:\n" + cart.toString());
-				
+
 				request.getSession().setAttribute("cart", cart);
-				request.setAttribute("site","cart");
-			} else if(action.equals("Pay")) {
-				Cart cart = (Cart)request.getSession().getAttribute("cart");
+				request.setAttribute("site", "cart");
+			} else if (action.equals("Pay")) {
+				Cart cart = (Cart) request.getSession().getAttribute("cart");
 				cart.clear();
 				request.getSession().setAttribute("cart", cart);
-				request.setAttribute("site","pay");
+				request.setAttribute("site", "pay");
 			}
 		}
 		request.getRequestDispatcher("index.jsp").forward(request, response);
-		
+
 	}
-	
+
 }

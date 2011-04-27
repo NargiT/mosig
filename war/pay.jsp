@@ -7,6 +7,7 @@
 		<tr  style="border-bottom:0px">
 			<td> <form action="controller" method="get">
 				 <input type="submit" value="Continue shopping"/>
+				 </form>
 			</td>
 		</tr>
 	</table>

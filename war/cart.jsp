@@ -2,7 +2,7 @@
 <%@	page import="java.util.LinkedList"%>
 <%@	page import="pokemon.model.CartPokemon"%>
 <%@	page import="pokemon.model.Cart"%>
-
+<%@ page import="java.text.DecimalFormat" %>
 
 <table>
 	<thead>
@@ -46,15 +46,15 @@
 	<tfoot>
 		<tr>
 			<td>Price (without VTA)</td>
-			<td><%=dFormat.format(usercart.getTotalPriceWithoutVAT())%> &euro;</td>
+			<td colspan="3"><%=dFormat.format(usercart.getTotalPriceWithoutVAT())%> &euro;</td>
 		</tr>
 		<tr>
 			<td>V.T.A.</td>
-			<td><%=dFormat.format(usercart.getTotalPrice() - usercart.getTotalPriceWithoutVAT())%> &euro;</td>
+			<td colspan="3"><%=dFormat.format(usercart.getTotalPrice() - usercart.getTotalPriceWithoutVAT())%> &euro;</td>
 		</tr>
 		<tr>
 			<td>Total price</td>
-			<td><%=usercart.getTotalPrice()%> &euro;</td>
+			<td colspan="3"><%=usercart.getTotalPrice()%> &euro;</td>
 		</tr>
 	</tfoot>
 </table>
