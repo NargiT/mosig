@@ -1,13 +1,20 @@
 package pokemon.model;
 
+import java.io.Serializable;
+
 /**
  * Class which is derived from the pokemon-class and
  * extends it by further features for handling pokemons in
  * an onlineshop-cart
  *
  */
-public class CartPokemon extends Pokemon {
+public class CartPokemon extends Pokemon implements Serializable {
 
+	/**
+	 * Default serial version
+	 */
+	
+	private static final long serialVersionUID = 1L;
 	/**
 	 * Units of the pokemon
 	 */

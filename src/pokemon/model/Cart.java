@@ -1,12 +1,18 @@
 package pokemon.model;
 
+import java.io.Serializable;
 import java.util.LinkedList;
 
 /**
  * 
  * Class for handling the pokemons in the cart
  */
-public class Cart {
+public class Cart implements Serializable {
+
+	/**
+	 * Default serial version
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * The name of the owner of the cart

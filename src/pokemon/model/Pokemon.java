@@ -1,11 +1,18 @@
 package pokemon.model;
 
+import java.io.Serializable;
+
 /**
  * Class containing basic information on a pokemon
  *
  */
-public class Pokemon {
+public class Pokemon implements Serializable {
 	
+	/**
+	 * Default serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/** 
 	 * Name of the pokemon
 	 */

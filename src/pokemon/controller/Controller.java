@@ -8,9 +8,11 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import pokemon.model.Cart;
 import pokemon.model.CartManager;
+import pokemon.model.SessionConstants;
 import pokemon.model.Pokemon;
 import pokemon.model.UserManager;
 
@@ -120,34 +122,43 @@ public class Controller extends HttpServlet {
 				log.info("LOGIN-DATA: USER=" + nickname + ", PW=" + password);
 				if (usermanager.verifyLogin(nickname, password)) {
 					log.info("LOGIN-DATA correct");
-					request.getSession().setAttribute("nickname", nickname);
-					request.getSession().setAttribute("loggedin", true);
+					//Open session
+					// do we have an old session?
+					HttpSession session = request.getSession(false);
+					if (session != null) {
+					   // prevent session fixation
+					   session.invalidate();
+					}
+					// create a new session and initialize it
+					session = request.getSession(true);
+					session.setAttribute(SessionConstants.NICKNAME_TOKEN, nickname);
+					session.setAttribute(SessionConstants.ISLOGGEDIN_TOKEN, true);
+					//Do we have an old card?
 					Cart cart = cartmanager.getCart(nickname);
 					if (cart == null) {
+						//Add new card
 						cart = new Cart(nickname);
 					}
-					request.getSession().setAttribute("cart", cart);
+					session.setAttribute(SessionConstants.CART_TOKEN, cart);
 				} else {
 					log.info("LOGIN-DATA incorrect");
 				}
 			} else if (action.equals("Logout")) {
 				Cart cart = (Cart) request.getSession().getAttribute("cart");
 				cartmanager.setCart(cart);
-				request.getSession().removeAttribute("nickname");
-				request.getSession().removeAttribute("cart");
-				request.getSession().removeAttribute("loggedin");
+				request.getSession().invalidate();
 				log.info("LOGOUT performed");
 			} else if (action.equals("AddToCart")) {
-				if (request.getSession().getAttribute("loggedin") != null) {
+				HttpSession session = request.getSession();
+				if (session.getAttribute(SessionConstants.ISLOGGEDIN_TOKEN) != null) {
 					String pokemonname = request.getParameter("pokemonname");
 					double pokemonprice = Double.parseDouble(request
 							.getParameter("pokemonprice"));
 					log.info("pokemon-name=" + pokemonname + ", pokemon-price="
 							+ pokemonprice);
-					Cart cart = (Cart) request.getSession()
-							.getAttribute("cart");
+					Cart cart = (Cart) session.getAttribute(SessionConstants.CART_TOKEN);
 					cart.addToCart(pokemonname, pokemonprice);
-					request.getSession().setAttribute("cart", cart);
+					session.setAttribute(SessionConstants.CART_TOKEN, cart);
 					log.info("pokemon added to cart");
 					log.info("New basket:\n" + cart.toString());
 				} else {
@@ -157,17 +168,18 @@ public class Controller extends HttpServlet {
 				request.setAttribute("site", "cart");
 			} else if (action.equals("RemoveFromCard")) {
 				String pokemonname = request.getParameter("pokemonname");
-				Cart cart = (Cart) request.getSession().getAttribute("cart");
+				HttpSession session = request.getSession();
+				Cart cart = (Cart) session.getAttribute(SessionConstants.CART_TOKEN);
 				cart.removeFromCart(pokemonname);
 				log.info(pokemonname + " removed from cart");
 				log.info("New Basket:\n" + cart.toString());
-
-				request.getSession().setAttribute("cart", cart);
+				session.setAttribute(SessionConstants.CART_TOKEN, cart);
 				request.setAttribute("site", "cart");
 			} else if (action.equals("Pay")) {
-				Cart cart = (Cart) request.getSession().getAttribute("cart");
+				HttpSession session = request.getSession();
+				Cart cart = (Cart) session.getAttribute(SessionConstants.CART_TOKEN);
 				cart.clear();
-				request.getSession().setAttribute("cart", cart);
+				session.setAttribute(SessionConstants.CART_TOKEN, cart);
 				request.setAttribute("site", "pay");
 			}
 		}
