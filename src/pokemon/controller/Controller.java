@@ -26,7 +26,7 @@ import pokemon.model.UserManager;
 public class Controller extends HttpServlet {
 
 	/**
-	 * 
+	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 6276391437596079172L;
 
