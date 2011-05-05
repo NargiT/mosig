@@ -1,0 +1,216 @@
+body {
+	background-color: #C0C0C0;
+	color: #333333;
+	font-family: Verdana, sans-serif;
+	font-size: 14px;
+	margin: auto;
+	background-image: url("../img/body_bg.jpg");
+	background-position: top;
+	background-repeat: repeat-x;
+}
+
+header {
+	margin: auto;
+	height: 150px;
+	text-align: center;
+	background-image: url("../img/left.png");
+	background-position: bottom;
+	background-repeat: repeat-x;
+}
+
+footer {
+	margin: auto;
+	height: 43px;
+	background-repeat: no-repeat;
+	background-color: #006699;
+	text-align: center;
+}
+
+#simulmenu {
+	background-image: url("../img/topmid.png");
+	padding: 0px;
+	margin: auto;
+}
+
+#content {
+	background-color: #FFFFFF;
+	margin: 10px auto;
+	padding: 0px;
+	width: 95%;
+	border: 2px solid #CCCCCC;
+}
+
+.errors {
+	margin: 10px;
+	color: red;
+}
+
+.frame {
+	margin: 0px auto 10px;
+	width: 90%;
+	border: 2px #CCCCCC solid;
+}
+
+.frameHeader {
+	background-image: url("../img/frameheader.png");
+	background-repeat: repeat-x;
+	height: 35px;
+	padding-top: 5px;
+	cursor: pointer;
+	font-size: 20px;
+	color: #FFFFFF;
+	text-align: center;
+}
+
+.frameContent {
+	font-weight: bold;
+	background-image: url("../img/framecontent.png");
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
+
+.toggle {
+	float: right;
+}
+
+/**************************************************************************
+						 *                   *
+						 * Search form style *
+						 *                   *
+ **************************************************************************/
+#searchForm .firstcolumn {
+	text-align: right;
+}
+
+#searchForm table {
+	margin: auto;
+}
+
+#searchForm table tr td {
+	padding: 5px 0px;
+}
+
+#searchForm input[type=text] {
+	padding: 0px 8px;
+	height: 40px;
+	font-size: 20px;
+	border: 1px solid #CCCCCC;
+	border-bottom: 2px solid #006699;
+	border-right: 2px solid #006699;
+}
+
+#searchForm input[type=submit] {
+	padding: 5px;
+	padding-right: 32px;
+	font-size: 15px;
+	background-image: url("../img/search32.png");
+	background-repeat: no-repeat;
+	background-position: right;
+	font-weight: bold;
+	border-bottom: 2px solid #006699;
+	border-right: 2px solid #006699;
+	background-repeat: no-repeat;
+	background-position: right;
+}
+
+#searchForm input[type=submit]:ACTIVE {
+	background-color: #BDDFFF;
+	border-left: 2px solid #006699;
+	border-top: 2px solid #006699;
+	border-bottom: 2px solid #FFFFFF;
+	border-right: 2px solid #FFFFFF;
+}
+
+#searchForm input[type=submit]:FOCUS {
+	background-color: #BDDFFF;
+}
+
+/**************************************************************************
+						 *                   *
+						 * Result form style *
+						 *                   *
+ **************************************************************************/
+#resultForm table {
+	margin: 10px auto;
+	width: 95%;
+	font-weight: normal;
+	border-collapse: collapse;
+	border-spacing: 0px;
+	font-weight: normal;
+}
+
+#resultForm #resultTable thead {
+	text-align: left;
+	height: 40px;
+}
+
+.summary {
+	height: 50px;
+	border: 1px solid black;
+}
+
+.summary td {
+	min-width: 80px;
+}
+
+.details {
+	width: 98%;
+	margin: auto;
+	border-width: 0px 4px;
+	border-style: solid;
+}
+
+.walk {
+	background-image: url("../img/walk.png");
+}
+
+.walk:BEFORE {
+	content: "Walk";
+}
+
+.bus {
+	background-image: url("../img/bus.png");
+}
+
+.bus:BEFORE {
+	content: "Bus ";
+}
+
+.tram {
+	background-image: url("../img/tram.png");
+}
+
+.tram:BEFORE {
+	content: "Tram ";
+}
+
+.arrow {
+	background-image: url("../img/arrow.png");
+	border-width: 0px;
+}
+
+.picto {
+	display: inline-block;
+	border: 1px solid #CCCCCC;
+	background-repeat: no-repeat;
+	background-color: #FCFCFC;
+	padding: 10px 2px 5px 32px;
+	margin-top: 2px;
+}
+
+.next {
+	display: inline;
+	background-repeat: no-repeat;
+	padding: 10px 2px 5px 32px;
+}
+
+.showdetails {
+	background-image: url("../img/eye.png");
+	padding: 7px 2px 4px 40px;
+	background-repeat: no-repeat;
+	text-decoration: underline;
+}
+
+.showdetails:HOVER {
+	cursor: pointer;
+}
