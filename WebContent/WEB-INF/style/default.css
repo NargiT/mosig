@@ -64,9 +64,7 @@ footer {
 
 .frameContent {
 	font-weight: bold;
-	background-image: url("../img/framecontent.png");
-	background-repeat: repeat-x;
-	background-position: bottom;
+	background-color: #BDDFFF;
 }
 
 .toggle {
@@ -99,7 +97,7 @@ footer {
 	border-right: 2px solid #006699;
 }
 
-#searchForm input[type=submit] {
+#searchForm input[type=button] {
 	padding: 5px;
 	padding-right: 32px;
 	font-size: 15px;
@@ -109,20 +107,18 @@ footer {
 	font-weight: bold;
 	border-bottom: 2px solid #006699;
 	border-right: 2px solid #006699;
-	background-repeat: no-repeat;
-	background-position: right;
 }
 
-#searchForm input[type=submit]:ACTIVE {
-	background-color: #BDDFFF;
+#searchForm input[type=button]:ACTIVE {
+	background-color: #FFDD04;
 	border-left: 2px solid #006699;
 	border-top: 2px solid #006699;
 	border-bottom: 2px solid #FFFFFF;
 	border-right: 2px solid #FFFFFF;
 }
 
-#searchForm input[type=submit]:FOCUS {
-	background-color: #BDDFFF;
+#searchForm input[type=button]:FOCUS {
+	background-color: #FFDD04;
 }
 
 /**************************************************************************
@@ -147,6 +143,11 @@ footer {
 .summary {
 	height: 50px;
 	border: 1px solid black;
+	background-color: #FFFFFF;
+}
+
+.summary:HOVER {
+	cursor: pointer;
 }
 
 .summary td {
@@ -158,13 +159,27 @@ footer {
 	margin: auto;
 	border-width: 0px 4px;
 	border-style: solid;
+	background-color: #FFFFFF;
+}
+
+.details table table td {
+	padding: 0px 5px;
+	border-bottom: 1px solid #CCCCCC;
+}
+
+.travel {
+	display: inline-block;
+	background-repeat: no-repeat;
+	background-color: #FCFCFC;
+	padding: 10px 2px 5px 32px;
+	margin-top: 2px;
 }
 
 .walk {
 	background-image: url("../img/walk.png");
 }
 
-.walk:BEFORE {
+.summary .walk:BEFORE {
 	content: "Walk";
 }
 
@@ -172,7 +187,7 @@ footer {
 	background-image: url("../img/bus.png");
 }
 
-.bus:BEFORE {
+.summary .bus:BEFORE {
 	content: "Bus ";
 }
 
@@ -180,11 +195,11 @@ footer {
 	background-image: url("../img/tram.png");
 }
 
-.tram:BEFORE {
+.summary .tram:BEFORE {
 	content: "Tram ";
 }
 
-.arrow {
+.summary .arrow {
 	background-image: url("../img/arrow.png");
 	border-width: 0px;
 }
@@ -204,6 +219,13 @@ footer {
 	padding: 10px 2px 5px 32px;
 }
 
+.info {
+	background-image: url("../img/info.png");
+	background-repeat: no-repeat;
+	padding: 15px 10px 15px 50px;
+	margin-top: 2px;
+}
+
 .showdetails {
 	background-image: url("../img/eye.png");
 	padding: 7px 2px 4px 40px;
@@ -211,6 +233,13 @@ footer {
 	text-decoration: underline;
 }
 
-.showdetails:HOVER {
+.navigation {
 	cursor: pointer;
+	text-align: center;
+	font-size: 14xp;
+	padding: 10px;
+	text-decoration: underline;
+}
+.navigation:HOVER {
+	background-color: #FFDD04;
 }

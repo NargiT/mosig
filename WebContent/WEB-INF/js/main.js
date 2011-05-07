@@ -1,6 +1,12 @@
-function details(id) {
+function opendetails(id) {
 	// do stuff when DOM is ready
-	$('#details_' + id).slideToggle('fast', function() {
+	$('#details_' + id).slideDown('fast', function() {
+		// Animation complete
+	});
+}
+
+function closedetails(id) {
+	$('#details_' + id).slideUp('fast', function() {
 		// Animation complete
 	});
 }
@@ -81,7 +87,6 @@ $(document).ready(function() {
 	 * Close the RESULT frame
 	 */
 	var openResult = true;
-	// $('#resultFrame').hide();
 
 	// do stuff when DOM is ready
 	$('#resultFrameHeader').click(function() {
@@ -127,58 +132,88 @@ $(document).ready(function() {
 			$("#resulttoggleupon").hide();
 		}
 	});
+	
 
 	/*
 	 * Input text focus/blur management
 	 */
 	$("#timepicker").focus(function() {
-		$(this).css('background-color', '#BDDFFF');
+		$(this).css('background-color', '#FFDD04');
 	});
 	$("#timepicker").blur(function() {
 		$(this).css('background-color', '#FFFFFF');
 	});
 
 	$("#datepicker").focus(function() {
-		$(this).css('background-color', '#BDDFFF');
+		$(this).css('background-color', '#FFDD04');
 	});
 	$("#datepicker").blur(function() {
 		$(this).css('background-color', '#FFFFFF');
 	});
 
 	$("#to").focus(function() {
-		$(this).css('background-color', '#BDDFFF');
+		$(this).css('background-color', '#FFDD04');
 	});
 	$("#to").blur(function() {
 		$(this).css('background-color', '#FFFFFF');
 	});
 
 	$("#from").focus(function() {
-		$(this).css('background-color', '#BDDFFF');
+		$(this).css('background-color', '#FFDD04');
 	});
 	$("#from").blur(function() {
 		$(this).css('background-color', '#FFFFFF');
 	});
 
 	$('.summary').hover(function() {
-		if ($(this).css('background-color') != 'rgb(189, 223, 255)') {
-			$(this).css('background-color', '#CCCCCC');
+		if ($(this).css('background-color') != 'rgb(113, 175, 204)') {
+			$(this).css('background-color', '#FFDD04');
 		}
 	}, function() {
-		if ($(this).css('background-color') != 'rgb(189, 223, 255)')
-			$(this).css('background-color', 'transparent');
+		if ($(this).css('background-color') != 'rgb(113, 175, 204)')
+			$(this).css('background-color', '#FFFFFF');
 	});
 
-	var lastDetails;
-	$('.summary').click(function() {
-		if ($(this).attr('id') == $(lastDetails).attr('id')) {
-			if ($(this).css('background-color') != 'rgb(189, 223, 255)') {
-				$(this).css('background-color', '#BDDFFF');
-			}
+	/*
+	 * Initialize tabs
+	 */
+	var lastDetails = $('#summary_2');
+	details_frames = new Array(false, true, false);
+	for ( var i = 0; i < 3; i++) {
+		if (details_frames[i]) {
+			opendetails(i + 1);
 		} else {
-			$(lastDetails).css('background-color', 'transparent');
+			closedetails(i + 1);
+		}
+	}
+	$(lastDetails).css('background-color', '#71AFCC');
+
+	$('.summary').click(function() {
+		var click_id = $(this).attr('id').substr(8);
+		var clicked_id = $(lastDetails).attr('id').substr(8);
+
+		if ($(this).attr('id') == $(lastDetails).attr('id')) {
+			$(this).css('background-color', '#71AFCC');
+		} else {
+			$(lastDetails).css('background-color', '#FFFFFF');
 			lastDetails = this;
 			$(this).click();
 		}
-	});
 
+		if (click_id == clicked_id) {
+			if (details_frames[clicked_id - 1]) {
+				closedetails(click_id);
+				details_frames[clicked_id - 1] = false;
+			} else {
+				opendetails(click_id);
+				details_frames[click_id - 1] = true;
+			}
+		} else {
+			closedetails(clicked_id);
+			details_frames[clicked_id - 1] = false;
+			opendetails(click_id);
+			details_frames[click_id - 1] = true;
+		}
+	});
+	$('#resultFrame').hide();
 });
