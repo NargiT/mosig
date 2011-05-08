@@ -1,11 +1,9 @@
 <?php
 error_reporting(E_ALL);
-if (isset ($_GET["from"])) {
-	$input = $_GET["from"];
-} else
-	if (isset ($_GET["to"])) {
-		$input = $_GET["to"];
-	}
+if (isset ($_GET["search"])) {
+	$input = $_GET["search"];
+}
+//print_r($_GET);
 require 'Database.php';
 $db = new Database(array (
 	'data/station.xml',

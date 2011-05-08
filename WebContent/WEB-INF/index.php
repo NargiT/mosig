@@ -33,12 +33,12 @@ $unselected_colour = "#FFFFFF";
 		<div class="frame">
 			<div id="searchFrameHeader" class="frameHeader">
 				Path Finder<img id="searchtoggledownoff" alt="toggledownoff"
-					src="img/toggledownoff" class="toggle" /> <img
-					id="searchtoggledownon" alt="toggledownon" src="img/toggledownon"
+					src="img/toggledownoff.png" class="toggle" /> <img
+					id="searchtoggledownon" alt="toggledownon" src="img/toggledownon.png"
 					class="toggle" style="display: none" /> <img id="searchtoggleupoff"
-					alt="toggleupoff" src="img/toggleupoff" class="toggle"
+					alt="toggleupoff" src="img/toggleupoff.png" class="toggle"
 					style="display: none" /> <img id="searchtoggleupon"
-					alt="toggleupon" src="img/toggleupon" class="toggle"
+					alt="toggleupon" src="img/toggleupon.png" class="toggle"
 					style="display: none" />
 
 			</div>
@@ -49,12 +49,16 @@ $unselected_colour = "#FFFFFF";
 							<td class="firstcolumn"><label for="from">From :</label></td>
 							<td colspan="7"><input name="from" type="text" id="from"
 								autocomplete="off" maxlength="255" size="67" />
+								<ul id="search_results_from">
+								</ul>
 							</td>
 						</tr>
 						<tr>
 							<td class="firstcolumn"><label for="to">To :</label></td>
 							<td colspan="7"><input type="text" id="to" name="to"
 								autocomplete="off" maxlength="255" size="67" />
+							 <ul id="search_results_to">
+								</ul>
 							</td>
 						</tr>
 						<tr>
@@ -87,12 +91,12 @@ $unselected_colour = "#FFFFFF";
 		<div class="frame" id="resultFrame">
 			<div id="resultFrameHeader" class="frameHeader">
 				Results<img id="resulttoggledownoff" alt="toggledownoff"
-					src="img/toggledownoff" class="toggle" /> <img
-					id="resulttoggledownon" alt="toggledownon" src="img/toggledownon"
+					src="img/toggledownoff.png" class="toggle" /> <img
+					id="resulttoggledownon" alt="toggledownon" src="img/toggledownon.png"
 					class="toggle" style="display: none" /> <img id="resulttoggleupoff"
-					alt="toggleupoff" src="img/toggleupoff" class="toggle"
+					alt="toggleupoff" src="img/toggleupoff.png" class="toggle"
 					style="display: none" /> <img id="resulttoggleupon"
-					alt="toggleupon" src="img/toggleupon" class="toggle"
+					alt="toggleupon" src="img/toggleupon.png" class="toggle"
 					style="display: none" />
 				<div id="searchError" class="errors"></div>
 			</div>

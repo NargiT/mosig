@@ -11,6 +11,102 @@ function closedetails(id) {
 	});
 }
 
+/**
+ * Incremental search class
+ */
+var Search = {
+	found : false,
+	selected : -1,
+	id : "",
+	data : "",
+	html : "",
+	inputHandler : function(lastKeyPressCode,id){
+		var value = $('#' + id).val();
+		if (lastKeyPressCode == 8) {
+			if (value.length < 1) {
+				Search.hide(id);
+			} else {
+				Search.search(value, id);
+			}
+		} else if (lastKeyPressCode > 46 && lastKeyPressCode < 91) {
+			if (value.length > 1) {
+				Search.search(value, id);
+			}
+		} else if (lastKeyPressCode == 38) {
+			Search.moveSelection(-1, id);
+		} else if (lastKeyPressCode == 40) {
+			Search.moveSelection(1, id);
+		} else if(lastKeyPressCode == 13){
+			Search.select(id);
+		}
+	}
+	,
+	moveSelection : function(step, id) {
+		var lis = $("li", $("#search_results_" + id));
+		if (!lis)
+			return;
+		Search.selected += step;
+		if (Search.selected < 0) {
+			Search.selected = 0;
+		} else if (Search.selected >= lis.size()) {
+			Search.selected = lis.size() - 1;
+		}
+		lis.removeClass("selected_result");
+		$(lis[Search.selected]).addClass("selected_result");
+	},
+	select : function(id) {
+		var lis = $("li", $("#search_results_" + id));
+		if (!lis)
+			return;
+		if (Search.selected < 0) {
+			Search.selected = 0;
+		} else if (Search.selected >= lis.size()) {
+			Search.selected = lis.size() - 1;
+		}
+		var span = $(lis[Search.selected]).get(0);
+		var text = span.innerText;
+		$("#"+id).val(text);
+		Search.found = false;
+		Search.id = "";
+		Search.data = "";
+		Search.hide(id);
+		
+	},
+	search : function(value, id) {
+		$.get("search.php", {
+			search : value
+		}, function(data) {
+			if (data.length > 0) {
+				Search.data = data;
+				Search.found = true;
+				Search.moveSelection(1);
+				Search.show(id);
+				Search.id = id;
+			} else {
+				Search.hide(id);
+			}
+		});
+	},
+	hide : function(id) {
+		$("#search_results_" + id).html("");
+		$("#search_results_" + id).get(0).blur();
+	},
+	show : function(id) {
+		if (this.found && Search.id == id) {
+			var ul = $("#search_results_" + id);
+			ul.width($("#" + id).outerWidth());
+			ul.html(Search.data);
+			ul.children().hover(function() {
+				$("li", ul).removeClass("selected_result");
+				$(this).addClass("selected_result");
+				Search.selected = $(this).index();
+			}).click(function() {
+				Search.select(id);
+			});
+		}
+	}
+}
+
 $(document).ready(function() {
 	/*
 	 * Use a calendar to pick a day
@@ -132,7 +228,6 @@ $(document).ready(function() {
 			$("#resulttoggleupon").hide();
 		}
 	});
-	
 
 	/*
 	 * Input text focus/blur management
@@ -153,16 +248,24 @@ $(document).ready(function() {
 
 	$("#to").focus(function() {
 		$(this).css('background-color', '#FFDD04');
+		Search.show("to");
 	});
 	$("#to").blur(function() {
 		$(this).css('background-color', '#FFFFFF');
+		setTimeout(function(){
+	        Search.hide("to");
+	    }, 200);
 	});
 
 	$("#from").focus(function() {
 		$(this).css('background-color', '#FFDD04');
+		Search.show("from");
 	});
 	$("#from").blur(function() {
 		$(this).css('background-color', '#FFFFFF');
+		setTimeout(function(){
+	        Search.hide("from");
+	    }, 200);
 	});
 
 	$('.summary').hover(function() {
@@ -216,4 +319,14 @@ $(document).ready(function() {
 		}
 	});
 	$('#resultFrame').hide();
+
+	/*
+	 * AJAX Incremental search
+	 */
+	$('#to').keyup(function(e) {
+		Search.inputHandler(e.keyCode, "to");
+	});
+	$('#from').keyup(function(e) {
+		Search.inputHandler(e.keyCode, "from");
+	});
 });

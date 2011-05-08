@@ -47,13 +47,15 @@ class Database {
     }
 
     function search($input) {
+    	  //echo $input;
+    	  //echo "\n";
         $s="ABCDEFGHIGKLMNOPQRSTUVWXYZÀÉÈÂÎÔàéèâîô";
         $a="abcdefghijklmnopqrstuvwxyzaeeaioaeeaio";
         //translate(.,'".$s."','".$a."')
         //translate('".$input . "','".$s."','".$a."')
         $xml = "<?xml version='1.0' encoding='UTF-8'?>\n";
         $xml .= "<results>\n";
-        echo "Searching for " . $input . "\n";
+        //echo "Searching for " . $input . "\n";
         $dxpath = new DOMXPath($this->dom);
         $results = $dxpath->query(
         "/*/*/*[@name]/@name[
@@ -93,8 +95,9 @@ class Database {
             }
         }
         $xml.="</results>";
+        //preprint($xml);
         $xslDoc = new DOMDocument();
-        $xslDoc->load("xsl/stations.xsl");
+        $xslDoc->load("stations.xsl");
         $xmlDoc = new DOMDocument();
         $xmlDoc->loadXML($xml);
         $proc = new XSLTProcessor();
@@ -108,6 +111,7 @@ class Database {
             
                      );
         $html = $proc->transformToXML($xmlDoc);
+        return $html;
         $tidy = tidy_parse_string($html, $tidy_config, 'UTF8'); 
         $tidy->cleanRepair();
         return $tidy;

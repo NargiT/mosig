@@ -121,6 +121,30 @@ footer {
 	background-color: #FFDD04;
 }
 
+/*Result List*/
+#search_results_to,#search_results_from{
+	padding-left: 5px;
+	background-color:white;
+	position:absolute;
+	margin-top:0px;
+}
+
+/*Result Item*/
+#search_results_to .search_result,#search_results_from .search_result{
+	height:32px;
+	padding-bottom:5px;
+	border-bottom:1px solid black;
+	margin-bottom:3px;
+	margin-top:0px;
+	display:block;
+	font-size: 15px;
+}
+
+/*Selected Result Item*/
+#search_results_to .selected_result,#search_results_from .selected_result{
+	background-color:#FEEB7F;
+}
+
 /**************************************************************************
 						 *                   *
 						 * Result form style *
