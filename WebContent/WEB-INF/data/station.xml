@@ -1,0 +1,203 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<stations>
+    <station name="Cité Internationale">
+        <tramway id="B" />
+        <bus id="30" />
+    </station>
+
+    <station name="Palais de Justice">
+        <tramway id="B" />
+    </station>
+
+    <station name="Gare Europole">
+        <tramway id="B" />
+        <bus id="30" />
+    </station>
+
+    <station name="Saint-Bruno">
+        <tramway id="A" />
+        <tramway id="B" />
+        <bus id="32" />
+    </station>
+
+    <station name="Alembert">
+        <bus id="32" />
+    </station>
+
+    <station name="Abbé Grégoire">
+        <bus id="32" />
+    </station>
+
+    <station name="Gares">
+        <tramway id="A" />
+        <tramway id="B" />
+        <bus id ="34" />
+    </station>
+
+    <station name="Alsace-Lorraine">
+        <tramway id="A" />
+        <tramway id="B" />
+        <bus id="1" />
+        <bus id="17" />
+    </station>
+
+    <station name="Victor Hugo">
+        <tramway id="A" />
+        <tramway id="B" />
+
+        <bus id="13" />
+        <bus id="33" />
+        <bus id="34" />
+        <bus id="Le Rabot" />
+    </station>
+
+    <station name="Trois Dauphins">
+        <bus id="13" />
+        <bus id="17" />
+        <bus id="33" />
+    </station>
+
+    <station name="Hubert Dubedout-Maison du Tourisme">
+        <tramway id="A" />
+        <tramway id="B" />
+    </station>
+
+    <station name="Sainte-Claire Les Halles">
+        <tramway id="B" />
+    </station>
+
+    <station name="Verdun-Préfercture">
+        <tramway id="A" />
+        <bus id="16" />
+        <bus id="21" />
+        <bus id="31" />
+        <bus id="32" />
+        <bus id="33" />
+        <bus id="41" />
+    </station>
+
+    <station name="Chavant">
+        <tramway id="A" />
+        <tramway id="C" />
+        <bus id="31" />
+        <bus id="34" />
+    </station>
+
+    <station name="Mutualité">
+        <bus id="16" />
+        <bus id="31" />
+        <bus id="32" />
+    </station>
+
+    <station name="Bir Hakeim">
+        <bus id="21" />
+        <bus id="33" />
+        <bus id="41" />
+    </station>
+
+    <station name="Hôtel de Police">
+        <bus id="16" />
+        <bus id="31" />
+    </station>
+
+    <station name="Notre-Dame Musée">
+        <tramway id="B" />
+        <bus id="16" />
+    </station>
+
+    <station name="Île Verte">
+        <tramway id="B" />
+        <bus id="31" />
+    </station>
+
+    <station name="Xavier Jouvin">
+        <bus id="16" />
+    </station>
+
+    <station name="Maurice Gignoux">
+        <bus id="Le Rabot" />
+    </station>
+
+    <station name="Veyret">
+        <bus id="Le Rabot" />
+    </station>
+
+    <station name="Le Rabot">
+        <bus id="Le Rabot" />
+    </station>
+
+    <station name="Docteur Mazet">
+        <bus id="17" />
+        <bus id="34" />
+    </station>
+
+    <station name="Aristide Briand">
+        <bus id="1" />
+    </station>
+
+    <station name="Esplanade">
+        <bus id="1" />
+    </station>
+
+    <station name="Félix Viallet">
+        <bus id="34" />
+        <bus id="" />
+    </station>
+
+    <station name="Gare Routière">
+        <bus id="34" />
+    </station>
+
+    <station name="Émile Gueymard">
+        <bus id="34" />
+    </station>
+
+    <station name="Docteur Martin">
+        <bus id="41" />
+        <bus id="34" />
+        <bus id="13" />
+        <bus id="33" />
+        <bus id="32" />
+        <bus id="16" />
+        <bus id="31" />
+    </station>
+
+    <station name="Champollion">
+        <bus id="13" />
+        <bus id="32" />
+        <bus id="16" />
+    </station>
+
+    <station name="Jay-Gambetta">
+        <bus id="Le Rabot" />
+    </station>
+
+    <station name="Caserne de Bonne">
+        <bus id="16" />
+    </station>
+
+    <station name="Jaurès-Berriat">
+        <bus id="1" />
+        <bus id="17" />
+    </station>
+
+    <station name="Chorier-Condorcet">
+        <bus id="1" />
+        <bus id="17" />
+        <bus id="32" />
+    </station>
+
+    <station name="Condorcet">
+        <bus id="32" />
+    </station>
+
+    <station name="Championnet">
+        <bus id="32" />
+        <bus id="13" />
+    </station>
+
+    <station name="L'Aigle">
+        <bus id="1" />
+        <bus id="17" />
+    </station>
+</stations>

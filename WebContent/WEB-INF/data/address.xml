@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<addresses>
+    <adresse name="Victor Hugo" type="place"/>
+    <adresse name="Gabriel Péri" type="rue" />
+    <adresse name="Saint Bruno" type="place" />
+    <adresse name="Gambetta" type="boulevard" />
+    <adresse name="Berriat" type="cours" />
+    <adresse name="des Thiers" type="rue" />
+    <adresse name="Condorcet" type="place" />
+    <adresse name="Hoche" type="rue" />
+    <adresse name="Voltaire" type="rue" />
+    <adresse name="Pasteur" type="place" />
+    <adresse name="Saint-André" type="place" /> 
+    <adresse name="aux Herbes" type="place" />
+    <adresse name="Agutte Sembat" type="boulevard" />
+    <adresse name="des Bergers" type="rue" />
+    <adresse name="de Saint-Jacques" type="rue" />
+</addresses> 
