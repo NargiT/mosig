@@ -139,7 +139,7 @@ $unselected_colour = "#FFFFFF";
 								</td>
 								<td><div class="showdetails">Details</div>
 								</td>
-								<td>12 May</td>
+								<td>16 May</td>
 								<td>21min</td>
 								<td>
 									<div class="walk picto"></div>
@@ -239,7 +239,7 @@ $unselected_colour = "#FFFFFF";
 								</td>
 								<td><div class="showdetails"">Details</div>
 								</td>
-								<td>12 May</td>
+								<td>16 May</td>
 								<td>21min</td>
 								<td>
 									<div class="walk picto"></div>
@@ -337,7 +337,7 @@ $unselected_colour = "#FFFFFF";
 								</td>
 								<td><div class="showdetails">Details</div>
 								</td>
-								<td>12 May</td>
+								<td>16 May</td>
 								<td>17min</td>
 								<td>
 									<div class="walk picto"></div>
