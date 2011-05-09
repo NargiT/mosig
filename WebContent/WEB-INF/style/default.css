@@ -38,6 +38,7 @@ footer {
 	padding: 0px;
 	width: 95%;
 	border: 2px solid #CCCCCC;
+	min-height: 800px;
 }
 
 .errors {
@@ -52,8 +53,9 @@ footer {
 }
 
 .frameHeader {
-	background-image: url("../img/frameheader.png");
+/* 	background-image: url("../img/frameheader.png"); */
 	background-repeat: repeat-x;
+	background-color: #006699;
 	height: 35px;
 	padding-top: 5px;
 	cursor: pointer;
@@ -159,9 +161,12 @@ footer {
 	font-weight: normal;
 }
 
+#resultTable table {
+	margin: 0px;
+}
+
 #resultForm #resultTable thead {
 	text-align: left;
-	height: 40px;
 }
 
 .summary {

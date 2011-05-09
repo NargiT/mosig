@@ -139,8 +139,8 @@ $unselected_colour = "#FFFFFF";
 								</td>
 								<td><div class="showdetails">Details</div>
 								</td>
-								<td>5 May</td>
-								<td>22min</td>
+								<td>12 May</td>
+								<td>21min</td>
 								<td>
 									<div class="walk picto"></div>
 									<div class="arrow next"></div>
@@ -239,8 +239,8 @@ $unselected_colour = "#FFFFFF";
 								</td>
 								<td><div class="showdetails"">Details</div>
 								</td>
-								<td>5 May</td>
-								<td>22min</td>
+								<td>12 May</td>
+								<td>21min</td>
 								<td>
 									<div class="walk picto"></div>
 									<div class="arrow next"></div>
@@ -294,7 +294,7 @@ $unselected_colour = "#FFFFFF";
 														</tr>
 														<tr>
 															<td>arrival</td>
-															<td>10:11</td>
+															<td>11:11</td>
 														</tr>
 													</table></td>
 												<td rowspan="2"><iframe width="300" height="300"
@@ -337,8 +337,8 @@ $unselected_colour = "#FFFFFF";
 								</td>
 								<td><div class="showdetails">Details</div>
 								</td>
-								<td>5 May</td>
-								<td>22min</td>
+								<td>12 May</td>
+								<td>17min</td>
 								<td>
 									<div class="walk picto"></div>
 									<div class="arrow next"></div>
