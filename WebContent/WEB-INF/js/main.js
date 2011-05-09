@@ -23,13 +23,13 @@ var Search = {
 	inputHandler : function(lastKeyPressCode,id){
 		var value = $('#' + id).val();
 		if (lastKeyPressCode == 8) {
-			if (value.length < 1) {
+			if (value.length < 2) {
 				Search.hide(id);
 			} else {
 				Search.search(value, id);
 			}
 		} else if (lastKeyPressCode > 46 && lastKeyPressCode < 91) {
-			if (value.length > 1) {
+			if (value.length > 2) {
 				Search.search(value, id);
 			}
 		} else if (lastKeyPressCode == 38) {

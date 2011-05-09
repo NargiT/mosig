@@ -65,6 +65,7 @@ class Database {
          substring(translate(.,'".$s."','".$a."'),string-length(.)-string-length('" . $input . "')+1))]");
         $rarray = array();
         $prevresult = "";
+		$i=0;
         foreach ($results as $value) {
             $name = $value->value; 
             $tram=false;
@@ -93,6 +94,7 @@ class Database {
             } else{
                 $xml.="<result type='address' name='".$value->value."'/>\n";
             }
+			if($i>7) break;
         }
         $xml.="</results>";
         //preprint($xml);
