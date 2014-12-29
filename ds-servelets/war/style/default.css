@@ -1,0 +1,101 @@
+@CHARSET "ISO-8859-1";
+
+body {
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	font-variant: small-caps;
+	width: 90%;
+	margin: auto;
+}
+
+header {
+	padding-left: 2%;
+	padding-bottom: 20px;
+}
+
+input[type="submit"] {
+	font-variant: small-caps;
+	border: 2px solid #3D5AA8;
+	color: #3D5AA8;
+	background-color: #FFCC00;
+	font-weight: bold;
+}
+
+#login input[type="submit"] {
+	float: right;
+}
+
+#login {
+	margin: 10px 10px 0px 0px;
+	width: 15%;
+	border: 4px solid #3D5AA8;
+	background-color: #FFCC00;
+	float: right;
+}
+
+#login * {
+	margin: 2px;
+}
+
+#content {
+	padding: 10px;
+	text-align: center;
+	border: 4px solid #3D5AA8;
+	background-color: #FFCC00;
+}
+
+#content .pokemon {
+	display: inline-block;
+	border: 2px solid #FFCC00;
+	padding-bottom: 3px;
+}
+
+#content form p {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+#content table {
+	margin: auto;
+	width: 90%;
+	border-collapse: collapse;
+}
+
+#content table tr td {
+/* 	text-align: left; */
+	height: 50px;
+}
+
+#content table thead {
+	font-weight: bold;
+	background:#3D5AA8;
+	color:#FFCC00;
+}
+
+#content table tbody tr {
+	border-bottom:1px dashed #3D5AA8;
+}
+
+#content table tbody tr td:FIRST-CHILD {
+	text-transform: capitalize;
+}
+
+#content table tfoot {
+	font-weight: bold;
+	border: none;
+}
+
+figure {
+	border: 2px solid #FFCC00;
+	padding: 5px;
+	margin: 5px;
+	background-color: #FFFFFF;
+}
+
+figcaption:FIRST-LETTER {
+	text-transform: uppercase;
+}
+
+footer {
+	text-align: center;
+}
